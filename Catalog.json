@@ -1,0 +1,133 @@
+{
+    "Greenhouses": [
+        {
+            "GREENHOUSE_ID": "30AEA4266030",
+            "GREENHOUSE_LATITUDE": 42.067,
+            "GREENHOUSE_LONGITUDE": 8.9,
+            "THRESHOLD_HUMID_MIN": 0,
+            "THRESHOLD_HUMID_MAX": 0,
+            "THRESHOLD_BRIGHT_MIN": 0,
+            "THRESHOLD_BRIGHT_MAX": 0,
+            "THRESHOLD_TEMPER_MIN": 0,
+            "THRESHOLD_TEMPER_MAX": 0,
+            "BROKER_HOST": "10.42.0.1",
+            "BROKER_PORT": 1884,
+            "STATUS_TOPIC": "/p4iot/greenhouses/30AEA4266030/status",
+            "COMMANDS_TOPIC": "/p4iot/greenhouses/30AEA4266030/commands/+",
+            "SENSORS_TOPIC": "/p4iot/greenhouses/30AEA4266030/sensors"
+        }
+    ],
+    "Plants": [
+        {
+            "PLANT_ID": "84F3EB33DB49",
+            "PLANT_NAME": "Peperoncino",
+            "GREENHOUSE_ID": "30AEA4266030",
+            "BROKER_HOST": "10.42.0.1",
+            "BROKER_PORT": 1884,
+            "STATUS_TOPIC": "/p4iot/plants/84F3EB33DB49/status",
+            "COMMANDS_TOPIC": "/p4iot/plants/84F3EB33DB49/commands/+",
+            "SENSORS_TOPIC": "/p4iot/plants/84F3EB33DB49/sensors",
+            "OWNERS": [
+                1,
+                2
+            ],
+            "THRESHOLD_MOIST_MIN": 1,
+            "THRESHOLD_MOIST_MAX": 33
+        },
+        {
+            "PLANT_ID": "aAAAAAAAAAAA",
+            "PLANT_NAME": "Peperoncino",
+            "GREENHOUSE_ID": "30AEA426603",
+            "BROKER_HOST": "10.42.0.1",
+            "BROKER_PORT": 1884,
+            "STATUS_TOPIC": "/p4iot/plants/aAAAAAAAAAAA/status",
+            "COMMANDS_TOPIC": "/p4iot/plants/aAAAAAAAAAAA/commands/+",
+            "SENSORS_TOPIC": "/p4iot/plants/aAAAAAAAAAAA/sensors",
+            "OWNERS": [
+                1,
+                2
+            ],
+            "THRESHOLD_MOIST_MIN": 0,
+            "THRESHOLD_MOIST_MAX": 0
+        },
+        {
+            "PLANT_ID": "84F3EB33D049",
+            "PLANT_NAME": "Bergamotto",
+            "GREENHOUSE_ID": "30AEA4266030",
+            "BROKER_HOST": "10.42.0.1",
+            "BROKER_PORT": 1884,
+            "STATUS_TOPIC": "/p4iot/plants/84F3EB33DB49/status",
+            "COMMANDS_TOPIC": "/p4iot/plants/84F3EB33DB49/commands/+",
+            "SENSORS_TOPIC": "/p4iot/plants/84F3EB33DB49/sensors",
+            "OWNERS": [
+                1,
+                2
+            ],
+            "THRESHOLD_MOIST_MIN": 54,
+            "THRESHOLD_MOIST_MAX": 0
+        }
+    ],
+    "Farmers": [
+        {
+            "FARMER_ID": "1234",
+            "CROPS_OWNED": [
+                "84F3EB33DB49",
+                "84F3EB33D049"
+            ],
+            "ITEMS_SELL": [
+                {
+                    "item": "avocado",
+                    "price": 2,
+                    "quantityAvailable": 22
+                },
+                {
+                    "item": "pompelmo",
+                    "price": 87,
+                    "quantityAvailable": 7
+                },
+                {
+                    "item": "fragole",
+                    "price": 2000,
+                    "quantityAvailable": 15
+                },
+                {
+                    "item": "patate",
+                    "price": 2,
+                    "quantityAvailable": 20
+                }
+            ]
+        },
+        {
+            "FARMER_ID": "5678",
+            "CROPS_OWNED": "",
+            "ITEMS_SELL": [
+                {
+                    "item": "patate",
+                    "price": 13,
+                    "quantityAvailable": 45
+                },
+                {
+                    "item": "avocado",
+                    "price": 2,
+                    "quantityAvailable": 22
+                },
+                {
+                    "item": "fragole",
+                    "price": 2,
+                    "quantityAvailable": 22
+                }
+            ]
+        }
+    ],
+    "Users": [
+        {
+            "USER_ID": "123456"
+        }
+    ],
+    "Statistics": [
+        {
+            "water_period": "50",
+            "temperature_period": "60"
+        }
+    ]
+}

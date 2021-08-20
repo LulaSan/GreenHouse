@@ -1,0 +1,26 @@
+ESEMPI URL 
+PLANT DEVICE
+per ottentere:
+-Tutte le informazioni della pianta - http://localhost:8080/plant/<PLANT_ID>
+-Informazione specifica sulla pianta - http://localhost:8080/plant/<PLANT_ID>/STATUS_TOPIC
+per aggiungere un nuovo plant device:
+fare una richiesta post a http://localhost:8080/plant/<nuovo PLANT_ID> e inserendo come "data" il dictionary riempito con keys e values
+
+Greenhouse DEVICE
+per ottentere:
+-Tutte le informazioni della greenhouse - http://localhost:8080/greenhouse/<GREENHOUSE_ID>
+-Informazione specifica sulla greenhouse - http://localhost:8080/greenhouse/<GREENHOUSE_ID>/STATUS_TOPIC
+per aggiungere un nuovo greenhouse device:
+fare una richiesta post a http://localhost:8080/greenhouse/<nuovo PLANT_ID> e inserendo come "data" il dictionary riempito con keys e values
+
+
+
+STATISTICHE
+per ottenere:
+-il periodo delle statistiche  http://localhost:8080/statistic/water_period o temperature_period
+per modificare:
+-il periodo delle statistiche  http://localhost:8080/statistic/water_period/<nuovo valore> es  http://localhost:8080/statistic/water_period/50 (ho ipotizzato secondi come uniità di misura)
+
+CONTROLLERS:
+per i controllori il modo di ottenere il valore del treshold è come sopra:
+ esempio - http://localhost:8080/greenhouse/<GREENHOUSE_ID>/THRESHOLD_TEMPER_MIN  per ottenere la soglia inferiore.
