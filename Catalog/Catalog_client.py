@@ -1,8 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# coding=utf-8
+
 import json
 import time
 import requests 
 import datetime
-# coding=utf-8
 
 class PlantClient():
     def __init__(self,PlantsList):
