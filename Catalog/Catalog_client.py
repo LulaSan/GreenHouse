@@ -34,7 +34,7 @@ class PlantClient():
                         trovato=(self.PlantsList[i][self.oggetto])
                         nontrovato=0
                     else:
-                        return f' Non esiste questa Key '
+                        return f" Non esiste questa Key "
         if nontrovato==1:
             return f' Nulla corrisponde alla tua ricerca, riprova!'
         else:
