@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # coding=utf-8
-
+#!/usr/bin/python3
 import json
 import time
 import requests 
