@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import cherrypy
 from Catalog_client import *
 
