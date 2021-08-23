@@ -110,7 +110,10 @@ class CHERRY_CATALOG():
 
         
 
-if __name__=="__main__": 
+if __name__=="__main__":
+    
+    print("inizio")
+	
     conf = {
 		'/':{
 			'request.dispatch':cherrypy.dispatch.MethodDispatcher(),
