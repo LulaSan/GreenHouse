@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env python
 import cherrypy
 from Catalog_client import *
 
