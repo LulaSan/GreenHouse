@@ -1,2 +1,2 @@
 #!/bin/bash
-echo python3 /home/GreenHouse/Catalog/Catalog_REST.py
+python3 /home/GreenHouse/Catalog/Catalog_REST.py
