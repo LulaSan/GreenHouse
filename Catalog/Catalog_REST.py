@@ -121,7 +121,7 @@ if __name__=="__main__":
 		    }
         }
     cherrypy.config.update({'server.socket_host': '0.0.0.0'})
-    cherrypy.config.update({'server.socket_port': 3000})
+    cherrypy.config.update({'server.socket_port': 2000})
     cherrypy.quickstart(CHERRY_CATALOG(),'/',conf)
 
    # cherrypy.engine.start()
