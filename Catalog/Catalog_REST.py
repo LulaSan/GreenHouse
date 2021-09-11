@@ -120,12 +120,11 @@ if __name__=="__main__":
 			'tools.sessions.on':True
 		    }
         }
-    cherrypy.config.update({ 'server.shutdown_timeout': 1 })
 
     cherrypy.config.update({'server.socket_host': '0.0.0.0'})
     cherrypy.config.update({'server.socket_port': 2000})
     cherrypy.quickstart(CHERRY_CATALOG(),'/',conf)
-	#ok
+	
 
-   # cherrypy.engine.start()
-    #cherrypy.engine.block()
+   cherrypy.engine.start()
+   cherrypy.engine.block()
