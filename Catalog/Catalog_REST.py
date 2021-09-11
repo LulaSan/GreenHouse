@@ -83,7 +83,7 @@ class CHERRY_CATALOG():
 
         if uri[0]=="statistic": #serve solo a cambiare il periodo
             output_post=str(self.statistic.modify(uri[1],uri[2]))#http://localhost:8080/statistic/water_period/50
-        #####FARMER###### /farmeritem/1234/patate/32/None
+        #####FARMER###### /farmeritem/1234/patate/32/None 
         if uri[0]=="uporaddfarmer":
             body_f=cherrypy.request.body.read()
             jsonBody_f=json.loads(body_f)
@@ -124,7 +124,7 @@ if __name__=="__main__":
     cherrypy.config.update({'server.socket_port': 8080})
     cherrypy.config.update({ 'server.shutdown_timeout': 1 })
     cherrypy.quickstart(CHERRY_CATALOG(),'/',conf)
-	
+	#ok
 
    # cherrypy.engine.start()
     #cherrypy.engine.block()
