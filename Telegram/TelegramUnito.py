@@ -12,12 +12,12 @@ import requests
 
 ##AGGIUNGERE MESSAGGIO INIZIALE CHE DICE DI SCRIVERE /start
 # listaFarmers=lista["list"]
-listaFarmers=json.loads(requests.get(url="http://p4iotsmartgh2021.ddns.net:2000/farmers").text)
 
 SIGNIN, ADMIN , ADMIN_TYPING, ADMIN_TYPING_2, ADMIN_TYPING_3, LEVEL1, FARMER , FARMER_TYPING, FARMER_TYPING_2= range(9)
 
 SERVER_file=json.loads('utils.json')
 SERVER=SERVER_file['SERVER']
+listaFarmers=json.loads(requests.get(url=SERVER+"/farmers").text)
 
 keyboardPrincipale= [[InlineKeyboardButton(text=f'Aggiungere, modificare, rimuovere un item', callback_data='b1_1')],
             [InlineKeyboardButton(text=f'Controllare attuatori', callback_data='b1_2')],
@@ -512,7 +512,7 @@ def displaylist(update: Update, context: CallbackContext) -> int:
   #1. stampo lista  2. chiedo di scrivere se nuovo nome item, prezzo e quantità separati da spazi
   #3. chiedo di scrivere "modifica prezzo patate 2/ modifica quantità patate 3 "
   farmerid=user_data["LOGID"]
-  singolo=json.loads(requests.get(url=f"http://p4iotsmartgh2021.ddns.net:2000/farmer/{farmerid}").text)
+  singolo=json.loads(requests.get(url=SERVER+f"/farmer/{farmerid}").text)
   items=singolo["ITEMS_SELL"]
   update.callback_query.message.edit_text(text=f"\nEcco gli items disponibili \n{items}"
                                      "se devi aggiungere, scrivi 'aggiungi <nome item>, <prezzo> e <quantità> separati da spazi\n"
@@ -531,12 +531,12 @@ def uporadditemfarmer(update: Update, context: CallbackContext) -> int:
     item=text[2]
     if text[1]== "prezzo":
       prezzo= int(text[3])
-      r=requests.post(f"http://p4iotsmartgh2021.ddns.net:2000/uporadditem/{farmerid}/{item}/{prezzo}/None")
+      r=requests.post(url=SERVER+f"/uporadditem/{farmerid}/{item}/{prezzo}/None")
     elif text[1]== "quantità" :
       quantita=int(text[3])
-      p=requests.post(f"http://p4iotsmartgh2021.ddns.net:2000/uporadditem/{farmerid}/{item}/None/{quantita}")
+      p=requests.post(url=f"{SERVER}/uporadditem/{farmerid}/{item}/None/{quantita}")
     
-    singolo=json.loads(requests.get(url=f"http://p4iotsmartgh2021.ddns.net:2000/farmer/{farmerid}").text)
+    singolo=json.loads(requests.get(url=f"{SERVER}/farmer/{farmerid}").text)
     items=singolo["ITEMS_SELL"]
     update.message.reply_text(f"Ok,fatto. Ecco la lista modificata\n {items} \n Riprova se vuoi modificare altro\n digita 'principale' per tornare al menu inziale")
     return FARMER_TYPING
@@ -544,16 +544,16 @@ def uporadditemfarmer(update: Update, context: CallbackContext) -> int:
     item=text[1]
     prezzo=int(text[2])
     quantita=int(text[3])
-    requests.post(f"http://p4iotsmartgh2021.ddns.net:2000/uporadditem/{farmerid}/{item}/{prezzo}/{quantita}")
-    singolo=json.loads(requests.get(url=f"http://p4iotsmartgh2021.ddns.net:2000/farmer/{farmerid}").text)
+    requests.post(f"{SERVER}/uporadditem/{farmerid}/{item}/{prezzo}/{quantita}")
+    singolo=json.loads(requests.get(url=f"{SERVER}/farmer/{farmerid}").text)
     items=singolo["ITEMS_SELL"]
     update.message.reply_text(f"Ok,fatto. Ecco la lista modificata\n {items} \n Riprova se vuoi modificare altro\n digita 'principale' per tornare al menu inziale")
     
     return FARMER_TYPING
   elif text[0] =="rimuovi":
     item=text[1]
-    requests.delete(f"http://p4iotsmartgh2021.ddns.net:2000/deleteitem/{farmerid}/{item}")
-    singolo=json.loads(requests.get(url=f"http://p4iotsmartgh2021.ddns.net:2000/farmer/{farmerid}").text)
+    requests.delete(f"{SERVER}/deleteitem/{farmerid}/{item}")
+    singolo=json.loads(requests.get(url=f"{SERVER}/farmer/{farmerid}").text)
     items=singolo["ITEMS_SELL"]
     update.message.reply_text(f"Ok,fatto. Ecco la lista modificata\n {items} \n Riprova se vuoi modificare altro\n digita 'principale' per tornare al menu inziale")
     
@@ -617,8 +617,8 @@ def PompaOFF(update: Update, context: CallbackContext) -> int:
     )
   return FARMER
 def listaCROPS(farmerid):
-  farmer=json.loads(requests.get(url=f"http://p4iotsmartgh2021.ddns.net:2000/farmer/{farmerid}").text)
-  plants=json.loads(requests.get(url="http://p4iotsmartgh2021.ddns.net:2000/plants").text)
+  farmer=json.loads(requests.get(url=f"{SERVER}/farmer/{farmerid}").text)
+  plants=json.loads(requests.get(url=f"{SERVER}/plants").text)
   cropsowned=farmer["CROPS_OWNED"]
   pprint(cropsowned)
   displaydict={"list":[]}
@@ -653,8 +653,8 @@ def NewThreshold_reply(update: Update, context: CallbackContext) -> int:
   farmerid=user_data["LOGID"]
   text = update.message.text.split(" ")
   pianta= text[0]
-  farmer=json.loads(requests.get(url=f"http://p4iotsmartgh2021.ddns.net:2000/farmer/{farmerid}").text)
-  plants=json.loads(requests.get(url="http://p4iotsmartgh2021.ddns.net:2000/plants").text)
+  farmer=json.loads(requests.get(url=f"{SERVER}/farmer/{farmerid}").text)
+  plants=json.loads(requests.get(url=f"{SERVER}/plants").text)
   cropsowned=farmer["CROPS_OWNED"]
   keyboard = [
         [
@@ -676,7 +676,7 @@ def NewThreshold_reply(update: Update, context: CallbackContext) -> int:
         if plant["PLANT_ID"]== crop and plant["PLANT_NAME"]== pianta:
           plantid=plant["PLANT_ID"]
           modified_dict={"THRESHOLD_MOIST_MIN": int(text[2])}
-          requests.post(url=f"http://p4iotsmartgh2021.ddns.net:2000/plant/{plantid}",json=modified_dict)
+          requests.post(url=f"{SERVER}/plant/{plantid}",json=modified_dict)
     lista=listaCROPS(farmerid)
     update.message.reply_text(text=f"Ecco la lista aggiornata\n {lista}\n puoi continuare oppure scegliere un'opzione dal menu", reply_markup=reply_markup )
     return FARMER
@@ -686,7 +686,7 @@ def NewThreshold_reply(update: Update, context: CallbackContext) -> int:
         if plant["PLANT_ID"]== crop and plant["PLANT_NAME"]== pianta:
           plantid=plant["PLANT_ID"]
           modified_dict={"THRESHOLD_MOIST_MAX": int(text[2])}
-          requests.post(url=f"http://p4iotsmartgh2021.ddns.net:2000/plant/{plantid}",json=modified_dict)
+          requests.post(url=f"{SERVER}/plant/{plantid}",json=modified_dict)
     lista=listaCROPS(farmerid)
     update.message.reply_text(text=f"Ecco la lista aggiornata\n {lista}, puoi continuare con un altro comando oppure cliccare su uno dei seguenti bottoni",reply_markup=reply_markup)
     return FARMER
