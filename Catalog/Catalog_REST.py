@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 import cherrypy
 from Catalog_client import *
 
@@ -7,8 +6,11 @@ class CHERRY_CATALOG():
     exposed=True
 
     def __init__(self):
-       fp=open("Catalog/Catalog.json")
+       fp=open("Catalog.json")
        catalog=json.load(fp)
+       self.Admins=catalog["Admins"]
+       self.admin=AdminClient(self.Admins)
+
        self.Greenhouses=catalog["Greenhouses"]
        self.greenhouse=GreenhouseClient(self.Greenhouses)
        self.Plants=catalog["Plants"]
@@ -30,6 +32,8 @@ class CHERRY_CATALOG():
             if uri[0]=='plants':
                 output=str(self.plant.showlist())
                 
+            if uri[0]=='admins':
+                output=str(self.admin.showlist())                
             
             if uri[0]=='plant': 
                 if len(uri)==2:
@@ -41,7 +45,7 @@ class CHERRY_CATALOG():
             if uri[0]=='greenhouses':
                 output=str(self.greenhouse.showlist())
 
-            if uri[0]=='greenhouse': 
+            if uri[0]=='greenhouse': #:2000/greenhouse/GreenhouseID
                 if len(uri)==2:
                     output=str(self.greenhouse.search(uri[1],None)) 
                 elif len(uri)==3:
@@ -83,7 +87,7 @@ class CHERRY_CATALOG():
 
         if uri[0]=="statistic": #serve solo a cambiare il periodo
             output_post=str(self.statistic.modify(uri[1],uri[2]))#http://localhost:8080/statistic/water_period/50
-        #####FARMER###### /farmeritem/1234/patate/32/None 
+        #####FARMER###### /farmeritem/1234/patate/32/None
         if uri[0]=="uporaddfarmer":
             body_f=cherrypy.request.body.read()
             jsonBody_f=json.loads(body_f)
@@ -110,19 +114,16 @@ class CHERRY_CATALOG():
 
         
 
-if __name__=="__main__":
-    
-    print("inizio")
-
+if __name__=="__main__": 
     conf = {
 		'/':{
 			'request.dispatch':cherrypy.dispatch.MethodDispatcher(),
 			'tools.sessions.on':True
 		    }
         }
-
     cherrypy.config.update({'server.socket_host': '0.0.0.0'})
     cherrypy.config.update({'server.socket_port': 2000})
-    #cherrypy.engine.exit()
     cherrypy.quickstart(CHERRY_CATALOG(),'/',conf)
 
+   # cherrypy.engine.start()
+    #cherrypy.engine.block()

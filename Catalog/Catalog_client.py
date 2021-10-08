@@ -1,11 +1,15 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# coding=utf-8
-#!/usr/bin/python3
 import json
 import time
 import requests 
 import datetime
+
+class AdminClient():
+    def __init__(self,AdminList):
+        self.AdminList=AdminList
+    def showlist(self):
+        listaadmin=self.AdminList.copy()
+        prettylist=json.dumps(listaadmin,indent=4)
+        return prettylist
 
 class PlantClient():
     def __init__(self,PlantsList):
@@ -34,7 +38,7 @@ class PlantClient():
                         trovato=(self.PlantsList[i][self.oggetto])
                         nontrovato=0
                     else:
-                        return f" Non esiste questa Key "
+                        return f' Non esiste questa Key '
         if nontrovato==1:
             return f' Nulla corrisponde alla tua ricerca, riprova!'
         else:
@@ -265,12 +269,12 @@ class FarmerClient():
         self.price=price # la quantity deve essere la totale disponibile in quel momento
         self.quantity=quantity
         self.item=item
-        update=0;
+        update=0
         for i in range(len(self.FarmersList)):
             if farmerID==self.FarmersList[i]["FARMER_ID"]:
                 for j in range(len(self.FarmersList[i]["ITEMS_SELL"])):
                     if item == self.FarmersList[i]["ITEMS_SELL"][j]["item"]: # se l'item già c'è faccio l'update della quantità o del prezzo
-                        update=1;
+                        update=1
                         if self.price!="None":
                             self.FarmersList[i]["ITEMS_SELL"][j]["price"]=int(self.price)
                             

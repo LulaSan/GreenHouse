@@ -15,6 +15,22 @@
             "STATUS_TOPIC": "/p4iot/greenhouses/30AEA4266030/status",
             "COMMANDS_TOPIC": "/p4iot/greenhouses/30AEA4266030/commands/+",
             "SENSORS_TOPIC": "/p4iot/greenhouses/30AEA4266030/sensors"
+        }, 
+        {
+            "GREENHOUSE_ID": "ABCDEFG",
+            "GREENHOUSE_LATITUDE": 44.067,
+            "GREENHOUSE_LONGITUDE": 10.9,
+            "THRESHOLD_HUMID_MIN": 0,
+            "THRESHOLD_HUMID_MAX": 0,
+            "THRESHOLD_BRIGHT_MIN": 0,
+            "THRESHOLD_BRIGHT_MAX": 0,
+            "THRESHOLD_TEMPER_MIN": 0,
+            "THRESHOLD_TEMPER_MAX": 0,
+            "BROKER_HOST": "10.42.0.1",
+            "BROKER_PORT": 1884,
+            "STATUS_TOPIC": "/p4iot/greenhouses/ABCDEFG/status",
+            "COMMANDS_TOPIC": "/p4iot/greenhouses/ABCDEFG/commands/+",
+            "SENSORS_TOPIC": "/p4iot/greenhouses/ABCDEFG/sensors"
         }
     ],
     "Plants": [
@@ -35,7 +51,7 @@
             "THRESHOLD_MOIST_MAX": 33
         },
         {
-            "PLANT_ID": "luisaSan",
+            "PLANT_ID": "aAAAAAAAAAAA",
             "PLANT_NAME": "Peperoncino",
             "GREENHOUSE_ID": "30AEA426603",
             "BROKER_HOST": "10.42.0.1",
@@ -70,17 +86,18 @@
     "Farmers": [
         {
             "FARMER_ID": "1234",
+            "GRENHOUSE_ID":"30AEA4266030",
             "CROPS_OWNED": [
                 "84F3EB33DB49",
                 "84F3EB33D049"
             ],
             "ITEMS_SELL": [
-                {
+                {   
                     "item": "avocado",
                     "price": 2,
                     "quantityAvailable": 22
                 },
-                {
+                {   
                     "item": "pompelmo",
                     "price": 87,
                     "quantityAvailable": 7
@@ -122,6 +139,11 @@
     "Users": [
         {
             "USER_ID": "123456"
+        }
+    ],
+    "Admin": [
+        {
+            "ADMIN_ID":"1234"
         }
     ],
     "Statistics": [
