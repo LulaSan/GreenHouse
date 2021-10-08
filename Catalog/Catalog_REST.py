@@ -113,7 +113,7 @@ class CHERRY_CATALOG():
 if __name__=="__main__":
     
     print("inizio")
-    cherrypy.engine.exit()
+    #cherrypy.engine.exit()
 
     conf = {
 		'/':{
