@@ -7,7 +7,7 @@ class CHERRY_CATALOG():
     exposed=True
 
     def __init__(self):
-       fp=open("/home/GreenHouse/Catalog/Catalog.json")
+       fp=open("Catalog/Catalog.json")
        catalog=json.load(fp)
        self.Greenhouses=catalog["Greenhouses"]
        self.greenhouse=GreenhouseClient(self.Greenhouses)
