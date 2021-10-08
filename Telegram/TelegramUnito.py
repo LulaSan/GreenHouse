@@ -15,7 +15,7 @@ import requests
 
 SIGNIN, ADMIN , ADMIN_TYPING, ADMIN_TYPING_2, ADMIN_TYPING_3, LEVEL1, FARMER , FARMER_TYPING, FARMER_TYPING_2= range(9)
 
-SERVER_file=json.loads(open('utils.json','r'))
+SERVER_file=json.load(open('utils.json','r'))
 SERVER=SERVER_file['SERVER']
 listaFarmers=json.loads(requests.get(url=SERVER+"/farmers").text)
 
