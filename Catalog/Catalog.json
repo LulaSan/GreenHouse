@@ -144,6 +144,9 @@
     "Admins": [
         {
             "ADMIN_ID":"1234"
+        },
+        {
+            "ADMIN_ID":"4567"
         }
     ],
     "Statistics": [
