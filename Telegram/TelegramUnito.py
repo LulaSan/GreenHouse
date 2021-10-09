@@ -58,8 +58,12 @@ def update_catalog(loggedUsers):
   catalog["LOGGED_USERS"]=loggedUsers
   json.dump(catalog,open("telegram_catalog.json","w"),indent=4)
 
-# def main_menu(update: Update, context: CallbackContext) -> int:
-#   update.callback_query.message.edit_text("Chi sei?",reply_markup=main_menu_keyboard())
+def main_menu(update: Update, context: CallbackContext) -> int:
+    update.callback_query.message.edit_text(main_menu_message(),reply_markup=main_menu_keyboard())
+
+def first_menu(update: Update, context: CallbackContext) -> int:
+    update.callback_query.message.edit_text(first_menu_message(),reply_markup=first_menu_keyboard())
+
 
 
 def main_menu_keyboard():
