@@ -71,10 +71,10 @@ def main_menu_keyboard():
                 [InlineKeyboardButton(text=f'Farmer', callback_data='signinF')],
                 [InlineKeyboardButton(text=f'User', callback_data='signinU')]]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
-
+tipo= ''
 def sign_in(self,update: Update, context: CallbackContext) -> int:
   ##registro la tipologia di utente che è l'ultima risposta data
-  self.tipo=update.callback_query.data[-1]
+  tipo=update.callback_query.data[-1]
   fp=open("telegram_catalog.json",'r')
   catalog=json.load(fp)
   fp.close()
@@ -83,7 +83,7 @@ def sign_in(self,update: Update, context: CallbackContext) -> int:
   
   for i in range(len(loggedUsers)):
     if oldid== loggedUsers[i]["CHATID"]:
-      loggedUsers[i]["TYPE"]=str(self.tipo)
+      loggedUsers[i]["TYPE"]=str(tipo)
       update_catalog(loggedUsers)
       pprint(loggedUsers)
 
@@ -103,7 +103,7 @@ def sign_in_credenziali(self,update: Update, context: CallbackContext) -> int:
     oldid=str(update.effective_chat["id"])
     trovato=0
     
-    if self.tipo== 'F':
+    if tipo== 'F':
         #cerco l'id scritto dall'utente nella lista farmers, se ha cambiato numero di accesso a telegram ma è sempre lo stesso utente sarà riconosciuto dal suo logid
         for i in range(len(listaFarmers)):
             pprint(listaFarmers)
@@ -123,7 +123,7 @@ def sign_in_credenziali(self,update: Update, context: CallbackContext) -> int:
             update.message.reply_text('Scegli tra:', reply_markup=reply_markupPrincipale)
             return FARMER
         
-    elif self.tipo=='A':
+    elif tipo=='A':
         for i in range(len(listaAdmin)):
             if text == listaAdmin[i]['ADMIN_ID']:
                 pprint(listaAdmin[i])
@@ -143,7 +143,7 @@ def sign_in_credenziali(self,update: Update, context: CallbackContext) -> int:
                     update.message.reply_text(text=f"\nBenvenuto!\nEcco le greenhouse disponibili \n{greenhouselist}\nA quale greenhouse sei interessato?\n")
                     return ADMIN
 
-    elif self.tipo=='U':
+    elif tipo=='U':
         pass 
         #aggiungere##################################################
 
