@@ -9,15 +9,15 @@ import re
 import json
 from pprint import pprint
 import requests
-base_url="http://ec2-18-119-119-157.us-east-2.compute.amazonaws.com"
+
 ##AGGIUNGERE MESSAGGIO INIZIALE CHE DICE DI SCRIVERE /start
-listaFarmers=json.loads(requests.get(url= f"{base_url}:2000/farmers").text)
+listaFarmers=json.loads(requests.get(url="http://ec2-18-118-161-25.us-east-2.compute.amazonaws.com:2000/farmers").text)
 # listaFarmers=lista["list"]
 SIGNIN, FARMER , FARMER_TYPING, FARMER_TYPING_2= range(4)
-keyboardPrincipale= [[InlineKeyboardButton(text=f'Aggiungere, modificare, rimuovere un item', callback_data='b1_1')],
-            [InlineKeyboardButton(text=f'Controllare attuatori', callback_data='b1_2')],
-            [InlineKeyboardButton(text=f'Statistiche', callback_data='b1_3')],
-            [InlineKeyboardButton(text=f'Torna al log in', callback_data='start')]]
+keyboardPrincipale= [[InlineKeyboardButton(text=f'Aggiungere, modificare, rimuovere un item', callback_data='AMR')],
+            [InlineKeyboardButton(text=f'Controllare attuatori', callback_data='AS')],
+            [InlineKeyboardButton(text=f'Statistiche', callback_data='SF')],
+            [InlineKeyboardButton(text=f'Torna al log in', callback_data='main')]]
 reply_markupPrincipale = InlineKeyboardMarkup(keyboardPrincipale)
 
 def menuprincipaleFarmer(update: Update, context: CallbackContext) -> int:
@@ -26,6 +26,7 @@ def menuprincipaleFarmer(update: Update, context: CallbackContext) -> int:
 
 def start(update: Update, context: CallbackContext) -> int:
   user = update.message.from_user
+
   fp=open("telegram_catalog.json","r")
   catalog=json.load(fp)
   loggedUsers=catalog["LOGGED_USERS"]
@@ -44,10 +45,6 @@ def start(update: Update, context: CallbackContext) -> int:
   update_catalog(loggedUsers)
   update.message.reply_text("Chi sei?",reply_markup=main_menu_keyboard())
 
-def start2(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text("log in",reply_markup=main_menu_keyboard())
-  sign_in(Update,CallbackContext)
-  
 
 def update_catalog(loggedUsers):
   fp=open("telegram_catalog.json",'r')
@@ -56,11 +53,20 @@ def update_catalog(loggedUsers):
   catalog["LOGGED_USERS"]=loggedUsers
   json.dump(catalog,open("telegram_catalog.json","w"),indent=4)
 
+
+
+# def main_menu(update: Update, context: CallbackContext) -> int:
+#   update.callback_query.message.edit_text("Chi sei?",reply_markup=main_menu_keyboard())
+
+
 def main_menu_keyboard():
     keyboard = [[InlineKeyboardButton(text=f'Admin', callback_data='signinA')],
                 [InlineKeyboardButton(text=f'Farmer', callback_data='signinF')],
                 [InlineKeyboardButton(text=f'User', callback_data='signinU')]]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+
+
 
 def sign_in(update: Update, context: CallbackContext) -> int:
   ##registro la tipologia di utente che è l'ultima risposta data
@@ -121,7 +127,7 @@ def displaylist(update: Update, context: CallbackContext) -> int:
   #1. stampo lista  2. chiedo di scrivere se nuovo nome item, prezzo e quantità separati da spazi
   #3. chiedo di scrivere "modifica prezzo patate 2/ modifica quantità patate 3 "
   farmerid=user_data["LOGID"]
-  singolo=json.loads(requests.get(url=f"{base_url}:2000/farmer/{farmerid}").text)
+  singolo=json.loads(requests.get(url=f"http://ec2-18-118-161-25.us-east-2.compute.amazonaws.com:2000/farmer/{farmerid}").text)
   items=singolo["ITEMS_SELL"]
   update.callback_query.message.edit_text(text=f"\nEcco gli items disponibili \n{items}"
                                      "se devi aggiungere, scrivi 'aggiungi <nome item>, <prezzo> e <quantità> separati da spazi\n"
@@ -140,12 +146,12 @@ def uporadditemfarmer(update: Update, context: CallbackContext) -> int:
     item=text[2]
     if text[1]== "prezzo":
       prezzo= int(text[3])
-      r=requests.post(f"{base_url}:2000/uporadditem/{farmerid}/{item}/{prezzo}/None")
+      r=requests.post(f"http://ec2-18-118-161-25.us-east-2.compute.amazonaws.com:2000/uporadditem/{farmerid}/{item}/{prezzo}/None")
     elif text[1]== "quantità" :
       quantita=int(text[3])
-      p=requests.post(f"{base_url}:2000/uporadditem/{farmerid}/{item}/None/{quantita}")
+      p=requests.post(f"http://ec2-18-118-161-25.us-east-2.compute.amazonaws.com:2000/uporadditem/{farmerid}/{item}/None/{quantita}")
     
-    singolo=json.loads(requests.get(url=f"{base_url}:2000/farmer/{farmerid}").text)
+    singolo=json.loads(requests.get(url=f"http://ec2-18-118-161-25.us-east-2.compute.amazonaws.com:2000/farmer/{farmerid}").text)
     items=singolo["ITEMS_SELL"]
     update.message.reply_text(f"Ok,fatto. Ecco la lista modificata\n {items} \n Riprova se vuoi modificare altro\n digita 'principale' per tornare al menu inziale")
     return FARMER_TYPING
@@ -153,16 +159,16 @@ def uporadditemfarmer(update: Update, context: CallbackContext) -> int:
     item=text[1]
     prezzo=int(text[2])
     quantita=int(text[3])
-    requests.post(f"{base_url}:2000/uporadditem/{farmerid}/{item}/{prezzo}/{quantita}")
-    singolo=json.loads(requests.get(url=f"{base_url}:2000/farmer/{farmerid}").text)
+    requests.post(f"http://ec2-18-118-161-25.us-east-2.compute.amazonaws.com:2000/uporadditem/{farmerid}/{item}/{prezzo}/{quantita}")
+    singolo=json.loads(requests.get(url=f"http://ec2-18-118-161-25.us-east-2.compute.amazonaws.com:2000/farmer/{farmerid}").text)
     items=singolo["ITEMS_SELL"]
     update.message.reply_text(f"Ok,fatto. Ecco la lista modificata\n {items} \n Riprova se vuoi modificare altro\n digita 'principale' per tornare al menu inziale")
     
     return FARMER_TYPING
   elif text[0] =="rimuovi":
     item=text[1]
-    requests.delete(f"{base_url}:2000/deleteitem/{farmerid}/{item}")
-    singolo=json.loads(requests.get(url=f"{base_url}:2000/farmer/{farmerid}").text)
+    requests.delete(f"http://ec2-18-118-161-25.us-east-2.compute.amazonaws.com:2000/deleteitem/{farmerid}/{item}")
+    singolo=json.loads(requests.get(url=f"http://ec2-18-118-161-25.us-east-2.compute.amazonaws.com:2000/farmer/{farmerid}").text)
     items=singolo["ITEMS_SELL"]
     update.message.reply_text(f"Ok,fatto. Ecco la lista modificata\n {items} \n Riprova se vuoi modificare altro\n digita 'principale' per tornare al menu inziale")
     
@@ -191,7 +197,7 @@ def pompaonoff(update: Update, context: CallbackContext) -> int:
         [
             InlineKeyboardButton("Pompa ON", callback_data="PompaON"),
             InlineKeyboardButton("Pompa OFF", callback_data="PompaOFF"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_2")
+            InlineKeyboardButton("Torna al menù precedente", callback_data="AS")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
@@ -206,7 +212,7 @@ def PompaON(update: Update, context: CallbackContext) -> int:
   keyboard = [
         [
             InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_2")
+            InlineKeyboardButton("Torna al menù precedente", callback_data="AS")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
@@ -218,7 +224,7 @@ def PompaOFF(update: Update, context: CallbackContext) -> int:
   keyboard = [
         [
             InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_2")
+            InlineKeyboardButton("Torna al menù precedente", callback_data="AS")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
@@ -226,8 +232,8 @@ def PompaOFF(update: Update, context: CallbackContext) -> int:
     )
   return FARMER
 def listaCROPS(farmerid):
-  farmer=json.loads(requests.get(url=f"{base_url}:2000/farmer/{farmerid}").text)
-  plants=json.loads(requests.get(url="{base_url}:2000/plants").text)
+  farmer=json.loads(requests.get(url=f"http://ec2-18-118-161-25.us-east-2.compute.amazonaws.com:2000/farmer/{farmerid}").text)
+  plants=json.loads(requests.get(url="http://ec2-18-118-161-25.us-east-2.compute.amazonaws.com:2000/plants").text)
   cropsowned=farmer["CROPS_OWNED"]
   pprint(cropsowned)
   displaydict={"list":[]}
@@ -246,7 +252,7 @@ def NewThreshold_info(update: Update, context: CallbackContext) -> int:
   keyboard = [
         [
             InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_2")
+            InlineKeyboardButton("Torna al menù precedente", callback_data="AS")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
@@ -262,13 +268,13 @@ def NewThreshold_reply(update: Update, context: CallbackContext) -> int:
   farmerid=user_data["LOGID"]
   text = update.message.text.split(" ")
   pianta= text[0]
-  farmer=json.loads(requests.get(url=f"{base_url}:2000/farmer/{farmerid}").text)
-  plants=json.loads(requests.get(url="{base_url}:2000/plants").text)
+  farmer=json.loads(requests.get(url=f"http://ec2-18-118-161-25.us-east-2.compute.amazonaws.com:2000/farmer/{farmerid}").text)
+  plants=json.loads(requests.get(url="http://ec2-18-118-161-25.us-east-2.compute.amazonaws.com:2000/plants").text)
   cropsowned=farmer["CROPS_OWNED"]
   keyboard = [
         [
             InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_2")
+            InlineKeyboardButton("Torna al menù precedente", callback_data="AS")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
@@ -285,7 +291,7 @@ def NewThreshold_reply(update: Update, context: CallbackContext) -> int:
         if plant["PLANT_ID"]== crop and plant["PLANT_NAME"]== pianta:
           plantid=plant["PLANT_ID"]
           modified_dict={"THRESHOLD_MOIST_MIN": int(text[2])}
-          requests.post(url=f"{base_url}:2000/plant/{plantid}",json=modified_dict)
+          requests.post(url=f"http://ec2-18-118-161-25.us-east-2.compute.amazonaws.com:2000/plant/{plantid}",json=modified_dict)
     lista=listaCROPS(farmerid)
     update.message.reply_text(text=f"Ecco la lista aggiornata\n {lista}\n puoi continuare oppure scegliere un'opzione dal menu", reply_markup=reply_markup )
     return FARMER
@@ -295,7 +301,7 @@ def NewThreshold_reply(update: Update, context: CallbackContext) -> int:
         if plant["PLANT_ID"]== crop and plant["PLANT_NAME"]== pianta:
           plantid=plant["PLANT_ID"]
           modified_dict={"THRESHOLD_MOIST_MAX": int(text[2])}
-          requests.post(url=f"{base_url}:2000/plant/{plantid}",json=modified_dict)
+          requests.post(url=f"http://ec2-18-118-161-25.us-east-2.compute.amazonaws.com:2000/plant/{plantid}",json=modified_dict)
     lista=listaCROPS(farmerid)
     update.message.reply_text(text=f"Ecco la lista aggiornata\n {lista}, puoi continuare con un altro comando oppure cliccare su uno dei seguenti bottoni",reply_markup=reply_markup)
     return FARMER
@@ -319,7 +325,7 @@ def ThingsBoard(update: Update, context: CallbackContext) -> int:
   keyboard = [
         [
             InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_3")
+            InlineKeyboardButton("Torna al menù precedente", callback_data="SF")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
@@ -351,7 +357,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('start', start))
   
     conv_handler = ConversationHandler(
-       entry_points=[CallbackQueryHandler(sign_in, pattern='signin')], allow_reentry= True,
+       entry_points=[CallbackQueryHandler(sign_in, pattern='signin')],
         states={
             FARMER_TYPING : [MessageHandler(Filters.text, callback= uporadditemfarmer)],
             FARMER_TYPING_2 : [MessageHandler(Filters.text, callback= NewThreshold_reply)],
@@ -361,16 +367,15 @@ def main():
               #da sign in vado a sign in credenziali che legge il messaggio input
              
             FARMER : [ #premo aggiungi e legge il messaggio
-                      CallbackQueryHandler(start2, pattern='start'),
-                      CallbackQueryHandler(displaylist, pattern='b1_1'),
-                      CallbackQueryHandler(attuatoriscelte, pattern='b1_2'),
+                      CallbackQueryHandler(displaylist, pattern='AMR'),
+                      CallbackQueryHandler(attuatoriscelte, pattern='AS'),
                       CallbackQueryHandler(pompaonoff, pattern='pompaonoff'),
                       CallbackQueryHandler(PompaOFF, pattern='PompaOFF'),
                       CallbackQueryHandler(PompaON, pattern='PompaON'),
                       CallbackQueryHandler(NewThreshold_info, pattern='newthreshold'),
                       CallbackQueryHandler(menuprincipaleFarmer, pattern='principale'),
                       
-                      CallbackQueryHandler(Statistiche_first, pattern='b1_3'),
+                      CallbackQueryHandler(Statistiche_first, pattern='SF'),
                       CallbackQueryHandler(ThingsBoard, pattern='thingsboard'),
 
                       
