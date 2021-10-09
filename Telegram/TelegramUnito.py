@@ -94,7 +94,7 @@ def sign_in(update: Update, context: CallbackContext) -> int:
 def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
     pprint("sto entrando del sign_in_credd")
     text = update.message.text # splitto il testo
-    
+    print(tipo)
     #salvo il LOG ID dell'utente
     fp=open("telegram_catalog.json",'r')
     catalog=json.load(fp)
