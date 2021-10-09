@@ -73,6 +73,7 @@ def main_menu_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 tipo= ''
 def sign_in(update: Update, context: CallbackContext) -> int:
+  global tipo
   ##registro la tipologia di utente che è l'ultima risposta data
   tipo=update.callback_query.data[-1]
   fp=open("telegram_catalog.json",'r')
@@ -94,6 +95,7 @@ def sign_in(update: Update, context: CallbackContext) -> int:
 def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
     pprint("sto entrando del sign_in_credd")
     text = update.message.text # splitto il testo
+    global tipo
     print(tipo)
     #salvo il LOG ID dell'utente
     fp=open("telegram_catalog.json",'r')
