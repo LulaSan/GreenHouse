@@ -164,7 +164,7 @@ def done(update: Update, _: CallbackContext) -> int:
 listaAdmin=json.loads(requests.get(url=SERVER+"/admins").text)
 greenhousesinfo = json.loads(requests.get(url=SERVER+f"/greenhouses").text) 
 greenhouselist = [] 
-greenhouselist.append(greenhousesinfo[0]["NAME"])
+greenhouselist.append(greenhousesinfo[0]["GREENHOUSE_ID"])
 greenhouse_id = greenhousesinfo[0]["GREENHOUSE_ID"]
 
 def id_greenhouse(update: Update, context: CallbackContext) -> int:
