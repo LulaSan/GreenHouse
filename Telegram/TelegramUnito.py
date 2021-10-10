@@ -739,7 +739,7 @@ def main():
     #updater.dispatcher.add_handler(CallbackQueryHandler(main_menu, pattern='main'))
   
     conv_handler = ConversationHandler(
-        entry_points=[CallbackQueryHandler(sign_in, pattern='signin'),CommandHandler('start', start)]],
+        entry_points=[CallbackQueryHandler(sign_in, pattern='signin'),CommandHandler('start', start)],
             states={
                 SIGNIN: [MessageHandler(Filters.text,sign_in_credenziali)],
                 #da sign in vado a sign in credenziali che legge il messaggio input
