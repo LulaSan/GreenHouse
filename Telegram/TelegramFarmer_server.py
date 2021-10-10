@@ -133,9 +133,8 @@ def displaylist(update: Update, context: CallbackContext) -> int:
                                      "se devi aggiungere, scrivi 'aggiungi <nome item>, <prezzo> e <quantità> separati da spazi\n"
                                      "oppure se devi modificare, scrivi ad esempio 'modifica prezzo patate 2' oppure' modifica quantità patate 3'\n "
                                      "se devi rimuovere scrivi rimuovi item, ad esempio 'rimuovi patate'\n"
-                                     "per 
-                                          
-                                          re al menu principale digita 'principale'  ")
+                                     "per tornare al menu principale digita 'principale'  ")                       
+                                         
   return FARMER_TYPING
 
 def uporadditemfarmer(update: Update, context: CallbackContext) -> int:
