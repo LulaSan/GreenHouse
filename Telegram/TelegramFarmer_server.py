@@ -17,7 +17,7 @@ SIGNIN, FARMER , FARMER_TYPING, FARMER_TYPING_2= range(4)
 keyboardPrincipale= [[InlineKeyboardButton(text=f'Aggiungere, modificare, rimuovere un item', callback_data='AMR')],
             [InlineKeyboardButton(text=f'Controllare attuatori', callback_data='AS')],
             [InlineKeyboardButton(text=f'Statistiche', callback_data='SF')],
-            [InlineKeyboardButton(text=f'Torna al log in', callback_data='signin')]]
+            [InlineKeyboardButton(text=f'Torna al log in', callback_data='start')]]
 reply_markupPrincipale = InlineKeyboardMarkup(keyboardPrincipale)
 
 def menuprincipaleFarmer(update: Update, context: CallbackContext) -> int:
