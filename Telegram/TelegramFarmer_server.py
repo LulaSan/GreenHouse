@@ -358,7 +358,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('start', start))
   
     conv_handler = ConversationHandler(
-       entry_points=[[CallbackQueryHandler(sign_in, pattern='signin'),CommandHandler('start', start)],allow_reentry=True,
+       entry_points=[CallbackQueryHandler(sign_in, pattern='signin'),CommandHandler('start', start)],allow_reentry=True,
         states={
             FARMER_TYPING : [MessageHandler(Filters.text, callback= uporadditemfarmer)],
             FARMER_TYPING_2 : [MessageHandler(Filters.text, callback= NewThreshold_reply)],
