@@ -1,6 +1,6 @@
 from telegram.ext import Updater
 import os
-from telegram.ext import CommandHandler, CallbackQueryHandler, CallbackContext, ConversationHandler,Filters,MessageHandler,   CommandHandler
+from telegram.ext import CommandHandler, CallbackQueryHandler, CallbackContext, ConversationHandler,Filters,MessageHandler
 from telegram import InlineKeyboardButton,ReplyKeyboardMarkup, InlineKeyboardMarkup, Update
 ############################### Bot ############################################
 import telepot
@@ -88,7 +88,14 @@ def sign_in(update: Update, context: CallbackContext) -> int:
       update_catalog(loggedUsers)
       pprint(loggedUsers)
 
-  update.callback_query.message.edit_text(f"Ok now log in write your id ")
+  keyboard = [
+        [
+            InlineKeyboardButton("Log in Menu", callback_data="main"),
+            
+        ]
+    ]
+  reply_markup = InlineKeyboardMarkup(keyboard)
+  update.callback_query.message.edit_text(f"Ok now log in write your id or go back",reply_markup=reply_markup)
 
   return SIGNIN
 
@@ -206,7 +213,7 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
     if res.status_code == 200:
       update.message.reply_text(text="New threshold updated")
       keyboard = [[
-          InlineKeyboardButton("Tornare al menu principale", callback_data="main"),
+          InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
           ]]
       reply_markup = InlineKeyboardMarkup(keyboard)
       update.message.reply_text(text="Torna al menu principale", reply_markup=reply_markup)
@@ -223,7 +230,7 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
     if res.status_code == 200:
       update.message.reply_text(text="New threshold updated")
       keyboard = [[
-          InlineKeyboardButton("Tornare al menu principale", callback_data="main"),
+          InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
           ]]
       reply_markup = InlineKeyboardMarkup(keyboard)
       update.message.reply_text(text="Torna al menu principale", reply_markup=reply_markup)
@@ -240,7 +247,7 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
     if res.status_code == 200:
       update.message.reply_text(text="New threshold updated")
       keyboard = [[
-          InlineKeyboardButton("Tornare al menu principale", callback_data="main"),
+          InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
           ]]
       reply_markup = InlineKeyboardMarkup(keyboard)
       update.message.reply_text(text="Torna al menu principale", reply_markup=reply_markup)
@@ -256,7 +263,7 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
     if res.status_code == 200:
       update.message.reply_text(text="New threshold updated")
       keyboard = [[
-          InlineKeyboardButton("Tornare al menu principale", callback_data="main"),
+          InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
           ]]
       reply_markup = InlineKeyboardMarkup(keyboard)
       update.message.reply_text(text="Torna al menu principale", reply_markup=reply_markup)
@@ -272,7 +279,7 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
     if res.status_code == 200:
       update.message.reply_text(text="New threshold updated")
       keyboard = [[
-          InlineKeyboardButton("Tornare al menu principale", callback_data="main"),
+          InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
           ]]
       reply_markup = InlineKeyboardMarkup(keyboard)
       update.message.reply_text(text="Torna al menu principale", reply_markup=reply_markup)
@@ -288,7 +295,7 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
     if res.status_code == 200:
       update.message.reply_text(text="New threshold updated")
       keyboard = [[
-          InlineKeyboardButton("Tornare al menu principale", callback_data="main"),
+          InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
           ]]
       reply_markup = InlineKeyboardMarkup(keyboard)
       update.message.reply_text(text="Torna al menu principale", reply_markup=reply_markup)
@@ -313,7 +320,7 @@ def ThingsBoard(update: Update, context: CallbackContext) -> int:
   update.callback_query.message.edit_text(text="Ecco il link di thingsboard: ")
   keyboard = [
         [
-            InlineKeyboardButton("Main menu", callback_data="main"),
+            InlineKeyboardButton("Main menu", callback_data="main_fm"),
             InlineKeyboardButton("Last menu", callback_data="b1_1")
         ]
     ]
@@ -343,7 +350,7 @@ def NewThreshold_period(update: Update, context: CallbackContext) -> int:
 
     keyboard = [
           [
-              InlineKeyboardButton("Tornare al menu principale", callback_data="main"),
+              InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
               InlineKeyboardButton("Torna al menù precedente", callback_data="b1_1")
           ]
       ]
@@ -363,7 +370,7 @@ def OpenWindows(update: Update, context: CallbackContext) -> int:
 
   keyboard = [
         [
-            InlineKeyboardButton("Tornare al menu principale", callback_data="main"),
+            InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
             InlineKeyboardButton("Torna al menù precedente", callback_data="b1_4")
         ]
     ]
@@ -383,7 +390,7 @@ def CloseWindows(update: Update, context: CallbackContext) -> int:
   
   keyboard = [
         [
-            InlineKeyboardButton("Tornare al menu principale", callback_data="main"),
+            InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
             InlineKeyboardButton("Torna al menù precedente", callback_data="b1_4")
         ]
     ]
@@ -404,7 +411,7 @@ def VentOFF(update: Update, context: CallbackContext) -> int:
 
   keyboard = [
         [
-            InlineKeyboardButton("Tornare al menu principale", callback_data="main"),
+            InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
             InlineKeyboardButton("Torna al menù precedente", callback_data="b1_4")
         ]
     ]
@@ -425,7 +432,7 @@ def VentON(update: Update, context: CallbackContext) -> int:
 
   keyboard = [
         [
-            InlineKeyboardButton("Tornare al menu principale", callback_data="main"),
+            InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
             InlineKeyboardButton("Torna al menù precedente", callback_data="b1_4")
         ]
     ]
@@ -455,7 +462,7 @@ def first_menu_keyboard():
 def Statistics_keyboard():
   keyboard = [[InlineKeyboardButton("ThingsBoard - Grafici Statistiche", callback_data="b2_1")],
               [InlineKeyboardButton("Modificare threshold di sampling", callback_data="b2_2")],
-              [InlineKeyboardButton("Main menu", callback_data="main")]]
+              [InlineKeyboardButton("Main menu", callback_data="main_fm")]]
   return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
 def actuator_control_keyboard():
@@ -463,7 +470,7 @@ def actuator_control_keyboard():
                 [InlineKeyboardButton(text=f'turn OFF vent', callback_data='VentOFF')],
                 [InlineKeyboardButton(text=f'OPEN windows', callback_data='OpenWindows')],
                 [InlineKeyboardButton(text=f'CLOSE windows', callback_data='CloseWindows')],
-                [InlineKeyboardButton(text=f'Main menu', callback_data='main')]]
+                [InlineKeyboardButton(text=f'Main menu', callback_data='main_fm')]]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
   
 ############################# Messages #########################################
@@ -732,15 +739,14 @@ def main():
     updater.dispatcher.add_handler(CallbackQueryHandler(main_menu, pattern='main'))
   
     conv_handler = ConversationHandler(
-        entry_points=[
-                      CallbackQueryHandler(sign_in, pattern='signin')], #CommandHandler('start',start),
+        entry_points=[CallbackQueryHandler(sign_in, pattern='signin')],
             states={
                 SIGNIN: [MessageHandler(Filters.text,sign_in_credenziali)],
                 #da sign in vado a sign in credenziali che legge il messaggio input
                 ADMIN: [MessageHandler(Filters.text, callback= id_greenhouse)],
 
                 LEVEL1 :[CallbackQueryHandler(first_menu_keyboard, pattern='first_menu'),
-                         CallbackQueryHandler(first_menu, pattern='main'),
+                         CallbackQueryHandler(first_menu, pattern='main_fm'),
                          CallbackQueryHandler(Statistics, pattern='b1_1'),
                          CallbackQueryHandler(ThingsBoard, pattern='b2_1'),
                          CallbackQueryHandler(NewThreshold_message, pattern='b2_2'),
