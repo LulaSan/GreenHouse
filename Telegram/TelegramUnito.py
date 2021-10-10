@@ -1,6 +1,6 @@
 from telegram.ext import Updater
 import os
-from telegram.ext import CommandHandler, CallbackQueryHandler, CallbackContext, ConversationHandler,Filters,MessageHandler
+from telegram.ext import CommandHandler, CallbackQueryHandler, CallbackContext, ConversationHandler,Filters,MessageHandler,CommandHandler
 from telegram import InlineKeyboardButton,ReplyKeyboardMarkup, InlineKeyboardMarkup, Update
 ############################### Bot ############################################
 import telepot
@@ -22,7 +22,7 @@ listaFarmers=json.loads(requests.get(url=SERVER+"/farmers").text)
 keyboardPrincipale= [[InlineKeyboardButton(text=f'Aggiungere, modificare, rimuovere un item', callback_data='b1_1')],
             [InlineKeyboardButton(text=f'Controllare attuatori', callback_data='b1_2')],
             [InlineKeyboardButton(text=f'Statistiche', callback_data='b1_3')],
-            [InlineKeyboardButton(text=f'Torna al log in', callback_data='main')]]
+            [InlineKeyboardButton(text=f'Torna al log in', callback_data='start')]]
 reply_markupPrincipale = InlineKeyboardMarkup(keyboardPrincipale)
 
 def menuprincipaleFarmer(update: Update, context: CallbackContext) -> int:
@@ -90,7 +90,7 @@ def sign_in(update: Update, context: CallbackContext) -> int:
 
   keyboard = [
         [
-            InlineKeyboardButton("Log in Menu", callback_data="main"),
+            InlineKeyboardButton("Log in Menu", callback_data="start"),
             
         ]
     ]
@@ -735,11 +735,11 @@ def main():
 
     token="1461734973:AAGtnon-G24cJcWVjVGbp7Lv1DIXhjJNT28"
     updater = Updater(token,use_context=True)
-    updater.dispatcher.add_handler(CommandHandler('start', start))
-    updater.dispatcher.add_handler(CallbackQueryHandler(main_menu, pattern='main'))
+    #updater.dispatcher.add_handler(CommandHandler('start', start))
+    #updater.dispatcher.add_handler(CallbackQueryHandler(main_menu, pattern='main'))
   
     conv_handler = ConversationHandler(
-        entry_points=[CallbackQueryHandler(sign_in, pattern='signin')],
+        entry_points=[CallbackQueryHandler(sign_in, pattern='signin'),CommandHandler('start', start)]],
             states={
                 SIGNIN: [MessageHandler(Filters.text,sign_in_credenziali)],
                 #da sign in vado a sign in credenziali che legge il messaggio input
