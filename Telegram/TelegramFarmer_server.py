@@ -82,7 +82,14 @@ def sign_in(update: Update, context: CallbackContext) -> int:
       update_catalog(loggedUsers)
       pprint(loggedUsers)
 
-  update.callback_query.message.edit_text(f"Ok now log in write your id ")
+  keyboard = [
+        [
+            InlineKeyboardButton("Log in Menu", callback_data="start"),
+            
+        ]
+    ]
+  reply_markup = InlineKeyboardMarkup(keyboard)
+  update.callback_query.message.edit_text(f"Ok now log in write your id or go back",reply_markup=reply_markup)
 
   return SIGNIN
 
@@ -364,10 +371,11 @@ def main():
             FARMER_TYPING_2 : [MessageHandler(Filters.text, callback= NewThreshold_reply)],
 
 
-            SIGNIN: [MessageHandler(Filters.text,sign_in_credenziali)],
+            SIGNIN: [MessageHandler(Filters.text,sign_in_credenziali),CommandHandler('start', start)],
               #da sign in vado a sign in credenziali che legge il messaggio input
              
             FARMER : [ #premo aggiungi e legge il messaggio
+                      CommandHandler('start', start)
                       CallbackQueryHandler(displaylist, pattern='AMR'),
                       CallbackQueryHandler(attuatoriscelte, pattern='AS'),
                       CallbackQueryHandler(pompaonoff, pattern='pompaonoff'),
