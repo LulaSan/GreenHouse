@@ -17,7 +17,7 @@ SIGNIN, FARMER , FARMER_TYPING, FARMER_TYPING_2= range(4)
 keyboardPrincipale= [[InlineKeyboardButton(text=f'Aggiungere, modificare, rimuovere un item', callback_data='AMR')],
             [InlineKeyboardButton(text=f'Controllare attuatori', callback_data='AS')],
             [InlineKeyboardButton(text=f'Statistiche', callback_data='SF')],
-            [InlineKeyboardButton(text=f'Torna al log in', callback_data='start')]]
+            [InlineKeyboardButton(text=f'Torna al log in', callback_data='signin')]]
 reply_markupPrincipale = InlineKeyboardMarkup(keyboardPrincipale)
 
 def menuprincipaleFarmer(update: Update, context: CallbackContext) -> int:
@@ -358,7 +358,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('start', start))
   
     conv_handler = ConversationHandler(
-       entry_points=[CallbackQueryHandler(sign_in, pattern='signin')],
+       entry_points=[CallbackQueryHandler(sign_in, pattern='signin')],allow_reentry=True,
         states={
             FARMER_TYPING : [MessageHandler(Filters.text, callback= uporadditemfarmer)],
             FARMER_TYPING_2 : [MessageHandler(Filters.text, callback= NewThreshold_reply)],
