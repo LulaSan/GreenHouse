@@ -355,7 +355,7 @@ def main():
 
     token="1461734973:AAGtnon-G24cJcWVjVGbp7Lv1DIXhjJNT28"
     updater = Updater(token,use_context=True)
-    updater.dispatcher.add_handler(CommandHandler('start', start))
+    #updater.dispatcher.add_handler(CommandHandler('start', start))
   
     conv_handler = ConversationHandler(
        entry_points=[CallbackQueryHandler(sign_in, pattern='signin'),CommandHandler('start', start)],allow_reentry=True,
