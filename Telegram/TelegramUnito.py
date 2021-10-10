@@ -19,9 +19,9 @@ SERVER_file=json.load(open('utils.json','r'))
 SERVER=SERVER_file['SERVER']
 listaFarmers=json.loads(requests.get(url=SERVER+"/farmers").text)
 
-keyboardPrincipale= [[InlineKeyboardButton(text=f'Aggiungere, modificare, rimuovere un item', callback_data='b1_1')],
-            [InlineKeyboardButton(text=f'Controllare attuatori', callback_data='b1_2')],
-            [InlineKeyboardButton(text=f'Statistiche', callback_data='b1_3')],
+keyboardPrincipale= [[InlineKeyboardButton(text=f'Aggiungere, modificare, rimuovere un item', callback_data='AMR')],
+            [InlineKeyboardButton(text=f'Controllare attuatori', callback_data='AS')],
+            [InlineKeyboardButton(text=f'Statistiche', callback_data='SF')],
             [InlineKeyboardButton(text=f'Torna al log in', callback_data='start')]]
 reply_markupPrincipale = InlineKeyboardMarkup(keyboardPrincipale)
 
