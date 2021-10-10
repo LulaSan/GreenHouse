@@ -4,6 +4,7 @@ from telegram.ext import CommandHandler, CallbackQueryHandler, CallbackContext, 
 from telegram import InlineKeyboardButton,ReplyKeyboardMarkup, InlineKeyboardMarkup, Update
 ############################### Bot ############################################
 import telepot
+
 import re
 
 import json
@@ -726,7 +727,8 @@ def ThingsBoard(update: Update, context: CallbackContext) -> int:
 
 def main():
 
-    token="1461734973:AAGtnon-G24cJcWVjVGbp7Lv1DIXhjJNT28"
+    #token="1461734973:AAGtnon-G24cJcWVjVGbp7Lv1DIXhjJNT28"
+    token="1990658567:AAG5By57hC8Hbyp9Mc2FTqqsIw8VLV_MsDM"
     updater = Updater(token,use_context=True)
     updater.dispatcher.add_handler(CommandHandler('start', start))
     #updater.dispatcher.add_handler(CallbackQueryHandler(main_menu, pattern='main'))
