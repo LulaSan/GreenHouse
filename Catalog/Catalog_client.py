@@ -318,7 +318,11 @@ class UserClient():
         self.UsersList=UsersList
         #l'user potrà vedere una lista di ortaggi con prezzo e qt disponibile, identificati da un ID che è quello del farmer,
         #una volta scelto l'oggetto farà una request DELETE con farmerID e nome dell'item e quantità desiderata
-  
+    def showlist(self):
+        listausers=self.UsersList.copy()
+        prettylist=json.dumps(listausers,indent=4)
+        return prettylist
+    
     def buyitem(self,FarmerID,item,quantity):
         self.FarmerID=FarmerID
         self.quantity=(quantity)
