@@ -63,7 +63,7 @@ class CHERRY_CATALOG():
                 output= str(self.farmer.farmerlist(uri[1]))
 		
             if uri[0] == "items_greenhouse":
-	        output= str(self.farmer.items_greenhouse(uri[1]))
+                output= str(self.farmer.items_greenhouse(uri[1]))
 	    
 	    
 
