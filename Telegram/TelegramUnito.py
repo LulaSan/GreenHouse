@@ -751,7 +751,7 @@ def main():
         entry_points=[CallbackQueryHandler(sign_in, pattern='signin'),CommandHandler('start', start)],
             states={
                 SIGNIN: [MessageHandler(Filters.text,sign_in_credenziali),
-                        MessageHandler(Filters.regex('^start$'), start]
+                        MessageHandler(Filters.regex('^start$'), start)],
                 #da sign in vado a sign in credenziali che legge il messaggio input
                 ADMIN: [MessageHandler(Filters.text, callback= id_greenhouse)],
 
