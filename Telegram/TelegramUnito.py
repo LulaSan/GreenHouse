@@ -30,7 +30,7 @@ def menuprincipaleFarmer(update: Update, context: CallbackContext) -> int:
   return FARMER
 
 def start(update: Update, context: CallbackContext) -> int:
-  user = update.message.from_user
+  #user = update.message.from_user
 
   fp=open("telegram_catalog.json","r")
   catalog=json.load(fp)
@@ -73,6 +73,7 @@ def main_menu_keyboard():
                 [InlineKeyboardButton(text=f'User', callback_data='signinU')]]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 tipo= ''
+
 def sign_in(update: Update, context: CallbackContext) -> int:
   global tipo
   ##registro la tipologia di utente che è l'ultima risposta data
@@ -735,7 +736,7 @@ def ThingsBoard(update: Update, context: CallbackContext) -> int:
 def main():
 
     #token="1461734973:AAGtnon-G24cJcWVjVGbp7Lv1DIXhjJNT28"
-    token="1990658567:AAG5By57hC8Hbyp9Mc2FTqqsIw8VLV_MsDM"
+    token="1990658567:AAG5By57hC8Hbyp9Mc2FTqqsIw8VLV_MsDM" #
 
     updater = Updater(token,use_context=True)
     #updater.dispatcher.add_handler(CommandHandler('start', start))
