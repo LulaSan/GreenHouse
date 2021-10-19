@@ -49,6 +49,7 @@ def start(update: Update, context: CallbackContext) -> int:
 
   update_catalog(loggedUsers)
   update.message.reply_text("Chi sei?",reply_markup=main_menu_keyboard())
+  
 
 
 def update_catalog(loggedUsers):
@@ -743,7 +744,8 @@ def main():
     conv_handler = ConversationHandler(
         entry_points=[CallbackQueryHandler(sign_in, pattern='signin'),CommandHandler('start', start)],
             states={
-                SIGNIN: [MessageHandler(Filters.text,sign_in_credenziali)],
+                SIGNIN: [MessageHandler(Filters.text,sign_in_credenziali),
+                        CallbackQueryHandler(start,'start')],
                 #da sign in vado a sign in credenziali che legge il messaggio input
                 ADMIN: [MessageHandler(Filters.text, callback= id_greenhouse)],
 
