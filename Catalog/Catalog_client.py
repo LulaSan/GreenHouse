@@ -222,11 +222,12 @@ class FarmerClient():
 
     def listforuser(self):
         display={}
+        listforuser=[]
         for i in range(len(self.FarmersList)):
             display={"FARMER_ID": self.FarmersList[i]["FARMER_ID"],
                     "Items":self.FarmersList[i]["ITEMS_SELL"]}
-            dispjson=json.dumps(display,indent=4)
-
+            listforuser.append(display)
+            dispjson=json.dumps(listforuser,indent=4)
             return  dispjson
     
     def farmerslist(self):
