@@ -130,7 +130,7 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
                     update_catalog(loggedUsers)
                     pprint(loggedUsers)
                             
-            update.message.reply_text('Scegli tra:', reply_markup=reply_markupPrincipale)
+            update.message.reply_text('Scegli tra:', reply_markup=reply_markupPrincipale_FARMER)
             return FARMER
         
     elif tipo=='A':
