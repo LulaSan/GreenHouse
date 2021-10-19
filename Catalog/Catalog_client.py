@@ -1,369 +1,875 @@
+from telegram.ext import Updater
+import os
+from telegram.ext import CommandHandler, CallbackQueryHandler, CallbackContext, ConversationHandler,Filters,MessageHandler,CommandHandler
+from telegram import InlineKeyboardButton,ReplyKeyboardMarkup, InlineKeyboardMarkup, Update
+############################### Bot ############################################
+import telepot
+import re
+
 import json
-import time
-import requests 
-import datetime
+from pprint import pprint
+import requests
 
-class AdminClient():
-    def __init__(self,AdminList):
-        self.AdminList=AdminList
-    def showlist(self):
-        listaadmin=self.AdminList.copy()
-        prettylist=json.dumps(listaadmin,indent=4)
-        return prettylist
+##AGGIUNGERE MESSAGGIO INIZIALE CHE DICE DI SCRIVERE /start
+# listaFarmers=lista["list"]
 
-class PlantClient():
-    def __init__(self,PlantsList):
-        self.PlantsList=PlantsList
-    
-    def showlist(self):
-        listapiante=self.PlantsList.copy()
-        prettylist=json.dumps(listapiante,indent=4)
+SIGNIN, SIGNIN_PULSANTI, ADMIN , ADMIN_TYPING, ADMIN_TYPING_2, ADMIN_TYPING_3, LEVEL1, FARMER , FARMER_TYPING, FARMER_TYPING_2 , USER, USER_TYPING= range(12)
 
-        return prettylist
+SERVER_file=json.load(open('utils.json','r'))
+SERVER=SERVER_file['SERVER']
+listaFarmers=json.loads(requests.get(url=SERVER+"/farmers").text)
+listaAdmins=json.loads(requests.get(url=SERVER+"/admins").text)
+listaUsers=json.loads(requests.get(url=SERVER+"/users").text)
+def main_menu_keyboard():
+    keyboard = [[InlineKeyboardButton(text=f'Admin', callback_data='signinA')],
+                [InlineKeyboardButton(text=f'Farmer', callback_data='signinF')],
+                [InlineKeyboardButton(text=f'User', callback_data='signinU')]]
+    return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
-
-    def search(self,PlantID,oggetto=None):
-        self.PlantID=PlantID 
-        self.oggetto=oggetto
-        trovato=None
-        nontrovato=1
-        for i in range(len(self.PlantsList)): 
-            if self.PlantsList[i]["PLANT_ID"]==self.PlantID:
-                # è la plant giusta - tutte le info
-                if (self.oggetto==None):
-                    trovato=(self.PlantsList[i])
-                    nontrovato=0
-                elif (self.oggetto!=None ): # info sull'oggetto
-                    if self.oggetto in self.PlantsList[i].keys():
-                        trovato=(self.PlantsList[i][self.oggetto])
-                        nontrovato=0
-                    else:
-                        return f' Non esiste questa Key '
-        if nontrovato==1:
-            return f' Nulla corrisponde alla tua ricerca, riprova!'
-        else:
-            return str(trovato)
-    
-    def addplant(self,deviceID,newDevice):
-        self.deviceID=deviceID
-        self.newDevice=(newDevice) #this must be a dictionary
-        modifica=0
-        for i in range(len(self.PlantsList)):
-            if self.deviceID==self.PlantsList[i]["PLANT_ID"] :
-                modifica=1
-                parametriDaMod=newDevice.copy()
-                keysDaMod=list(parametriDaMod.keys())
-                valuesdaMod=list(parametriDaMod.values())
-                for key in range(len(keysDaMod)):
-                    if keysDaMod[key] in self.PlantsList[i].keys(): #cerco tra le key ognuna di quelle presente nel body della richiesta
-                        self.PlantsList[i][keysDaMod[key]]=valuesdaMod[key]
-                self.updateJson()
-                return f' Ho modificato quello che mi hai chiesto correttamente'
-        
-        if modifica==0:
-            plantIDnew=self.newDevice["PLANT_ID"]
-            newinformations={
-            "BROKER_HOST": "10.42.0.1", 
-            "BROKER_PORT": 1884, 
-            "STATUS_TOPIC": "/p4iot/plants/{}/status".format(plantIDnew),
-            "COMMANDS_TOPIC": "/p4iot/plants/{}/commands/+".format(plantIDnew),
-            "SENSORS_TOPIC": "/p4iot/plants/{}/sensors".format(plantIDnew)}
-            # newinformations=json.dumps(newinformations1)
-            deviceCompleto = {**newDevice, **newinformations}
-            self.PlantsList.append(deviceCompleto)
-            #updating Json
-            self.updateJson()
-
-            return f'Il Catalogo è stato aggiornato correttamente'
-    
-    def removeplant(self,deviceID):
-        self.deviceID=deviceID
-        for i in range(len(self.PlantsList)):
-            if self.deviceID==self.PlantsList[i]["PLANT_ID"] :
-                del self.PlantsList[i]
-                self.updateJson()
-        return "l'elemento è stato rimosso"
-
-    def updateJson(self):
-        fp=open("Catalog.json",'r')
-        catalog=json.load(fp)
-        fp.close()
-        catalog["Plants"]=self.PlantsList
-        json.dump(catalog,open("Catalog.json",'w'),indent=4)
-
-
-class StatisticClient():
-    def __init__(self,StatisticList):
-        self.StatisticList=StatisticList
-
-    def search(self,statistic):
-        self.statistic=statistic
-        trovato=None
-        nontrovato=1
-        if statistic in self.StatisticList[0].keys(): #water_period o temperature_period             
-            trovato=self.StatisticList[0][self.statistic]
-            nontrovato=0
-        if nontrovato==1:
-            return f' Nulla corrisponde alla tua ricerca, riprova!'
-        else:
-            return str(trovato)
-    
-    def modify(self,statistic,valore):
-        self.statistic=statistic
-        nontrovato=1
-        if statistic in self.StatisticList[0].keys(): # se statstic è una key del dizionario, water_period o temperature_period             
-            self.StatisticList[0][self.statistic]=valore #a quella key scrivi il valore
-            nontrovato=0
-            trovato=self.StatisticList[0]
-            fp=open("Catalog.json",)
-            catalog=json.load(fp)
-            # catalog["Statistics"][0].update(self.StatisticList)
-            catalog["Statistics"][0][statistic]=valore
-            json.dump(catalog,open("Catalog.json",'w'),indent=4)
-            fp.close()
-        if nontrovato==1:
-            return f' Nulla corrisponde alla tua ricerca, riprova!'
-        else:
-            return str(trovato) 
-
-class GreenhouseClient():
-    def __init__(self,GreenhousesList):
-        self.GreenhousesList=GreenhousesList
-    
-    def showlist(self):
-        prettylist=json.dumps(self.GreenhousesList,indent=4)
-        return prettylist
-
-    def search(self,GreenhouseID,oggetto=None):
-        self.GreenhouseID=GreenhouseID 
-        self.oggetto=oggetto
-        trovato=None
-        nontrovato=1
-        for i in range(len(self.GreenhousesList)): 
-            if self.GreenhousesList[i]["GREENHOUSE_ID"]==self.GreenhouseID:
-                # è la Greenhouse giusta - tutte le info
-                if (self.oggetto==None):
-                    trovato=(self.GreenhousesList[i])
-                    nontrovato=0
-                elif (self.oggetto!=None ): # info sull'oggetto
-                    if self.oggetto in self.GreenhousesList[i].keys():
-                        trovato=(self.GreenhousesList[i][self.oggetto])
-                        nontrovato=0
-                    else:
-                        return f' Non esiste questa Key '
-        if nontrovato==1:
-            return f' Nulla corrisponde alla tua ricerca, riprova!'
-        else:
-            return str(trovato)
-    
-    def addgreenhouse(self,newID,newDevice):
-        self.newID=newID
-        self.newDevice=newDevice #this must be a dictionary
-        modificaG=0
-        for i in range(len(self.GreenhousesList)):
-            if self.newID==self.GreenhousesList[i]["GREENHOUSE_ID"] :
-                modificaG=1
-                parametriDaMod=newDevice.copy()
-                keysDaMod=list(parametriDaMod.keys())
-                valuesdaMod=list(parametriDaMod.values())
-                for key in range(len(keysDaMod)):
-                    if keysDaMod[key] in self.GreenhousesList[i].keys(): #cerco tra le key ognuna di quelle presente nel body della richiesta
-                        self.GreenhousesList[i][keysDaMod[key]]=valuesdaMod[key]
-                self.updateJson()
-                return f' Ho modificato quello che mi hai chiesto correttamente'
-        
-        if modificaG==0:
-            GreenhouseIDnew=self.newDevice["GREENHOUSE_ID"]
-            newinformations={
-            "BROKER_HOST": "10.42.0.1", 
-            "BROKER_PORT": 1884, 
-            "STATUS_TOPIC": "/p4iot/greenhouses/{}/status".format(GreenhouseIDnew),
-            "COMMANDS_TOPIC": "/p4iot/greenhouses/{}/commands/+".format(GreenhouseIDnew),
-            "SENSORS_TOPIC": "/p4iot/greenhouses/{}/sensors".format(GreenhouseIDnew)}
-            deviceCompleto = {**newDevice, **newinformations}
-            self.GreenhousesList.append(deviceCompleto)
-            #updating Json
-            self.updateJson()            
-            return f'Il Catalogo è stato aggiornato correttamente'
-
-    def removegreenhouse(self,deviceID):
-        self.deviceID=deviceID
-        for i in range(len(self.GreenhousesList)):
-            if self.deviceID==self.GreenhousesList[i]["GREENHOUSE_ID"] :
-                del self.GreenhousesList[i]
-                
-        #rimuovo pianta nella lista delle piante
-        fp=open("Catalog.json",'r')
-        catalog=json.load(fp)
-        plantlist=catalog["Plants"]
-        plantlistcopia=plantlist.copy()
-        already_removed=0;
-        fp.close()
-        for j in range(len(plantlist)) :
-                if plantlist[j]["GREENHOUSE_ID"]==self.deviceID:
-                    already_removed+=1
-                    del plantlistcopia[j-already_removed]
-                
-        catalog["Plants"]=plantlistcopia
-        json.dump(catalog,open("Catalog.json",'w'),indent=4)
-        self.updateJson()
-        return "l'elemento è stato rimosso "    
-    def updateJson(self):
-        fp=open("Catalog.json",'r')
-        catalog=json.load(fp)
-        fp.close()
-        catalog["Greenhouses"]=self.GreenhousesList
-        json.dump(catalog,open("Catalog.json",'w'),indent=4)
-        
-class FarmerClient():
-    def __init__(self,FarmersList):
-        self.FarmersList=FarmersList
-
-    def listforuser(self):
-        display={}
-        for i in range(len(self.FarmersList)):
-            display={"FARMER_ID": self.FarmersList[i]["FARMER_ID"],
-                    "Items":self.FarmersList[i]["ITEMS_SELL"]}
-            dispjson=json.dumps(display,indent=4)
-
-            return  dispjson
-    
-    def farmerslist(self):
-        display={"list":[]}
-        # display["list"]=self.FarmersList
-        display=self.FarmersList
-        displayjson=json.dumps(display,indent=4)
-        return displayjson
-        #return self.FarmersList
-    
-    def farmerlist(self,farmerID):
-        for i in range(len(self.FarmersList)):
-            if farmerID == self.FarmersList[i]["FARMER_ID"]:
-                dispjson=json.dumps(self.FarmersList[i],indent=4)
-                return dispjson
+def start(update: Update, context: CallbackContext) -> int:
+  if update.message != None:
+    user = update.message.from_user
+    newid=str(user.id)
+  else:
+    user=context.user_data
+    newid= update.effective_chat.id
             
+  fp=open("telegram_catalog.json","r")
+  catalog=json.load(fp)
+  loggedUsers=catalog["LOGGED_USERS"]
+  fp.close()
+  new=0
+  
+  for i in range(len(loggedUsers)):
+    if newid in loggedUsers[i].values() :
+      update.message.reply_text(f"Hi, welcome back")
+      new=1
+  if new==0:
+    newUser={"CHATID":newid, "TYPE": "","LOGID":""}
+    loggedUsers.append(newUser)
+    update.message.reply_text(f"Hey, it seems that you are new here! Welcome!")
 
-    def addfarmer(self, farmerID,newFarmer):
-        self.farmerID=farmerID
-        self.newFarmer=(newFarmer) #this must be a dictionary
-        modifica=0
-        for i in range(len(self.FarmersList)):
-            if self.farmerID==self.FarmersList[i]["FARMER_ID"] :
-                modifica=1
-                parametriDaMod=newFarmer.copy()
-                keysDaMod=list(parametriDaMod.keys())
-                valuesdaMod=list(parametriDaMod.values())
-                for key in range(len(keysDaMod)):
-                    if keysDaMod[key] in self.FarmersList[i].keys(): #cerco tra le key ognuna di quelle presente nel body della richiesta
-                        self.FarmersList[i][keysDaMod[key]]=valuesdaMod[key]
-                self.updateJson()
-                return f' Ho modificato quello che mi hai chiesto correttamente'
-        
-        if modifica==0:
-            self.FarmersList.append(newFarmer)
-            #updating Json
-            self.updateJson()
-            return f'Il Catalogo è stato aggiornato correttamente'
-        
-    def addItem(self,farmerID,item,price=None,quantity=None):
-        self.price=price # la quantity deve essere la totale disponibile in quel momento
-        self.quantity=quantity
-        self.item=item
-        update=0
-        for i in range(len(self.FarmersList)):
-            if farmerID==self.FarmersList[i]["FARMER_ID"]:
-                for j in range(len(self.FarmersList[i]["ITEMS_SELL"])):
-                    if item == self.FarmersList[i]["ITEMS_SELL"][j]["item"]: # se l'item già c'è faccio l'update della quantità o del prezzo
-                        update=1
-                        if self.price!="None":
-                            self.FarmersList[i]["ITEMS_SELL"][j]["price"]=int(self.price)
+  update_catalog(loggedUsers)
+  update.message.reply_text("Chi sei?",reply_markup=main_menu_keyboard())
+  return SIGNIN_PULSANTI
+ 
+  
+
+
+def update_catalog(loggedUsers):
+  fp=open("telegram_catalog.json",'r')
+  catalog=json.load(fp)
+  fp.close()
+  catalog["LOGGED_USERS"]=loggedUsers
+  json.dump(catalog,open("telegram_catalog.json","w"),indent=4)
+
+def main_menu(update: Update, context: CallbackContext) -> int:
+    update.callback_query.message.edit_text(main_menu_message(),reply_markup=main_menu_keyboard())
+
+def first_menu(update: Update, context: CallbackContext) -> int:
+    update.callback_query.message.edit_text(first_menu_message(),reply_markup=first_menu_keyboard())
+
+
+
+
+tipo= ''
+
+def sign_in(update: Update, context: CallbackContext) -> int:
+  global tipo
+  ##registro la tipologia di utente che è l'ultima risposta data
+  tipo=update.callback_query.data[-1]
+  fp=open("telegram_catalog.json",'r')
+  catalog=json.load(fp)
+  fp.close()
+  loggedUsers=catalog["LOGGED_USERS"]
+  oldid=str(update.effective_chat["id"])
+  
+  for i in range(len(loggedUsers)):
+    if oldid== loggedUsers[i]["CHATID"]:
+      loggedUsers[i]["TYPE"]=str(tipo)
+      update_catalog(loggedUsers)
+      pprint(loggedUsers)
+
+  keyboard = [
+        [
+            InlineKeyboardButton("Log in Menu", callback_data="start"),
+            
+        ]
+    ]
+  reply_markup = InlineKeyboardMarkup(keyboard)
+  update.callback_query.message.edit_text(f"Ok now log in write your id or go back writing 'start'")
+
+  return SIGNIN
+
+def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
+    pprint("sto entrando del sign_in_credd")
+    text = update.message.text # splitto il testo
+    global tipo
+    print(tipo)
+    #salvo il LOG ID dell'utente
+    fp=open("telegram_catalog.json",'r')
+    catalog=json.load(fp)
+    fp.close()
+    loggedUsers=catalog["LOGGED_USERS"]
+    oldid=str(update.effective_chat["id"])
+    trovato=0
+    
+    if tipo== 'F':
+        #cerco l'id scritto dall'utente nella lista farmers, se ha cambiato numero di accesso a telegram ma è sempre lo stesso utente sarà riconosciuto dal suo logid
+        for i in range(len(listaFarmers)):
+            pprint(listaFarmers)
+            if listaFarmers[i]['FARMER_ID'] == text:
+                pprint(listaFarmers[i])
+                trovato=1
+                user_data=context.user_data # li salvo o qui
+                user_data["LOGID"]= text
+                pprint(user_data)
+
+            for j in range(len(loggedUsers)):  # o qui
+                if oldid == loggedUsers[j]["CHATID"]:
+                    loggedUsers[j]["LOGID"]=str(text)
+                    update_catalog(loggedUsers)
+                    pprint(loggedUsers)
                             
-                        if self.quantity!="None": # se uno c'è e l'altro no, è un modo per non scambiare gli input
-                            self.FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]=int(self.quantity)
-                        self.updateJson()
-                        return(f"ho modificato {item}")
-
-                if update==0: #se l'item non c'è lo aggiungo alla lista 
-                    newitem={
-                        "item":self.item,
-                        "price":int(self.price),
-                        "quantityAvailable":int(self.quantity)
-                    }
-                    self.FarmersList[i]["ITEMS_SELL"].append(newitem)
-                    self.updateJson()
-                    return (f"ho aggiunto {self.item}")
-    def deleteItem(self,farmerID,item):
-        self.item=item
-        self.farmerID=farmerID
-        farmerlistcopia=self.FarmersList.copy()
-        for i in range(len(self.FarmersList)):
-            if farmerID==self.FarmersList[i]["FARMER_ID"]:
-                for j in range(len(self.FarmersList[i]["ITEMS_SELL"])):
-                    if item == self.FarmersList[i]["ITEMS_SELL"][j]["item"]: # se l'item già c'è faccio l'update della quantità o del prezzo
-                        del farmerlistcopia[i]["ITEMS_SELL"][j]
+            update.message.reply_text('Scegli tra:', reply_markup=reply_markupPrincipale_FARMER)
+            return FARMER
         
-        self.FarmersList=farmerlistcopia
-        self.updateJson()
-        return f"ho rimosso {item}"
-                                    
-    def updateJson(self):
-        fp=open("Catalog.json",'r')
-        catalog=json.load(fp)
-        fp.close()
-        catalog["Farmers"]=self.FarmersList
-        json.dump(catalog,open("Catalog.json",'w'),indent=4)
-    
-class UserClient():
-    def __init__(self,UsersList):
-        self.UsersList=UsersList
-        #l'user potrà vedere una lista di ortaggi con prezzo e qt disponibile, identificati da un ID che è quello del farmer,
-        #una volta scelto l'oggetto farà una request DELETE con farmerID e nome dell'item e quantità desiderata
-    def showlist(self):
-        listausers=self.UsersList.copy()
-        prettylist=json.dumps(listausers,indent=4)
-        return prettylist
-    
-    def buyitem(self,FarmerID,item,quantity):
-        self.FarmerID=FarmerID
-        self.quantity=(quantity)
-        self.item=item
-        fp=open("Catalog.json",'r')
-        catalog=json.load(fp)
-        FarmersList=catalog["Farmers"]
-        farmerlistcopia=FarmersList.copy()
-        fp.close()
-        for i in range(len(FarmersList)):
-            if FarmerID==FarmersList[i]["FARMER_ID"]:
-                for j in range(len(FarmersList[i]["ITEMS_SELL"])):
-                    if self.item == FarmersList[i]["ITEMS_SELL"][j]["item"]:
-                        if int(quantity)<FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]: #se ne vuole meno, aggiorno la quantità disponibile
-                            FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]+= -int(self.quantity)
-                            nuovadisponibile=FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]
-                            self.updateJson(FarmersList)
-                            return f" la quantità rimanente di {self.item} è {nuovadisponibile}"
+    elif tipo=='A':
+        for i in range(len(listaAdmins)):
+            if text == listaAdmins[i]['ADMIN_ID']:
+                pprint(listaAdmins[i])
+                trovato=1
+                user_data=context.user_data # li salvo o qui
+                user_data["LOGID"]= text
+                pprint(user_data)
 
-                        elif int(quantity)==FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]:#se vuole tutto ciò che è disponibile, elimino l'item
-                                del farmerlistcopia[i]["ITEMS_SELL"][j]
-                                FarmersList=farmerlistcopia
-                                self.updateJson(FarmersList)
-                                return "hai chiesto tutta la quanittà disponibile, l'item è ora terminato"
-
-                        elif int(quantity)>FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]: # se ne vuole trppo --> error
-                            quantitadisponibile=FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]
-                            return f"Quantità richiesta non disponibile, la quantità disponibile è {quantitadisponibile}"
+                for j in range(len(loggedUsers)):  # o qui
+                    if oldid == loggedUsers[j]["CHATID"]:
+                        loggedUsers[j]["LOGID"]=str(text)
+                        update_catalog(loggedUsers)
+                        pprint(loggedUsers)
                         
-    def updateJson(self,FarmersList):
-        self.FarmersList=FarmersList
-        fp=open("Catalog.json",'r')
-        catalog=json.load(fp)
-        fp.close()
-        catalog["Farmers"]=self.FarmersList
-        json.dump(catalog,open("Catalog.json",'w'),indent=4)
+                    #display greenhouse list
+                    pprint(greenhouselist)
+                    update.message.reply_text(text=f"\nBenvenuto!\nEcco le greenhouse disponibili \n{greenhouselist}\nA quale greenhouse sei interessato?\n")
+                    return ADMIN
 
+    elif tipo=='U':
+        for i in range(len(listaUsers)):
+            if text == listaUsers[i]['USER_ID']:
+                pprint(listaUsers[i])
+                trovato=1
+                user_data=context.user_data # li salvo o qui
+                user_data["LOGID"]= text
+                pprint(user_data)
 
+                for j in range(len(loggedUsers)):  # o qui
+                    if oldid == loggedUsers[j]["CHATID"]:
+                        loggedUsers[j]["LOGID"]=str(text)
+                        update_catalog(loggedUsers)
+                        pprint(loggedUsers)
                         
-
-                       
+                    #display greenhouse list
+                    update.message.reply_text(text=f"\nWelcome, choose an option or digit 'start' to come back to LOG IN",reply_markup=keyboardPrincipale_USER())
+                    return USER
 
         
-        
+
+    if trovato==0:
+      update.message.reply_text('LOG_ID sbagliato, riprova')
+      return SIGNIN
+
+
+
+def update_catalog(loggedUsers):
+  fp=open("telegram_catalog.json",'r')
+  catalog=json.load(fp)
+  fp.close()
+  catalog["LOGGED_USERS"]=loggedUsers
+  json.dump(catalog,open("telegram_catalog.json","w"),indent=4)
+
+def done(update: Update, _: CallbackContext) -> int:
+    update.message.reply_text("niente")
+
+################ USER#############################################################################################
+
+def keyboardPrincipale_USER():
+  keyboardPrincipale= [[InlineKeyboardButton(text=f'Compra un prodotto', callback_data='compra_user')]]
+  return InlineKeyboardMarkup(keyboardPrincipale) 
+
+def displaylist_USER(update: Update, context: CallbackContext) -> int:
+  user_data=context.user_data
+  #1. stampo lista  2. chiedo di scrivere se nuovo nome item, prezzo e quantità separati da spazi
+  #3. chiedo di scrivere "modifica prezzo patate 2/ modifica quantità patate 3 "
+  # farmerid=user_data["LOGID"]
+  itemstobuy=json.loads(requests.get(url=f"{SERVER}/itemstobuy").text)
+  update.callback_query.message.edit_text(text=f"\nEcco gli items disponibili \n{itemstobuy}"
+                                     "Se vuoi acquistare un prodotto, scrivi in ordine : ID del contadino, nome dell'item e quantità desiderata \n ")
+  return USER_TYPING
+
+def buyitemuser(update: Update, context: CallbackContext) -> int:
+  pprint("sto entrando in buyitemuser")
+  user_data=context.user_data
+  # farmerid=user_data["LOGID"]
+  text = update.message.text.split(" ")
+  if text[0] == "principale":
+    update.message.reply_text('Scegli tra:', reply_markup=keyboardPrincipale_USER)
+    return USER
+  farmerID=text[0]
+  item=text[1]
+  quantita=text[2]
+  r=requests.delete(f"{SERVER}/buyitem/{farmerID}/{item}/{quantita}")
+  
+  itemstobuy=json.loads(requests.get(url=f"{SERVER}/itemstobuy").text)
+  update.message.reply_text(f"Ok,fatto. Ecco la lista modificata\n {itemstobuy} \n Riprova se vuoi modificare altro\n digita 'principale' per tornare al menu inziale")
+
+  return USER_TYPING
+
+
+
+
+
+
+
+
+
+
+
+
+##############################################################################################
+#######################################################°°ADMIN###################################################################à
+#############################################################################
+
+greenhousesinfo = json.loads(requests.get(url=SERVER+f"/greenhouses").text) 
+greenhouselist = [] 
+greenhouselist.append(greenhousesinfo[0]["GREENHOUSE_ID"])
+greenhouse_id = greenhousesinfo[0]["GREENHOUSE_ID"]
+
+def id_greenhouse(update: Update, context: CallbackContext) -> int:
+      text = update.message.text # splitto il testo
+      if text in greenhouselist :
+        update.message.reply_text(text=first_menu_message(),reply_markup=first_menu_keyboard())
+        return LEVEL1
+      else:
+        update.message.reply_text(text=f"La greenhouse scelta non corrisponde, riprovare.")
+        return ADMIN
+      #se verificato-> return nuovo MENU
+      #altrimenti return ADMIN e update.message.reply_text('LOG_ID sbagliato, riprova')
+
+# funzioni primo menu:
+def Statistics(update: Update, context: CallbackContext) -> int:
+  update.callback_query.message.edit_text("Cosa vuoi fare?",reply_markup=Statistics_keyboard())
+  return LEVEL1
+
+
+def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
+  text = update.message.text.split(" ")
+  greenhouse = json.loads(requests.get(url=f"{SERVER}/greenhouses/{greenhouse_id}").text)
+
+  if text[0] == "Principale":
+    update.message.reply_text('Scegli tra:', reply_markup=first_menu_keyboard())
+    return LEVEL1
+
+  elif text[0] == "1":
+    #greenhouse[0]["THRESHOLD_HUMID_MIN"]= int(text[1])
+    new_value = {"THRESHOLD_HUMID_MIN": int(text[1])}
+    res = requests.post(SERVER+f"/greenhouses/{greenhouse_id}",json=new_value)
+
+    if res.status_code == 200:
+      update.message.reply_text(text="New threshold updated")
+      keyboard = [[
+          InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
+          ]]
+      reply_markup = InlineKeyboardMarkup(keyboard)
+      update.message.reply_text(text="Torna al menu principale", reply_markup=reply_markup)
+      return LEVEL1
+
+    else:
+      update.message.reply_text(text="Parametro non aggiornato, problema con il server riprovare più tardi")
+      return ADMIN_TYPING_2
+       
+  elif text[0] == "2":
+    new_value = {"THRESHOLD_HUMID_MAX": int(text[1])}
+    res = requests.post(SERVER+f"/greenhouses/{greenhouse_id}",json=new_value)
+
+    if res.status_code == 200:
+      update.message.reply_text(text="New threshold updated")
+      keyboard = [[
+          InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
+          ]]
+      reply_markup = InlineKeyboardMarkup(keyboard)
+      update.message.reply_text(text="Torna al menu principale", reply_markup=reply_markup)
+      return LEVEL1
+      
+    else:
+      update.message.reply_text(text="Parametro non aggiornato, problema con il server riprovare più tardi")
+      return ADMIN_TYPING_2
+
+  elif text[0] == "3":
+    new_value = {"THRESHOLD_BRIGHT_MIN": int(text[1])}
+    res = requests.post(SERVER+f"/greenhouses/{greenhouse_id}",json=new_value)
+
+    if res.status_code == 200:
+      update.message.reply_text(text="New threshold updated")
+      keyboard = [[
+          InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
+          ]]
+      reply_markup = InlineKeyboardMarkup(keyboard)
+      update.message.reply_text(text="Torna al menu principale", reply_markup=reply_markup)
+      return LEVEL1
+      
+    else:
+      update.message.reply_text(text="Parametro non aggiornato, problema con il server riprovare più tardi")
+      return ADMIN_TYPING_2
+  elif text[0] == "4":
+    new_value = {"THRESHOLD_BRIGHT_MAX": int(text[1])}
+    res = requests.post(SERVER+f"/greenhouses/{greenhouse_id}",json=new_value)
+
+    if res.status_code == 200:
+      update.message.reply_text(text="New threshold updated")
+      keyboard = [[
+          InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
+          ]]
+      reply_markup = InlineKeyboardMarkup(keyboard)
+      update.message.reply_text(text="Torna al menu principale", reply_markup=reply_markup)
+      return LEVEL1
+      
+    else:
+      update.message.reply_text(text="Parametro non aggiornato, problema con il server riprovare più tardi")
+      return ADMIN_TYPING_2
+  elif text[0] == "5":
+    new_value = {"THRESHOLD_TEMPER_MIN": int(text[1])}
+    res = requests.post(SERVER+f"/greenhouses/{greenhouse_id}",json=new_value)
+
+    if res.status_code == 200:
+      update.message.reply_text(text="New threshold updated")
+      keyboard = [[
+          InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
+          ]]
+      reply_markup = InlineKeyboardMarkup(keyboard)
+      update.message.reply_text(text="Torna al menu principale", reply_markup=reply_markup)
+      return LEVEL1
+      
+    else:
+      update.message.reply_text(text="Parametro non aggiornato, problema con il server riprovare più tardi")
+      return ADMIN_TYPING_2
+  elif text[0] == "6":
+    new_value = {"THRESHOLD_TEMPER_MAX": int(text[1])}
+    res = requests.post(SERVER+f"/greenhouses/{greenhouse_id}",json=new_value)
+
+    if res.status_code == 200:
+      update.message.reply_text(text="New threshold updated")
+      keyboard = [[
+          InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
+          ]]
+      reply_markup = InlineKeyboardMarkup(keyboard)
+      update.message.reply_text(text="Torna al menu principale", reply_markup=reply_markup)
+      return LEVEL1
+      
+    else:
+      update.message.reply_text(text="Parametro non aggiornato, problema con il server riprovare più tardi")
+      return ADMIN_TYPING_2
+  else:
+    update.message.reply_text('Comando non valido, riprovare')
+    return ADMIN_TYPING_2
+ 
+
+
+def Actuators(update: Update, context: CallbackContext) -> int:
+  update.callback_query.message.edit_text("Cosa vuoi fare?",reply_markup=actuator_control_keyboard())
+  return LEVEL1
+
+
+# funzioni secondo livello:
+def ThingsBoard(update: Update, context: CallbackContext) -> int:
+  update.callback_query.message.edit_text(text="Ecco il link di thingsboard: ")
+  keyboard = [
+        [
+            InlineKeyboardButton("Main menu", callback_data="main_fm"),
+            InlineKeyboardButton("Last menu", callback_data="b1_1")
+        ]
+    ]
+  reply_markup = InlineKeyboardMarkup(inline_keyboard=keyboard)
+  update.callback_query.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup)
+  return LEVEL1
+
+def NewThreshold_period(update: Update, context: CallbackContext) -> int:
+  user_data=context.user_data
+  adminid=user_data["LOGID"]
+  text = update.message.text.split(" ")
+  
+  if text[0] == "Principale":
+    update.message.reply_text('Scegli tra:', reply_markup=first_menu_keyboard())
+    return LEVEL1
+  elif text[0] != "Principale" and text[0] != "periodo":
+    update.message.reply_text('Comando non valido, riprovare')
+    return ADMIN_TYPING
+  else:
+    
+    res = requests.post(SERVER+f"/statistic/water_period/{text[1]}")
+    if res.status_code == 200:
+      update.message.reply_text(text="New threshold updated")
+    else:
+      update.message.reply_text(text="Parametro non aggiornato, problema con il server riprovare più tardi")
+      return ADMIN_TYPING
+
+    keyboard = [
+          [
+              InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
+              InlineKeyboardButton("Torna al menù precedente", callback_data="b1_1")
+          ]
+      ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup    )
+  return LEVEL1
+
+def OpenWindows(update: Update, context: CallbackContext) -> int:
+  update.callback_query.message.edit_text("Finestra aperta")
+  ### comando che attiva la pompa -> aggiungere UNA POST PER CAMBIARE LO STATO DELLA POMPA ######
+  with open("Sensors.json", "r+") as outfile:
+    data = json.load(outfile)
+    data['Windows']= 'Open'
+    outfile.seek(0)  # rewind
+    json.dump(data, outfile)
+    outfile.truncate()
+
+  keyboard = [
+        [
+            InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
+            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_4")
+        ]
+    ]
+  reply_markup = InlineKeyboardMarkup(keyboard)
+  update.callback_query.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup    )
+  return LEVEL1
+
+def CloseWindows(update: Update, context: CallbackContext) -> int:
+  update.callback_query.message.edit_text("Finestra chiusa")
+  #comando che disattiva la pompa
+  with open("Sensors.json", "r+") as outfile:
+    data = json.load(outfile)
+    data['Windows']= 'Close'
+    outfile.seek(0)  # rewind
+    json.dump(data, outfile)
+    outfile.truncate()
+  
+  keyboard = [
+        [
+            InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
+            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_4")
+        ]
+    ]
+  reply_markup = InlineKeyboardMarkup(keyboard)
+  update.callback_query.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup
+    )
+  return LEVEL1
+
+def VentOFF(update: Update, context: CallbackContext) -> int:
+  update.callback_query.message.edit_text(" Ventola spenta")
+  #comando che disattiva la pompa
+  with open("Sensors.json", "r+") as outfile:
+    data = json.load(outfile)
+    data['Vent']= 'Off'
+    outfile.seek(0)  # rewind
+    json.dump(data, outfile)
+    outfile.truncate()
+
+  keyboard = [
+        [
+            InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
+            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_4")
+        ]
+    ]
+  reply_markup = InlineKeyboardMarkup(keyboard)
+  update.callback_query.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup
+    )
+  return LEVEL1
+
+def VentON(update: Update, context: CallbackContext) -> int:
+  update.callback_query.message.edit_text(" Ventola accesa")
+  #comando che disattiva la pompa
+  with open("Sensors.json", "r+") as outfile:
+    data = json.load(outfile)
+    data['Vent']= 'On'
+    outfile.seek(0)  # rewind
+    json.dump(data, outfile)
+    outfile.truncate()
+
+  keyboard = [
+        [
+            InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
+            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_4")
+        ]
+    ]
+  reply_markup = InlineKeyboardMarkup(keyboard)
+  update.callback_query.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup
+    )
+  return LEVEL1
+
+
+
+def add_remove_modify_item(update: Update, context: CallbackContext) -> int:
+  pass
+############################ Keyboards #########################################
+def main_menu_keyboard():
+    keyboard = [[InlineKeyboardButton(text=f'Admin', callback_data='signinA')],
+                [InlineKeyboardButton(text=f'Farmer', callback_data='signinF')],
+                [InlineKeyboardButton(text=f'User', callback_data='signinU')]]
+    return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+def first_menu_keyboard():
+    keyboard = [[InlineKeyboardButton(text=f'Statistics', callback_data='b1_1')],
+                [InlineKeyboardButton(text=f'Modify parameters of Greenhouse', callback_data='b1_2')],
+                [InlineKeyboardButton(text=f'Add/remove/modify items', callback_data='b1_3')],
+                [InlineKeyboardButton(text=f'Manage actuators', callback_data='b1_4')]]
+    return InlineKeyboardMarkup(inline_keyboard=keyboard) 
+
+def Statistics_keyboard():
+  keyboard = [[InlineKeyboardButton("ThingsBoard - Grafici Statistiche", callback_data="b2_1")],
+              [InlineKeyboardButton("Modificare threshold di sampling", callback_data="b2_2")],
+              [InlineKeyboardButton("Main menu", callback_data="main_fm")]]
+  return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+def actuator_control_keyboard():
+    keyboard = [[InlineKeyboardButton(text=f'turn ON vent', callback_data='VentON')],
+                [InlineKeyboardButton(text=f'turn OFF vent', callback_data='VentOFF')],
+                [InlineKeyboardButton(text=f'OPEN windows', callback_data='OpenWindows')],
+                [InlineKeyboardButton(text=f'CLOSE windows', callback_data='CloseWindows')],
+                [InlineKeyboardButton(text=f'Main menu', callback_data='main_fm')]]
+    return InlineKeyboardMarkup(inline_keyboard=keyboard)
+  
+############################# Messages #########################################
+def main_menu_message():
+  return 'Who are you? Please, choose the option in main menu:'
+
+def first_menu_message():
+  return 'Please, select one of the following action or write "start" to go back to LOG IN : '
+
+def actuator_control_message():
+  return 'Which actuator do you want to control? '
+
+def NewThreshold_message(update: Update, context: CallbackContext) -> int:
+  period=json.loads(requests.get(url=SERVER+"/statistic/water_period").text)
+  update.callback_query.message.reply_text(text=f"Il valore corrente è: {period}\n Se vuoi modificare il valore del periodo scrivi periodo + nuovo valore in secondi\n"
+  "ad esempio 'periodo 10'\n"
+  "scrivi 'Principale' se vuoi tornare al menu principale")
+  return ADMIN_TYPING
+
+def Green_House_Parameters(update: Update, context: CallbackContext) -> int:
+  update.callback_query.message.reply_text(text="Se vuoi modificare i parametri della greenhouse digita il numero relativo al parametro da modificare + il nuovo valore:\n"
+  "1) Low humidity threshold\n"
+  "2) High humidity threshold\n"
+  "3) Low bright threshold\n"
+  "4) High bright threshold\n"
+  "5) Low temperature threshold\n"
+  "6) High temperature threshold\n"
+
+  "\nScrivi 'Principale' se vuoi tornare al menu principale")
+  return ADMIN_TYPING_2
+
+def Item_message(update: Update, context: CallbackContext) -> int:
+  plant_in_greenhouse = []
+  plants = json.loads(requests.get(url=f"http://localhost:2000/plants").text)
+  for plant in plants:
+    if plant["GREENHOUSE_ID"]==greenhouse_id:
+      plant_in_greenhouse.append(plant)
+  update.callback_query.message.reply_text(text=f"\nEcco gli items disponibili \n{items}"####   !!!!!!!!!!!!
+                                     "se devi aggiungere, scrivi 'aggiungi <nome item>, <prezzo> e <quantità> separati da spazi\n"
+                                     "oppure se devi modificare, scrivi ad esempio 'modifica prezzo patate 2' oppure' modifica quantità patate 3'\n "
+                                     "se devi rimuovere scrivi rimuovi item, ad esempio 'rimuovi patate'\n"
+                                     "per tornare al menu principale digita 'Principale' ")
+  return ADMIN_TYPING_3
+
+
+    ####################################################### FARMER ###################################
+    #####################################################################################
+    #################################################
+keyboardPrincipale= [[InlineKeyboardButton(text=f'Aggiungere, modificare, rimuovere un item', callback_data='AMR')],
+            [InlineKeyboardButton(text=f'Controllare attuatori', callback_data='AS')],
+            [InlineKeyboardButton(text=f'Statistiche', callback_data='SF')]]
+reply_markupPrincipale_FARMER = InlineKeyboardMarkup(keyboardPrincipale)
+
+def menuprincipaleFarmer(update: Update, context: CallbackContext) -> int:
+  update.callback_query.message.edit_text('Choose an action or write "start" to go back to LOG IN', reply_markup=reply_markupPrincipale_FARMER)
+  return FARMER  
+
+def displaylist(update: Update, context: CallbackContext) -> int:
+  user_data=context.user_data
+  #1. stampo lista  2. chiedo di scrivere se nuovo nome item, prezzo e quantità separati da spazi
+  #3. chiedo di scrivere "modifica prezzo patate 2/ modifica quantità patate 3 "
+  farmerid=user_data["LOGID"]
+  singolo=json.loads(requests.get(url=SERVER+f"/farmer/{farmerid}").text)
+  items=singolo["ITEMS_SELL"]
+  update.callback_query.message.edit_text(text=f"\nEcco gli items disponibili \n{items}"
+                                     "se devi aggiungere, scrivi 'aggiungi <nome item>, <prezzo> e <quantità> separati da spazi\n"
+                                     "oppure se devi modificare, scrivi ad esempio 'modifica prezzo patate 2' oppure' modifica quantità patate 3'\n "
+                                     "se devi rimuovere scrivi rimuovi item, ad esempio 'rimuovi patate'\n"
+                                     "per tornare al menu principale digita 'principale'  ")
+  return FARMER_TYPING
+
+def uporadditemfarmer(update: Update, context: CallbackContext) -> int:
+  pprint("sto entrando in upporadditem")
+  user_data=context.user_data
+  farmerid=user_data["LOGID"]
+  text = update.message.text.split(" ")
+
+  if text[0] == "modifica":
+    item=text[2]
+    if text[1]== "prezzo":
+      prezzo= int(text[3])
+      r=requests.post(url=SERVER+f"/uporadditem/{farmerid}/{item}/{prezzo}/None")
+    elif text[1]== "quantità" :
+      quantita=int(text[3])
+      p=requests.post(url=f"{SERVER}/uporadditem/{farmerid}/{item}/None/{quantita}")
+    
+    singolo=json.loads(requests.get(url=f"{SERVER}/farmer/{farmerid}").text)
+    items=singolo["ITEMS_SELL"]
+    update.message.reply_text(f"Ok,fatto. Ecco la lista modificata\n {items} \n Riprova se vuoi modificare altro\n digita 'principale' per tornare al menu inziale")
+    return FARMER_TYPING
+  elif text[0] == "aggiungi":
+    item=text[1]
+    prezzo=int(text[2])
+    quantita=int(text[3])
+    requests.post(f"{SERVER}/uporadditem/{farmerid}/{item}/{prezzo}/{quantita}")
+    singolo=json.loads(requests.get(url=f"{SERVER}/farmer/{farmerid}").text)
+    items=singolo["ITEMS_SELL"]
+    update.message.reply_text(f"Ok,fatto. Ecco la lista modificata\n {items} \n Riprova se vuoi modificare altro\n digita 'principale' per tornare al menu inziale")
+    
+    return FARMER_TYPING
+  elif text[0] =="rimuovi":
+    item=text[1]
+    requests.delete(f"{SERVER}/deleteitem/{farmerid}/{item}")
+    singolo=json.loads(requests.get(url=f"{SERVER}/farmer/{farmerid}").text)
+    items=singolo["ITEMS_SELL"]
+    update.message.reply_text(f"Ok,fatto. Ecco la lista modificata\n {items} \n Riprova se vuoi modificare altro\n digita 'principale' per tornare al menu inziale")
+    
+    return FARMER_TYPING
+
+  elif text[0] == "principale":
+    update.message.reply_text('Scegli tra:', reply_markup=reply_markupPrincipale)
+    return FARMER
+
+  
+def attuatoriscelte(update: Update, context: CallbackContext) -> int:
+  keyboard = [
+        [
+            InlineKeyboardButton("Modificare la soglia dell'umidità", callback_data="newthreshold"),
+            InlineKeyboardButton("Accendere o spegnere la pompa", callback_data="pompaonoff"),
+            InlineKeyboardButton("Tornare al menu principale", callback_data="principale")
+        ]
+    ]
+  reply_markup = InlineKeyboardMarkup(keyboard)
+  update.callback_query.message.edit_text(text="Cosa vuoi fare?", reply_markup=reply_markup
+    )
+  return FARMER
+
+def pompaonoff(update: Update, context: CallbackContext) -> int:
+  keyboard = [
+        [
+            InlineKeyboardButton("Pompa ON", callback_data="PompaON"),
+            InlineKeyboardButton("Pompa OFF", callback_data="PompaOFF"),
+            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_2")
+        ]
+    ]
+  reply_markup = InlineKeyboardMarkup(keyboard)
+  update.callback_query.message.edit_text(text="Cosa vuoi fare?", reply_markup=reply_markup
+    )
+  return FARMER
+
+def PompaON(update: Update, context: CallbackContext) -> int:
+  
+  update.callback_query.message.edit_text(" Pompa accesa")
+  #comando che attiva la pompa
+  keyboard = [
+        [
+            InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
+            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_2")
+        ]
+    ]
+  reply_markup = InlineKeyboardMarkup(keyboard)
+  update.callback_query.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup    )
+  return FARMER
+def PompaOFF(update: Update, context: CallbackContext) -> int:
+  update.callback_query.message.edit_text(" Pompa spenta")
+  #comando che disattiva la pompa
+  keyboard = [
+        [
+            InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
+            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_2")
+        ]
+    ]
+  reply_markup = InlineKeyboardMarkup(keyboard)
+  update.callback_query.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup
+    )
+  return FARMER
+def listaCROPS(farmerid):
+  farmer=json.loads(requests.get(url=f"{SERVER}/farmer/{farmerid}").text)
+  plants=json.loads(requests.get(url=f"{SERVER}/plants").text)
+  cropsowned=farmer["CROPS_OWNED"]
+  pprint(cropsowned)
+  displaydict={"list":[]}
+  #STAMPO LISTA PIANTE OWNED CON THRESHOLDS
+  for crop in cropsowned:
+      for plant in plants:
+        if plant["PLANT_ID"] == crop:
+          displaydict["list"].append({"CROP":plant["PLANT_NAME"],"THRESHOLD_MOIST_MIN":plant["THRESHOLD_MOIST_MIN"],"THRESHOLD_MOIST_MAX":plant["THRESHOLD_MOIST_MAX"]})
+  
+  return displaydict
+
+def NewThreshold_info(update: Update, context: CallbackContext) -> int:
+  user_data=context.user_data
+  farmerid=user_data["LOGID"]
+  listacrops=listaCROPS(farmerid)
+  keyboard = [
+        [
+            InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
+            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_2")
+        ]
+    ]
+  reply_markup = InlineKeyboardMarkup(keyboard)
+  update.callback_query.message.edit_text(text=f"{listacrops}")
+  update.callback_query.message.reply_text(text="Se vuoi modificare il valore minimo scrivi nome pianta+min + nuovo valore\n"
+  "se vuoi modificare il valore massimo scrivi nome pianta+ max+ nuovo valore\n"
+  "ad esempio 'peperoncino min 54'\n"
+  "oppure scegli un'opzione nei bottoni in basso",reply_markup=reply_markup)
+  return FARMER
+
+def NewThreshold_reply(update: Update, context: CallbackContext) -> int:
+  user_data=context.user_data
+  farmerid=user_data["LOGID"]
+  text = update.message.text.split(" ")
+  pianta= text[0]
+  farmer=json.loads(requests.get(url=f"{SERVER}/farmer/{farmerid}").text)
+  plants=json.loads(requests.get(url=f"{SERVER}/plants").text)
+  cropsowned=farmer["CROPS_OWNED"]
+  keyboard = [
+        [
+            InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
+            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_2")
+        ]
+    ]
+  reply_markup = InlineKeyboardMarkup(keyboard)
+  #update.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup    )
+  
+
+  if text[0] == "Principale":
+    update.message.reply_text('Scegli tra:', reply_markup=reply_markupPrincipale)
+    return FARMER
+
+  elif text[1]=="min":
+    for crop in cropsowned:
+      for plant in plants:
+        if plant["PLANT_ID"]== crop and plant["PLANT_NAME"]== pianta:
+          plantid=plant["PLANT_ID"]
+          modified_dict={"THRESHOLD_MOIST_MIN": int(text[2])}
+          requests.post(url=f"{SERVER}/plant/{plantid}",json=modified_dict)
+    lista=listaCROPS(farmerid)
+    update.message.reply_text(text=f"Ecco la lista aggiornata\n {lista}\n puoi continuare oppure scegliere un'opzione dal menu", reply_markup=reply_markup )
+    return FARMER
+  elif text[1]=="max":
+    for crop in cropsowned:
+      for plant in plants:
+        if plant["PLANT_ID"]== crop and plant["PLANT_NAME"]== pianta:
+          plantid=plant["PLANT_ID"]
+          modified_dict={"THRESHOLD_MOIST_MAX": int(text[2])}
+          requests.post(url=f"{SERVER}/plant/{plantid}",json=modified_dict)
+    lista=listaCROPS(farmerid)
+    update.message.reply_text(text=f"Ecco la lista aggiornata\n {lista}, puoi continuare con un altro comando oppure cliccare su uno dei seguenti bottoni",reply_markup=reply_markup)
+    return FARMER
+  
+
+def Statistiche_first(update: Update, context: CallbackContext) -> int:
+  keyboard = [
+      [
+          InlineKeyboardButton("ThingsBoard - Grafici Statistiche", callback_data="thingsboard"),
+          InlineKeyboardButton("Modificare threshold di sampling", callback_data="threshold_stat"),
+          InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
+
+      ]
+  ]
+  reply_markup = InlineKeyboardMarkup(keyboard)
+  update.callback_query.message.edit_text(text="Cosa vuoi fare?", reply_markup=reply_markup)
+  return FARMER
+
+def ThingsBoard(update: Update, context: CallbackContext) -> int:
+  update.callback_query.message.edit_text(text="Ecco il link di thingsboard")
+  keyboard = [
+        [
+            InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
+            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_3")
+        ]
+    ]
+  reply_markup = InlineKeyboardMarkup(keyboard)
+  update.callback_query.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup    )
+  return FARMER
+
+
+def main():
+
+    token="1461734973:AAGtnon-G24cJcWVjVGbp7Lv1DIXhjJNT28" #CLod condiviso
+    #token="1990658567:AAG5By57hC8Hbyp9Mc2FTqqsIw8VLV_MsDM" # GreenHOUSE2021
+
+    updater = Updater(token,use_context=True)
+    updater.dispatcher.add_handler(CommandHandler('start', start))
+    #updater.dispatcher.add_handler(CallbackQueryHandler(main_menu, pattern='main'))
+  
+    conv_handler = ConversationHandler(
+        entry_points=[CallbackQueryHandler(sign_in, pattern='signin'),CommandHandler('start', start)],
+            states={
+                SIGNIN_PULSANTI:[CallbackQueryHandler(sign_in, pattern='signin')],
+                SIGNIN: [MessageHandler(Filters.regex('^start$'), start),
+                         MessageHandler(Filters.text,sign_in_credenziali),
+                        ],
+                #da sign in vado a sign in credenziali che legge il messaggio input
+                ADMIN: [MessageHandler(Filters.text, callback= id_greenhouse)],
+
+                LEVEL1 :[
+                         MessageHandler(Filters.regex('^start$'), start),
+                         CallbackQueryHandler(first_menu_keyboard, pattern='first_menu'),
+                         CallbackQueryHandler(first_menu, pattern='main_fm'),
+                         CallbackQueryHandler(Statistics, pattern='b1_1'),
+                         CallbackQueryHandler(ThingsBoard, pattern='b2_1'),
+                         CallbackQueryHandler(NewThreshold_message, pattern='b2_2'),
+                         CallbackQueryHandler(Actuators, pattern='b1_4'),
+                         CallbackQueryHandler(Green_House_Parameters, pattern='b1_2'),
+                         CallbackQueryHandler(OpenWindows, pattern='OpenWindow'),
+                         CallbackQueryHandler(CloseWindows, pattern='CloseWindow'),
+                         CallbackQueryHandler(VentOFF, pattern='VentOFF'),
+                         CallbackQueryHandler(VentON, pattern='VentON'),
+                         CallbackQueryHandler(Item_message, pattern='item')],
+
+                ADMIN_TYPING : [MessageHandler(Filters.text, callback= NewThreshold_period)],
+                ADMIN_TYPING_2 : [MessageHandler(Filters.text, callback= NewParametersGreenhouse)],
+                ADMIN_TYPING_3 : [MessageHandler(Filters.text, callback= add_remove_modify_item)],
+                
+                FARMER_TYPING : [MessageHandler(Filters.text, callback= uporadditemfarmer)],
+                FARMER_TYPING_2 : [MessageHandler(Filters.text, callback= NewThreshold_reply)],
+                FARMER : [ #premo aggiungi e legge il messaggio
+                      MessageHandler(Filters.regex('^start$'), start),
+                      CallbackQueryHandler(displaylist, pattern='AMR'),
+                      CallbackQueryHandler(attuatoriscelte, pattern='AS'),
+                      CallbackQueryHandler(pompaonoff, pattern='pompaonoff'),
+                      CallbackQueryHandler(PompaOFF, pattern='PompaOFF'),
+                      CallbackQueryHandler(PompaON, pattern='PompaON'),
+                      CallbackQueryHandler(NewThreshold_info, pattern='newthreshold'),
+                      CallbackQueryHandler(menuprincipaleFarmer, pattern='principale'),
+                    
+                      CallbackQueryHandler(Statistiche_first, pattern='SF'),
+                      CallbackQueryHandler(ThingsBoard, pattern='thingsboard'),
+
+                      ],
+                USER: [ MessageHandler(Filters.regex('^start$'), start),
+                        CallbackQueryHandler(displaylist_USER, pattern='compra_user')],
+                USER_TYPING : [MessageHandler(Filters.text, callback= buyitemuser)]
+                    
+                      
+            }, fallbacks=[MessageHandler(Filters.regex('^Done$'), done)])
+
+
+    updater.dispatcher.add_handler(conv_handler)
+
+    updater.start_polling()
+    updater.idle()
+
+if __name__=="__main__":
+    main()
