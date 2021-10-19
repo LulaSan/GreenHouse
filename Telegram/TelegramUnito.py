@@ -170,7 +170,7 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
                         pprint(loggedUsers)
                         
                     #display greenhouse list
-                    update.message.reply_text(text=f"\nBenvenuto!\nEcco gli ortaggi disponibili \n\nA quale greenhouse sei interessato?\n Scrivi 'start per tornare al LOGIN'",reply_markup=keyboardPrincipale_USER())
+                    update.message.reply_text(text=f"\nWelcome, choose an option or digit 'start' to come back to LOG IN",reply_markup=keyboardPrincipale_USER())
                     return USER
 
         
@@ -202,7 +202,7 @@ def displaylist_USER(update: Update, context: CallbackContext) -> int:
   #1. stampo lista  2. chiedo di scrivere se nuovo nome item, prezzo e quantità separati da spazi
   #3. chiedo di scrivere "modifica prezzo patate 2/ modifica quantità patate 3 "
   # farmerid=user_data["LOGID"]
-  itemstobuy=json.loads(requests.get(url=f"{base_url}:2000/itemstobuy").text)
+  itemstobuy=json.loads(requests.get(url=f"{SERVER}/itemstobuy").text)
   update.callback_query.message.edit_text(text=f"\nEcco gli items disponibili \n{itemstobuy}"
                                      "Se vuoi acquistare un prodotto, scrivi in ordine : ID del contadino, nome dell'item e quantità desiderata \n ")
   return USER_TYPING
@@ -857,8 +857,9 @@ def main():
                       CallbackQueryHandler(Statistiche_first, pattern='SF'),
                       CallbackQueryHandler(ThingsBoard, pattern='thingsboard'),
 
-                      ],
-                USER: [CallbackQueryHandler(displaylist_USER, pattern='compra_user')],
+                      ]
+                USER: [ MessageHandler(Filters.regex('^start$'), start),
+                        CallbackQueryHandler(displaylist_USER, pattern='compra_user')],
                 USER_TYPING : [MessageHandler(Filters.text, callback= buyitemuser)]
                     
                       
