@@ -30,8 +30,8 @@ class CHERRY_CATALOG():
     def GET(self,*uri): #to retrieve information
         output=''
         if len(uri)!=0:
-	    if uri[0]=='users':
-		output=str(self.user.showlist())
+            if uri[0]=='users':
+                output=str(self.user.showlist())
 		
             if uri[0]=='plants':
                 output=str(self.plant.showlist())
