@@ -227,8 +227,8 @@ class FarmerClient():
             display={"FARMER_ID": self.FarmersList[i]["FARMER_ID"],
                     "Items":self.FarmersList[i]["ITEMS_SELL"]}
             listforuser.append(display)
-            dispjson=json.dumps(listforuser,indent=4)
-            return  dispjson
+        dispjson=json.dumps(listforuser,indent=4)
+        return  dispjson
     
     def farmerslist(self):
         display={"list":[]}
