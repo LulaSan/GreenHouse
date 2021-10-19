@@ -524,10 +524,10 @@ keyboardPrincipale= [[InlineKeyboardButton(text=f'Aggiungere, modificare, rimuov
             [InlineKeyboardButton(text=f'Controllare attuatori', callback_data='AS')],
             [InlineKeyboardButton(text=f'Statistiche', callback_data='SF')],
             [InlineKeyboardButton(text=f'Torna al log in', callback_data='start')]]
-reply_markupPrincipale = InlineKeyboardMarkup(keyboardPrincipale)
+reply_markupPrincipale_FARMER = InlineKeyboardMarkup(keyboardPrincipale)
 
 def menuprincipaleFarmer(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text('Scegli tra:', reply_markup=reply_markupPrincipale)
+  update.callback_query.message.edit_text('Scegli tra:', reply_markup=reply_markupPrincipale_FARMER)
   return FARMER  
 
 def displaylist(update: Update, context: CallbackContext) -> int:
@@ -787,9 +787,9 @@ def main():
                       CallbackQueryHandler(PompaON, pattern='PompaON'),
                       CallbackQueryHandler(NewThreshold_info, pattern='newthreshold'),
                       CallbackQueryHandler(menuprincipaleFarmer, pattern='principale'),
-                      
+                      CallbackQueryHandler(start,'start),
                       CallbackQueryHandler(Statistiche_first, pattern='SF'),
-                      CallbackQueryHandler(ThingsBoard, pattern='thingsboard'),
+                      CallbackQueryHandler(ThingsBoard, pattern='thingsboard')
 
                       
                       ]
