@@ -102,7 +102,7 @@ def sign_in(update: Update, context: CallbackContext) -> int:
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.edit_text(f"Ok now log in write your id or go back",reply_markup=reply_markup)
+  update.callback_query.message.edit_text(f"Ok now log in write your id or go back writing 'start'")
 
   return SIGNIN
 
@@ -751,7 +751,7 @@ def main():
         entry_points=[CallbackQueryHandler(sign_in, pattern='signin'),CommandHandler('start', start)],
             states={
                 SIGNIN: [MessageHandler(Filters.text,sign_in_credenziali),
-                        CallbackQueryHandler(start,'start')],
+                        [MessageHandler(Filters.regex('^start$'), start],
                 #da sign in vado a sign in credenziali che legge il messaggio input
                 ADMIN: [MessageHandler(Filters.text, callback= id_greenhouse)],
 
