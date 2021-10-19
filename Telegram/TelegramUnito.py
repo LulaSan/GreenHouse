@@ -218,9 +218,9 @@ def buyitemuser(update: Update, context: CallbackContext) -> int:
   farmerID=text[0]
   item=text[1]
   quantita=text[2]
-  r=requests.delete(f"{base_url}:2000/buyitem/{farmerID}/{item}/{quantita}")
+  r=requests.delete(f"{SERVER}/buyitem/{farmerID}/{item}/{quantita}")
   
-  itemstobuy=json.loads(requests.get(url=f"{base_url}:2000/itemstobuy").text)
+  itemstobuy=json.loads(requests.get(url=f"{SERVER}/itemstobuy").text)
   update.message.reply_text(f"Ok,fatto. Ecco la lista modificata\n {itemstobuy} \n Riprova se vuoi modificare altro\n digita 'principale' per tornare al menu inziale")
 
   return USER_TYPING
