@@ -787,9 +787,9 @@ def main():
                       CallbackQueryHandler(PompaON, pattern='PompaON'),
                       CallbackQueryHandler(NewThreshold_info, pattern='newthreshold'),
                       CallbackQueryHandler(menuprincipaleFarmer, pattern='principale'),
-                      CallbackQueryHandler(start,'start),
+                      CallbackQueryHandler(start,pattern='start),
                       CallbackQueryHandler(Statistiche_first, pattern='SF'),
-                      CallbackQueryHandler(ThingsBoard, pattern='thingsboard')
+                      CallbackQueryHandler(ThingsBoard, pattern='thingsboard'),
 
                       
                       ]
