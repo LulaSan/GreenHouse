@@ -116,7 +116,7 @@
         },
         {
             "FARMER_ID": "5678",
-            "GRENHOUSE_ID":"ABCDEFG"
+            "GRENHOUSE_ID":"ABCDEFG",
             "CROPS_OWNED": "",
             "ITEMS_SELL": [
                 {
