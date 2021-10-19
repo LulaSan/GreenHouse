@@ -116,6 +116,7 @@
         },
         {
             "FARMER_ID": "5678",
+            "GRENHOUSE_ID":"ABCDEFG"
             "CROPS_OWNED": "",
             "ITEMS_SELL": [
                 {
@@ -139,6 +140,8 @@
     "Users": [
         {
             "USER_ID": "123456"
+        },
+        { "USER_ID": "luisa97"
         }
     ],
     "Admins": [
