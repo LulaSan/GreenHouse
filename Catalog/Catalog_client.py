@@ -235,7 +235,7 @@ class FarmerClient():
         items_in_greenhouse=[]
         for i in range(len(self.FarmersList)):
             if GreenhouseID == self.FarmersList[i]["GREENHOUSE_ID"]:
-                items_in_greenhouse.append(self.FarmersList[i]["ITEMS_SELL"]
+                items_in_greenhouse.append(self.FarmersList[i]["ITEMS_SELL"])
         displayjson=json.dumps(items_in_greenhouse,indent=4)
         return displayjson
                 
