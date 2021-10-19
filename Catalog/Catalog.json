@@ -86,7 +86,7 @@
     "Farmers": [
         {
             "FARMER_ID": "1234",
-            "GRENHOUSE_ID":"30AEA4266030",
+            "GREENHOUSE_ID":"30AEA4266030",
             "CROPS_OWNED": [
                 "84F3EB33DB49",
                 "84F3EB33D049"
@@ -116,7 +116,7 @@
         },
         {
             "FARMER_ID": "5678",
-            "GRENHOUSE_ID":"ABCDEFG",
+            "GREENHOUSE_ID":"ABCDEFG",
             "CROPS_OWNED": "",
             "ITEMS_SELL": [
                 {
