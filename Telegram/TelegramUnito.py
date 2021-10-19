@@ -857,7 +857,7 @@ def main():
                       CallbackQueryHandler(Statistiche_first, pattern='SF'),
                       CallbackQueryHandler(ThingsBoard, pattern='thingsboard'),
 
-                      ]
+                      ],
                 USER: [ MessageHandler(Filters.regex('^start$'), start),
                         CallbackQueryHandler(displaylist_USER, pattern='compra_user')],
                 USER_TYPING : [MessageHandler(Filters.text, callback= buyitemuser)]
