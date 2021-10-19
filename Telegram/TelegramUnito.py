@@ -54,6 +54,7 @@ def start(update: Update, context: CallbackContext) -> int:
 
   update_catalog(loggedUsers)
   update.message.reply_text("Chi sei?",reply_markup=main_menu_keyboard())
+ 
   
 
 
@@ -744,11 +745,11 @@ def main():
     token="1990658567:AAG5By57hC8Hbyp9Mc2FTqqsIw8VLV_MsDM" #
 
     updater = Updater(token,use_context=True)
-    #updater.dispatcher.add_handler(CommandHandler('start', start))
+    updater.dispatcher.add_handler(CommandHandler('start', start))
     #updater.dispatcher.add_handler(CallbackQueryHandler(main_menu, pattern='main'))
   
     conv_handler = ConversationHandler(
-        entry_points=[CallbackQueryHandler(sign_in, pattern='signin'),CommandHandler('start', start)],
+        entry_points=[CallbackQueryHandler(sign_in, pattern='signin')],#,CommandHandler('start', start)
             states={
                 SIGNIN: [MessageHandler(Filters.regex('^start$'), start),
                          MessageHandler(Filters.text,sign_in_credenziali),
