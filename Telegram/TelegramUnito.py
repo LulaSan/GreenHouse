@@ -13,21 +13,13 @@ import requests
 ##AGGIUNGERE MESSAGGIO INIZIALE CHE DICE DI SCRIVERE /start
 # listaFarmers=lista["list"]
 
-SIGNIN, ADMIN , ADMIN_TYPING, ADMIN_TYPING_2, ADMIN_TYPING_3, LEVEL1, FARMER , FARMER_TYPING, FARMER_TYPING_2= range(9)
+SIGNIN, SIGNIN_PULSANTI, ADMIN , ADMIN_TYPING, ADMIN_TYPING_2, ADMIN_TYPING_3, LEVEL1, FARMER , FARMER_TYPING, FARMER_TYPING_2= range(10)
 
 SERVER_file=json.load(open('utils.json','r'))
 SERVER=SERVER_file['SERVER']
 listaFarmers=json.loads(requests.get(url=SERVER+"/farmers").text)
 
-keyboardPrincipale= [[InlineKeyboardButton(text=f'Aggiungere, modificare, rimuovere un item', callback_data='AMR')],
-            [InlineKeyboardButton(text=f'Controllare attuatori', callback_data='AS')],
-            [InlineKeyboardButton(text=f'Statistiche', callback_data='SF')],
-            [InlineKeyboardButton(text=f'Torna al log in', callback_data='start')]]
-reply_markupPrincipale = InlineKeyboardMarkup(keyboardPrincipale)
 
-def menuprincipaleFarmer(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text('Scegli tra:', reply_markup=reply_markupPrincipale)
-  return FARMER
 
 def start(update: Update, context: CallbackContext) -> int:
   if update.message != None:
@@ -54,6 +46,7 @@ def start(update: Update, context: CallbackContext) -> int:
 
   update_catalog(loggedUsers)
   update.message.reply_text("Chi sei?",reply_markup=main_menu_keyboard())
+  return SIGNIN_PULSANTI
  
   
 
@@ -527,6 +520,15 @@ def Item_message(update: Update, context: CallbackContext) -> int:
     ####################################################### FARMER ###################################
     #####################################################################################
     #################################################
+keyboardPrincipale= [[InlineKeyboardButton(text=f'Aggiungere, modificare, rimuovere un item', callback_data='AMR')],
+            [InlineKeyboardButton(text=f'Controllare attuatori', callback_data='AS')],
+            [InlineKeyboardButton(text=f'Statistiche', callback_data='SF')],
+            [InlineKeyboardButton(text=f'Torna al log in', callback_data='start')]]
+reply_markupPrincipale = InlineKeyboardMarkup(keyboardPrincipale)
+
+def menuprincipaleFarmer(update: Update, context: CallbackContext) -> int:
+  update.callback_query.message.edit_text('Scegli tra:', reply_markup=reply_markupPrincipale)
+  return FARMER  
 
 def displaylist(update: Update, context: CallbackContext) -> int:
   user_data=context.user_data
@@ -749,8 +751,9 @@ def main():
     #updater.dispatcher.add_handler(CallbackQueryHandler(main_menu, pattern='main'))
   
     conv_handler = ConversationHandler(
-        entry_points=[CallbackQueryHandler(sign_in, pattern='signin')],#,CommandHandler('start', start)
+        entry_points=[CommandHandler('start', start)],
             states={
+                SIGNIN_PULSANTI:[CallbackQueryHandler(sign_in, pattern='signin')],
                 SIGNIN: [MessageHandler(Filters.regex('^start$'), start),
                          MessageHandler(Filters.text,sign_in_credenziali),
                         ],
