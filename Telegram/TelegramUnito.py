@@ -35,8 +35,8 @@ def start(update: Update, context: CallbackContext) -> int:
     newid=str(user.id)
   else:
     user=context.user_data
-    print(user)
-    newid=user["CHATID"]
+    newid= update.effective_chat.id
+            
   fp=open("telegram_catalog.json","r")
   catalog=json.load(fp)
   loggedUsers=catalog["LOGGED_USERS"]
