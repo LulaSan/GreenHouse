@@ -13,12 +13,13 @@ import requests
 ##AGGIUNGERE MESSAGGIO INIZIALE CHE DICE DI SCRIVERE /start
 # listaFarmers=lista["list"]
 
-SIGNIN, SIGNIN_PULSANTI, ADMIN , ADMIN_TYPING, ADMIN_TYPING_2, ADMIN_TYPING_3, LEVEL1, FARMER , FARMER_TYPING, FARMER_TYPING_2= range(10)
+SIGNIN, SIGNIN_PULSANTI, ADMIN , ADMIN_TYPING, ADMIN_TYPING_2, ADMIN_TYPING_3, LEVEL1, FARMER , FARMER_TYPING, FARMER_TYPING_2 , USER, USER_TYPING= range(12)
 
 SERVER_file=json.load(open('utils.json','r'))
 SERVER=SERVER_file['SERVER']
 listaFarmers=json.loads(requests.get(url=SERVER+"/farmers").text)
-
+listaAdmins=json.loads(requests.get(url=SERVER+"/admins").text)
+listaUsers=json.loads(requests.get(url=SERVER+"/users").text)
 def main_menu_keyboard():
     keyboard = [[InlineKeyboardButton(text=f'Admin', callback_data='signinA')],
                 [InlineKeyboardButton(text=f'Farmer', callback_data='signinF')],
@@ -134,9 +135,9 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
             return FARMER
         
     elif tipo=='A':
-        for i in range(len(listaAdmin)):
-            if text == listaAdmin[i]['ADMIN_ID']:
-                pprint(listaAdmin[i])
+        for i in range(len(listaAdmins)):
+            if text == listaAdmins[i]['ADMIN_ID']:
+                pprint(listaAdmins[i])
                 trovato=1
                 user_data=context.user_data # li salvo o qui
                 user_data["LOGID"]= text
@@ -154,13 +155,32 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
                     return ADMIN
 
     elif tipo=='U':
-        pass 
-        #aggiungere##################################################
+        for i in range(len(listaUsers)):
+            if text == listaUsers[i]['USER_ID']:
+                pprint(listaUsers[i])
+                trovato=1
+                user_data=context.user_data # li salvo o qui
+                user_data["LOGID"]= text
+                pprint(user_data)
+
+                for j in range(len(loggedUsers)):  # o qui
+                    if oldid == loggedUsers[j]["CHATID"]:
+                        loggedUsers[j]["LOGID"]=str(text)
+                        update_catalog(loggedUsers)
+                        pprint(loggedUsers)
+                        
+                    #display greenhouse list
+                    update.message.reply_text(text=f"\nBenvenuto!\nEcco gli ortaggi disponibili \n\nA quale greenhouse sei interessato?\n 
+                                              Scrivi 'start per tornare al LOGIN'",reply_markup=keyboardPrincipale_USER())
+                    return USER
+
+        
 
     if trovato==0:
       update.message.reply_text('LOG_ID sbagliato, riprova')
       return SIGNIN
-  
+
+
 
 def update_catalog(loggedUsers):
   fp=open("telegram_catalog.json",'r')
@@ -171,11 +191,56 @@ def update_catalog(loggedUsers):
 
 def done(update: Update, _: CallbackContext) -> int:
     update.message.reply_text("niente")
+
+################ USER#############################################################################################
+
+def keyboardPrincipale_USER():
+  keyboardPrincipale= [[InlineKeyboardButton(text=f'Compra un prodotto', callback_data='compra_user')]]
+  return InlineKeyboardMarkup(keyboardPrincipale) 
+
+def displaylist_USER(update: Update, context: CallbackContext) -> int:
+  user_data=context.user_data
+  #1. stampo lista  2. chiedo di scrivere se nuovo nome item, prezzo e quantità separati da spazi
+  #3. chiedo di scrivere "modifica prezzo patate 2/ modifica quantità patate 3 "
+  # farmerid=user_data["LOGID"]
+  itemstobuy=json.loads(requests.get(url=f"{base_url}:2000/itemstobuy").text)
+  update.callback_query.message.edit_text(text=f"\nEcco gli items disponibili \n{itemstobuy}"
+                                     "Se vuoi acquistare un prodotto, scrivi in ordine : ID del contadino, nome dell'item e quantità desiderata \n ")
+  return USER_TYPING
+
+def buyitemuser(update: Update, context: CallbackContext) -> int:
+  pprint("sto entrando in buyitemuser")
+  user_data=context.user_data
+  # farmerid=user_data["LOGID"]
+  text = update.message.text.split(" ")
+  if text[0] == "principale":
+    update.message.reply_text('Scegli tra:', reply_markup=keyboardPrincipale_USER)
+    return USER
+  farmerID=text[0]
+  item=text[1]
+  quantita=text[2]
+  r=requests.delete(f"{base_url}:2000/buyitem/{farmerID}/{item}/{quantita}")
+  
+  itemstobuy=json.loads(requests.get(url=f"{base_url}:2000/itemstobuy").text)
+  update.message.reply_text(f"Ok,fatto. Ecco la lista modificata\n {itemstobuy} \n Riprova se vuoi modificare altro\n digita 'principale' per tornare al menu inziale")
+
+  return USER_TYPING
+
+
+
+
+
+
+
+
+
+
+
+
 ##############################################################################################
 #######################################################°°ADMIN###################################################################à
 #############################################################################
 
-listaAdmin=json.loads(requests.get(url=SERVER+"/admins").text)
 greenhousesinfo = json.loads(requests.get(url=SERVER+f"/greenhouses").text) 
 greenhouselist = [] 
 greenhouselist.append(greenhousesinfo[0]["GREENHOUSE_ID"])
@@ -793,8 +858,9 @@ def main():
                       CallbackQueryHandler(Statistiche_first, pattern='SF'),
                       CallbackQueryHandler(ThingsBoard, pattern='thingsboard'),
 
-                      
                       ]
+                USER: [CallbackQueryHandler(displaylist_USER, pattern='compra_user')],
+                USER_TYPING : [MessageHandler(Filters.text, callback= buyitemuser)]
                     
                       
             }, fallbacks=[MessageHandler(Filters.regex('^Done$'), done)])
