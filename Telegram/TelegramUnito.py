@@ -184,7 +184,7 @@ greenhouse_id = greenhousesinfo[0]["GREENHOUSE_ID"]
 def id_greenhouse(update: Update, context: CallbackContext) -> int:
       text = update.message.text # splitto il testo
       if text in greenhouselist :
-        update.message.reply_text(text=f"Bene! seleziona l'operazione che vuoi svolgere:",reply_markup=first_menu_keyboard())
+        update.message.reply_text(text=first_menu_message(),reply_markup=first_menu_keyboard())
         return LEVEL1
       else:
         update.message.reply_text(text=f"La greenhouse scelta non corrisponde, riprovare.")
@@ -479,7 +479,7 @@ def main_menu_message():
   return 'Who are you? Please, choose the option in main menu:'
 
 def first_menu_message():
-  return 'Please, select one of the following action: '
+  return 'Please, select one of the following action or write "start" to go back to LOG IN : '
 
 def actuator_control_message():
   return 'Which actuator do you want to control? '
@@ -526,7 +526,7 @@ keyboardPrincipale= [[InlineKeyboardButton(text=f'Aggiungere, modificare, rimuov
 reply_markupPrincipale_FARMER = InlineKeyboardMarkup(keyboardPrincipale)
 
 def menuprincipaleFarmer(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text('Scegli tra: \n oppure scrivi "start" per tornare al LOG IN', reply_markup=reply_markupPrincipale_FARMER)
+  update.callback_query.message.edit_text('Choose an action or write "start" to go back to LOG IN', reply_markup=reply_markupPrincipale_FARMER)
   return FARMER  
 
 def displaylist(update: Update, context: CallbackContext) -> int:
@@ -759,7 +759,9 @@ def main():
                 #da sign in vado a sign in credenziali che legge il messaggio input
                 ADMIN: [MessageHandler(Filters.text, callback= id_greenhouse)],
 
-                LEVEL1 :[CallbackQueryHandler(first_menu_keyboard, pattern='first_menu'),
+                LEVEL1 :[
+                         MessageHandler(Filters.regex('^start$'), start),
+                         CallbackQueryHandler(first_menu_keyboard, pattern='first_menu'),
                          CallbackQueryHandler(first_menu, pattern='main_fm'),
                          CallbackQueryHandler(Statistics, pattern='b1_1'),
                          CallbackQueryHandler(ThingsBoard, pattern='b2_1'),
