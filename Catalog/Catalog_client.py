@@ -230,6 +230,16 @@ class FarmerClient():
         dispjson=json.dumps(listforuser,indent=4)
         return  dispjson
     
+    def items_greenhouse(self,GreenhouseID):
+        trovato=0
+        items_in_greenhouse=[]
+        for i in range(len(self.FarmersList)):
+            if GreenhouseID == self.FarmersList[i]["GREENHOUSE_ID"]:
+                items_in_greenhouse.append(self.FarmersList[i]["ITEMS_SELL"]
+        displayjson=json.dumps(items_in_greenhouse,indent=4)
+        return displayjson
+                
+    
     def farmerslist(self):
         display={"list":[]}
         # display["list"]=self.FarmersList
