@@ -19,7 +19,11 @@ SERVER_file=json.load(open('utils.json','r'))
 SERVER=SERVER_file['SERVER']
 listaFarmers=json.loads(requests.get(url=SERVER+"/farmers").text)
 
-
+def main_menu_keyboard():
+    keyboard = [[InlineKeyboardButton(text=f'Admin', callback_data='signinA')],
+                [InlineKeyboardButton(text=f'Farmer', callback_data='signinF')],
+                [InlineKeyboardButton(text=f'User', callback_data='signinU')]]
+    return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
 def start(update: Update, context: CallbackContext) -> int:
   if update.message != None:
@@ -66,11 +70,7 @@ def first_menu(update: Update, context: CallbackContext) -> int:
 
 
 
-def main_menu_keyboard():
-    keyboard = [[InlineKeyboardButton(text=f'Admin', callback_data='signinA')],
-                [InlineKeyboardButton(text=f'Farmer', callback_data='signinF')],
-                [InlineKeyboardButton(text=f'User', callback_data='signinU')]]
-    return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
 tipo= ''
 
 def sign_in(update: Update, context: CallbackContext) -> int:
@@ -751,7 +751,7 @@ def main():
     #updater.dispatcher.add_handler(CallbackQueryHandler(main_menu, pattern='main'))
   
     conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('start', start)],
+        entry_points=[CallbackQueryHandler(sign_in, pattern='signin'),CommandHandler('start', start)],
             states={
                 SIGNIN_PULSANTI:[CallbackQueryHandler(sign_in, pattern='signin')],
                 SIGNIN: [MessageHandler(Filters.regex('^start$'), start),
