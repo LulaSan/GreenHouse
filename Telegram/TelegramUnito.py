@@ -30,14 +30,18 @@ def menuprincipaleFarmer(update: Update, context: CallbackContext) -> int:
   return FARMER
 
 def start(update: Update, context: CallbackContext) -> int:
-  #user = update.message.from_user
-
+  if update.message != None:
+    user = update.message.from_user
+    newid=str(user.id)
+  else:
+    user=context.user_data
+    nweid=user_data["LOGID"]
   fp=open("telegram_catalog.json","r")
   catalog=json.load(fp)
   loggedUsers=catalog["LOGGED_USERS"]
   fp.close()
   new=0
-  newid=str(user.id)
+  
   for i in range(len(loggedUsers)):
     if newid in loggedUsers[i].values() :
       update.message.reply_text(f"Hi, welcome back")
