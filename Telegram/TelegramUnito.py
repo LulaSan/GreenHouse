@@ -522,12 +522,11 @@ def Item_message(update: Update, context: CallbackContext) -> int:
     #################################################
 keyboardPrincipale= [[InlineKeyboardButton(text=f'Aggiungere, modificare, rimuovere un item', callback_data='AMR')],
             [InlineKeyboardButton(text=f'Controllare attuatori', callback_data='AS')],
-            [InlineKeyboardButton(text=f'Statistiche', callback_data='SF')],
-            [InlineKeyboardButton(text=f'Torna al log in', callback_data='start')]]
+            [InlineKeyboardButton(text=f'Statistiche', callback_data='SF')]]
 reply_markupPrincipale_FARMER = InlineKeyboardMarkup(keyboardPrincipale)
 
 def menuprincipaleFarmer(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text('Scegli tra:', reply_markup=reply_markupPrincipale_FARMER)
+  update.callback_query.message.edit_text('Scegli tra: \n oppure scrivi "start" per tornare al LOG IN', reply_markup=reply_markupPrincipale_FARMER)
   return FARMER  
 
 def displaylist(update: Update, context: CallbackContext) -> int:
@@ -780,6 +779,7 @@ def main():
                 FARMER_TYPING : [MessageHandler(Filters.text, callback= uporadditemfarmer)],
                 FARMER_TYPING_2 : [MessageHandler(Filters.text, callback= NewThreshold_reply)],
                 FARMER : [ #premo aggiungi e legge il messaggio
+                      MessageHandler(Filters.regex('^start$'), start),
                       CallbackQueryHandler(displaylist, pattern='AMR'),
                       CallbackQueryHandler(attuatoriscelte, pattern='AS'),
                       CallbackQueryHandler(pompaonoff, pattern='pompaonoff'),
@@ -787,7 +787,7 @@ def main():
                       CallbackQueryHandler(PompaON, pattern='PompaON'),
                       CallbackQueryHandler(NewThreshold_info, pattern='newthreshold'),
                       CallbackQueryHandler(menuprincipaleFarmer, pattern='principale'),
-                      CallbackQueryHandler(start,pattern='start'),
+                    
                       CallbackQueryHandler(Statistiche_first, pattern='SF'),
                       CallbackQueryHandler(ThingsBoard, pattern='thingsboard'),
 
