@@ -170,8 +170,7 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
                         pprint(loggedUsers)
                         
                     #display greenhouse list
-                    update.message.reply_text(text=f"\nBenvenuto!\nEcco gli ortaggi disponibili \n\nA quale greenhouse sei interessato?\n 
-                                              Scrivi 'start per tornare al LOGIN'",reply_markup=keyboardPrincipale_USER())
+                    update.message.reply_text(text=f"\nBenvenuto!\nEcco gli ortaggi disponibili \n\nA quale greenhouse sei interessato?\n Scrivi 'start per tornare al LOGIN'",reply_markup=keyboardPrincipale_USER())
                     return USER
 
         
