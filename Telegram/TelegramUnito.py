@@ -264,7 +264,7 @@ def Statistics(update: Update, context: CallbackContext) -> int:
 
 def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
   text = update.message.text.split(" ")
-  greenhouse = json.loads(requests.get(url=f"{SERVER}/greenhouses/{greenhouse_id}").text)
+  greenhouse = json.loads(requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}").text)
 
   if text[0] == "Principale":
     update.message.reply_text('Scegli tra:', reply_markup=first_menu_keyboard())
@@ -273,7 +273,7 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
   elif text[0] == "1":
     #greenhouse[0]["THRESHOLD_HUMID_MIN"]= int(text[1])
     new_value = {"THRESHOLD_HUMID_MIN": int(text[1])}
-    res = requests.post(SERVER+f"/greenhouses/{greenhouse_id}",json=new_value)
+    res = requests.post(SERVER+f"/greenhouse/{greenhouse_id}",json=new_value)
 
     if res.status_code == 200:
       update.message.reply_text(text="New threshold updated")
@@ -290,7 +290,7 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
        
   elif text[0] == "2":
     new_value = {"THRESHOLD_HUMID_MAX": int(text[1])}
-    res = requests.post(SERVER+f"/greenhouses/{greenhouse_id}",json=new_value)
+    res = requests.post(SERVER+f"/greenhouse/{greenhouse_id}",json=new_value)
 
     if res.status_code == 200:
       update.message.reply_text(text="New threshold updated")
@@ -307,7 +307,7 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
 
   elif text[0] == "3":
     new_value = {"THRESHOLD_BRIGHT_MIN": int(text[1])}
-    res = requests.post(SERVER+f"/greenhouses/{greenhouse_id}",json=new_value)
+    res = requests.post(SERVER+f"/greenhouse/{greenhouse_id}",json=new_value)
 
     if res.status_code == 200:
       update.message.reply_text(text="New threshold updated")
@@ -323,7 +323,7 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
       return ADMIN_TYPING_2
   elif text[0] == "4":
     new_value = {"THRESHOLD_BRIGHT_MAX": int(text[1])}
-    res = requests.post(SERVER+f"/greenhouses/{greenhouse_id}",json=new_value)
+    res = requests.post(SERVER+f"/greenhouse/{greenhouse_id}",json=new_value)
 
     if res.status_code == 200:
       update.message.reply_text(text="New threshold updated")
@@ -339,7 +339,7 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
       return ADMIN_TYPING_2
   elif text[0] == "5":
     new_value = {"THRESHOLD_TEMPER_MIN": int(text[1])}
-    res = requests.post(SERVER+f"/greenhouses/{greenhouse_id}",json=new_value)
+    res = requests.post(SERVER+f"/greenhouse/{greenhouse_id}",json=new_value)
 
     if res.status_code == 200:
       update.message.reply_text(text="New threshold updated")
@@ -355,7 +355,7 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
       return ADMIN_TYPING_2
   elif text[0] == "6":
     new_value = {"THRESHOLD_TEMPER_MAX": int(text[1])}
-    res = requests.post(SERVER+f"/greenhouses/{greenhouse_id}",json=new_value)
+    res = requests.post(SERVER+f"/greenhouse/{greenhouse_id}",json=new_value)
 
     if res.status_code == 200:
       update.message.reply_text(text="New threshold updated")
