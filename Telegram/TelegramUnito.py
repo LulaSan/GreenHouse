@@ -398,11 +398,7 @@ def NewThreshold_period(update: Update, context: CallbackContext) -> int:
   adminid=user_data["LOGID"]
   text = update.message.text.split(" ")
   tipologia=text[0]
-  water_period=json.loads(requests.get(url=SERVER+"/statistic/water_period").text)
-  temperature_period=json.loads(requests.get(url=SERVER+"/statistic/temperature_period").text)
-  update.callback_query.message.reply_text(text=f" Actual temperature period = {temperature_period} \n Actual water period = {water_period} \n  "
-                                           "To modify the period write temperature or water followe by the new value in seconds \n"
-                                           "or write 'principale' to go back to main menu")
+  
   if text[0] == "Principale":
     update.message.reply_text('Scegli tra:', reply_markup=first_menu_keyboard())
     return LEVEL1
@@ -555,10 +551,11 @@ def actuator_control_message():
   return 'Which actuator do you want to control? '
 
 def NewThreshold_message(update: Update, context: CallbackContext) -> int:
-  period=json.loads(requests.get(url=SERVER+"/statistic/water_period").text)
-  update.callback_query.message.reply_text(text=f"Il valore corrente è: {period}\n Se vuoi modificare il valore del periodo scrivi periodo + nuovo valore in secondi\n"
-  "ad esempio 'periodo 10'\n"
-  "scrivi 'Principale' se vuoi tornare al menu principale")
+  water_period=json.loads(requests.get(url=SERVER+"/statistic/water_period").text)
+  temperature_period=json.loads(requests.get(url=SERVER+"/statistic/temperature_period").text)
+  update.callback_query.message.reply_text(text=f" Actual temperature period = {temperature_period} \n Actual water period = {water_period} \n  "
+                                           "To modify the period write temperature or water followe by the new value in seconds \n"
+                                           "or write 'principale' to go back to main menu")
   return ADMIN_TYPING
 
 def Green_House_Parameters(update: Update, context: CallbackContext) -> int:
@@ -829,7 +826,7 @@ def main():
                          CallbackQueryHandler(first_menu, pattern='main_fm'),
                          CallbackQueryHandler(Statistics, pattern='b1_1'),
                          CallbackQueryHandler(ThingsBoard, pattern='b2_1'),
-                         CallbackQueryHandler(NewThreshold_period, pattern='b2_2'),
+                         CallbackQueryHandler(NewThreshold_message, pattern='b2_2'),
                          CallbackQueryHandler(Actuators, pattern='b1_4'),
                          CallbackQueryHandler(Green_House_Parameters, pattern='b1_2'),
                          CallbackQueryHandler(OpenWindows, pattern='OpenWindow'),
