@@ -736,13 +736,13 @@ def NewThreshold_humidity_reply(update: Update, context: CallbackContext) -> int
   farmer=json.loads(requests.get(url=f"{SERVER}/farmer/{farmerid}").text)
   plants=json.loads(requests.get(url=f"{SERVER}/plants").text)
   cropsowned=farmer["CROPS_OWNED"]
-  keyboard = [
-        [
-            InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="AS")
-        ]
-    ]
-  reply_markup = InlineKeyboardMarkup(keyboard)
+  #keyboard = [
+       # [
+      #      InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
+     #       InlineKeyboardButton("Torna al menù precedente", callback_data="AS")
+    #    ]
+   # ]
+  #reply_markup = InlineKeyboardMarkup(keyboard)
 
   if text[0] == "Principale":
     update.message.reply_text('Scegli tra:', reply_markup=reply_markupPrincipale_FARMER)
@@ -756,7 +756,7 @@ def NewThreshold_humidity_reply(update: Update, context: CallbackContext) -> int
           modified_dict={"THRESHOLD_MOIST_MIN": int(text[2])}
           requests.post(url=f"{SERVER}/plant/{plantid}",json=modified_dict)
     lista=listaCROPS(farmerid)
-    update.message.reply_text(text=f"Ecco la lista aggiornata\n {lista}\n puoi continuare oppure scegliere un'opzione dal menu", reply_markup=reply_markup )
+    update.message.reply_text(text=f"Ecco la lista aggiornata\n {lista}\n puoi continuare oppure scrivere 'principale' per tornare al menu principale )
     return FARMER_TYPING_2
 
   elif text[1]=="max":
@@ -767,7 +767,7 @@ def NewThreshold_humidity_reply(update: Update, context: CallbackContext) -> int
           modified_dict={"THRESHOLD_MOIST_MAX": int(text[2])}
           requests.post(url=f"{SERVER}/plant/{plantid}",json=modified_dict)
     lista=listaCROPS(farmerid)
-    update.message.reply_text(text=f"Ecco la lista aggiornata\n {lista}, puoi continuare con un altro comando oppure cliccare su uno dei seguenti bottoni",reply_markup=reply_markup)
+    update.message.reply_text(text=f"Ecco la lista aggiornata\n {lista}, puoi continuare con un altro comando oppure  'principale' per tornare al menu principale )
     return FARMER_TYPING_2
   return FARMER
 
