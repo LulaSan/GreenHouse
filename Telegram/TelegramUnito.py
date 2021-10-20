@@ -653,7 +653,7 @@ def uporadditemfarmer(update: Update, context: CallbackContext) -> int:
 def attuatoriscelte(update: Update, context: CallbackContext) -> int:
   keyboard = [
         [
-            InlineKeyboardButton("Modificare la soglia dell'umidità", callback_data="newthreshold"),
+            InlineKeyboardButton("Modificare la soglia dell'umidità", callback_data="newthreshold_humidity"),
             InlineKeyboardButton("Accendere o spegnere la pompa", callback_data="pompaonoff"),
             InlineKeyboardButton("Tornare al menu principale", callback_data="principale")
         ]
@@ -716,7 +716,7 @@ def listaCROPS(farmerid):
   
   return displaydict
 
-def NewThreshold_info(update: Update, context: CallbackContext) -> int:
+def NewThreshold_humidity_info(update: Update, context: CallbackContext) -> int: 
   user_data=context.user_data
   farmerid=user_data["LOGID"]
   listacrops=listaCROPS(farmerid)
@@ -734,7 +734,7 @@ def NewThreshold_info(update: Update, context: CallbackContext) -> int:
   "oppure scegli un'opzione nei bottoni in basso",reply_markup=reply_markup)
   return FARMER_TYPING_2
 
-def NewThreshold_reply(update: Update, context: CallbackContext) -> int:
+def NewThreshold_humidity_reply(update: Update, context: CallbackContext) -> int:
   user_data=context.user_data
   farmerid=user_data["LOGID"]
   text = update.message.text.split(" ")
@@ -776,13 +776,13 @@ def NewThreshold_reply(update: Update, context: CallbackContext) -> int:
     lista=listaCROPS(farmerid)
     update.message.reply_text(text=f"Ecco la lista aggiornata\n {lista}, puoi continuare con un altro comando oppure cliccare su uno dei seguenti bottoni",reply_markup=reply_markup)
     return FARMER_TYPING_2
-  
+  return FARMER
 
 def Statistiche_first(update: Update, context: CallbackContext) -> int:
   keyboard = [
       [
           InlineKeyboardButton("ThingsBoard - Grafici Statistiche", callback_data="thingsboard"),
-          InlineKeyboardButton("Modificare threshold di sampling", callback_data="threshold_stat"),
+          InlineKeyboardButton("Modificare threshold di sampling", callback_data="threshold_sampling"),
           InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
 
       ]
@@ -802,7 +802,8 @@ def ThingsBoard(update: Update, context: CallbackContext) -> int:
   reply_markup = InlineKeyboardMarkup(keyboard)
   update.callback_query.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup    )
   return FARMER
-
+def Threshold_sampling(update: Update, context: CallbackContext) -> int:
+    
 
 def main():
 
@@ -843,7 +844,7 @@ def main():
                 ADMIN_TYPING_3 : [MessageHandler(Filters.text, callback= add_remove_modify_item)],
                 
                 FARMER_TYPING : [MessageHandler(Filters.text, callback= uporadditemfarmer)],
-                FARMER_TYPING_2 : [MessageHandler(Filters.text, callback= NewThreshold_reply)],
+                FARMER_TYPING_2 : [MessageHandler(Filters.text, callback= NewThreshold_humidity_reply)],
                 FARMER : [ #premo aggiungi e legge il messaggio
                       MessageHandler(Filters.regex('^start$'), start),
                       CallbackQueryHandler(displaylist, pattern='AMR'),
@@ -851,11 +852,12 @@ def main():
                       CallbackQueryHandler(pompaonoff, pattern='pompaonoff'),
                       CallbackQueryHandler(PompaOFF, pattern='PompaOFF'),
                       CallbackQueryHandler(PompaON, pattern='PompaON'),
-                      CallbackQueryHandler(NewThreshold_info, pattern='threshold_stat'),
+                      CallbackQueryHandler(NewThreshold_humidity_info, pattern='newthreshold_humidity'),
                       CallbackQueryHandler(menuprincipaleFarmer, pattern='principale'),
                     
                       CallbackQueryHandler(Statistiche_first, pattern='SF'),
                       CallbackQueryHandler(ThingsBoard, pattern='thingsboard'),
+                      CallbackQueryHandler(Threshold_sampling, pattern='threshold_sampling'),
 
                       ],
                 USER: [ MessageHandler(Filters.regex('^start$'), start),
