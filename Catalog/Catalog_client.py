@@ -144,7 +144,7 @@ class GreenhouseClient():
             if self.GreenhousesList[i]["GREENHOUSE_ID"]==self.GreenhouseID:
                 # è la Greenhouse giusta - tutte le info
                 if (self.oggetto==None):
-                    trovato=str(self.GreenhousesList[i])
+                    trovato=(self.GreenhousesList[i])
                     nontrovato=0
                 elif (self.oggetto!=None ): # info sull'oggetto
                     if self.oggetto in self.GreenhousesList[i].keys():
