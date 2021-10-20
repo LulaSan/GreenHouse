@@ -789,7 +789,7 @@ def ThingsBoard(update: Update, context: CallbackContext) -> int:
   keyboard = [
         [
             InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_3")
+            InlineKeyboardButton("Torna al menù precedente", callback_data="SF")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
