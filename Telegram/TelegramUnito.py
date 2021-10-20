@@ -767,7 +767,7 @@ def NewThreshold_humidity_reply(update: Update, context: CallbackContext) -> int
           modified_dict={"THRESHOLD_MOIST_MAX": int(text[2])}
           requests.post(url=f"{SERVER}/plant/{plantid}",json=modified_dict)
     lista=listaCROPS(farmerid)
-    update.message.reply_text(text=f"Ecco la lista aggiornata\n {lista}, puoi continuare con un altro comando oppure  'principale' per tornare al menu principale )
+    update.message.reply_text(text=f"Ecco la lista aggiornata\n {lista}, puoi continuare con un altro comando oppure  'principale' per tornare al menu principale")
     return FARMER_TYPING_2
   return FARMER
 
