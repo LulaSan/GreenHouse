@@ -775,7 +775,6 @@ def Statistiche_first(update: Update, context: CallbackContext) -> int:
   keyboard = [
       [
           InlineKeyboardButton("ThingsBoard - Grafici Statistiche", callback_data="thingsboard"),
-          InlineKeyboardButton("Modificare threshold di sampling", callback_data="threshold_sampling"),
           InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
 
       ]
@@ -796,8 +795,7 @@ def ThingsBoard(update: Update, context: CallbackContext) -> int:
   update.callback_query.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup    )
   return FARMER
 
-def Threshold_sampling(update: Update, context: CallbackContext) -> int:
-  pass
+
     
 
 def main():
@@ -852,7 +850,6 @@ def main():
                     
                       CallbackQueryHandler(Statistiche_first, pattern='SF'),
                       CallbackQueryHandler(ThingsBoard, pattern='thingsboard'),
-                      CallbackQueryHandler(Threshold_sampling, pattern='threshold_sampling'),
 
                       ],
                 USER: [ MessageHandler(Filters.regex('^start$'), start),
