@@ -144,7 +144,7 @@ class GreenhouseClient():
             if self.GreenhousesList[i]["GREENHOUSE_ID"]==self.GreenhouseID:
                 # è la Greenhouse giusta - tutte le info
                 if (self.oggetto==None):
-                    trovato=(self.GreenhousesList[i])
+                    trovato=str(self.GreenhousesList[i])
                     nontrovato=0
                 elif (self.oggetto!=None ): # info sull'oggetto
                     if self.oggetto in self.GreenhousesList[i].keys():
@@ -155,7 +155,7 @@ class GreenhouseClient():
         if nontrovato==1:
             return f' Nulla corrisponde alla tua ricerca, riprova!'
         else:
-            return str(trovato)
+            return json.dumps(trovato,indent=4)
     
     def addgreenhouse(self,newID,newDevice):
         self.newID=newID
