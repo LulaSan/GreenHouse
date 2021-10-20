@@ -397,30 +397,36 @@ def NewThreshold_period(update: Update, context: CallbackContext) -> int:
   user_data=context.user_data
   adminid=user_data["LOGID"]
   text = update.message.text.split(" ")
-  
+  tipologia=text[0]
+  water_period=json.loads(requests.get(url=SERVER+"/statistic/water_period").text)
+  temperature_period=json.loads(requests.get(url=SERVER+"/statistic/temperature_period").text)
+  update.callback_query.message.reply_text(text=f" Actual temperature period = {temperature_period} \n Actual water period = {water_period} \n  
+                                           "To modify the period write temperature or water followe by the new value in seconds \n"
+                                           "or write 'principale' to go back to main menu")
   if text[0] == "Principale":
     update.message.reply_text('Scegli tra:', reply_markup=first_menu_keyboard())
     return LEVEL1
-  elif text[0] != "Principale" and text[0] != "periodo":
+  elif text[0] != "Principale" and text[0] != "water" and text[0] != "temperature" :
     update.message.reply_text('Comando non valido, riprovare')
     return ADMIN_TYPING
-  else:
-    
+  elif text[0] == 'water':
     res = requests.post(SERVER+f"/statistic/water_period/{text[1]}")
-    if res.status_code == 200:
-      update.message.reply_text(text="New threshold updated")
-    else:
-      update.message.reply_text(text="Parametro non aggiornato, problema con il server riprovare più tardi")
-      return ADMIN_TYPING
+    water_period=json.loads(requests.get(url=SERVER+"/statistic/water_period").text)
+    
+    update.message.reply_text(text=f" Actual water period = {water_period} \n  
+                                           "To modify the period write temperature or water followe by the new value in seconds \n"
+                                           "or write 'principale' to go back to main menu")
+   
 
-    keyboard = [
-          [
-              InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
-              InlineKeyboardButton("Torna al menù precedente", callback_data="b1_1")
-          ]
-      ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup    )
+    return ADMIN_TYPING
+  elif text[0] == 'temperature' :
+    res = requests.post(SERVER+f"/statistic/temperature_period/{text[1]}")
+    temperature_period=json.loads(requests.get(url=SERVER+"/statistic/temperature_period").text)
+    update.message.reply_text(text=f" ctual temperature period = {temperature_period} \n  
+                                           "To modify the period write temperature or water followe by the new value in seconds \n"
+                                           "or write 'principale' to go back to main menu")
+    return ADMIN_TYPING
+
   return LEVEL1
 
 def OpenWindows(update: Update, context: CallbackContext) -> int:
