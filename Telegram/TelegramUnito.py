@@ -829,7 +829,7 @@ def main():
                          CallbackQueryHandler(first_menu, pattern='main_fm'),
                          CallbackQueryHandler(Statistics, pattern='b1_1'),
                          CallbackQueryHandler(ThingsBoard, pattern='b2_1'),
-                         CallbackQueryHandler(NewThreshold_message, pattern='b2_2'),
+                         CallbackQueryHandler(NewThreshold_period, pattern='b2_2'),
                          CallbackQueryHandler(Actuators, pattern='b1_4'),
                          CallbackQueryHandler(Green_House_Parameters, pattern='b1_2'),
                          CallbackQueryHandler(OpenWindows, pattern='OpenWindow'),
