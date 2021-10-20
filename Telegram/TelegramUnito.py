@@ -745,7 +745,7 @@ def NewThreshold_humidity_reply(update: Update, context: CallbackContext) -> int
   reply_markup = InlineKeyboardMarkup(keyboard)
 
   if text[0] == "Principale":
-    update.message.reply_text('Scegli tra:', reply_markup=reply_markupPrincipale)
+    update.message.reply_text('Scegli tra:', reply_markup=reply_markupPrincipale_FARMER)
     return FARMER
 
   elif text[1]=="min":
