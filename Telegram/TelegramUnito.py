@@ -559,12 +559,12 @@ def NewThreshold_message(update: Update, context: CallbackContext) -> int:
   return ADMIN_TYPING
 
 def Green_House_Parameters(update: Update, context: CallbackContext) -> int:
-  THRESHOLD_HUMID_MIN=json.loads(requests.get(url=f"{SERVER}/greenhouses/{greenhouse_id}/THRESHOLD_HUMID_MIN").text)
-  THRESHOLD_HUMID_MAX=json.loads(requests.get(url=f"{SERVER}/greenhouses/{greenhouse_id}/THRESHOLD_HUMID_MAX").text)
-  THRESHOLD_BRIGHT_MIN=json.loads(requests.get(url=f"{SERVER}/greenhouses/{greenhouse_id}/THRESHOLD_BRIGHT_MIN").text)
-  THRESHOLD_BRIGHT_MAX=json.loads(requests.get(url=f"{SERVER}/greenhouses/{greenhouse_id}/THRESHOLD_BRIGHT_MAX").text)
-  THRESHOLD_TEMPER_MIN=json.loads(requests.get(url=f"{SERVER}/greenhouses/{greenhouse_id}/THRESHOLD_TEMPER_MIN").text)
-  THRESHOLD_TEMPER_MAX=json.loads(requests.get(url=f"{SERVER}/greenhouses/{greenhouse_id}/THRESHOLD_TEMPER_MAX").text)
+  THRESHOLD_HUMID_MIN=requests.get(url=f"{SERVER}/greenhouses/{greenhouse_id}/THRESHOLD_HUMID_MIN").text
+  THRESHOLD_HUMID_MAX=requests.get(url=f"{SERVER}/greenhouses/{greenhouse_id}/THRESHOLD_HUMID_MAX").text
+  THRESHOLD_BRIGHT_MIN=requests.get(url=f"{SERVER}/greenhouses/{greenhouse_id}/THRESHOLD_BRIGHT_MIN").text
+  THRESHOLD_BRIGHT_MAX=requests.get(url=f"{SERVER}/greenhouses/{greenhouse_id}/THRESHOLD_BRIGHT_MAX").text
+  THRESHOLD_TEMPER_MIN=requests.get(url=f"{SERVER}/greenhouses/{greenhouse_id}/THRESHOLD_TEMPER_MIN").text
+  THRESHOLD_TEMPER_MAX=requests.get(url=f"{SERVER}/greenhouses/{greenhouse_id}/THRESHOLD_TEMPER_MAX").text
   update.callback_query.message.reply_text(text=f"Se vuoi modificare i parametri della greenhouse digita il numero relativo al parametro da modificare + il nuovo valore:\n"
   "Accanto è indicato il valore attuale"
   f"1) Low humidity threshold: {THRESHOLD_HUMID_MIN}\n"
