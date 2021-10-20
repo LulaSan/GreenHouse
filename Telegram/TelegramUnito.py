@@ -568,12 +568,13 @@ def Green_House_Parameters(update: Update, context: CallbackContext) -> int:
   update.callback_query.message.reply_text(text=f"Se vuoi modificare i parametri della greenhouse digita il numero relativo al parametro da modificare + il nuovo valore:\n"
   "Accanto è indicato il valore attuale"
   f"1) Low humidity threshold: {THRESHOLD_HUMID_MIN}\n"
-  f"2) High humidity threshold: {THRESHOLD_HUMID_MAX}\n")
+  f"2) High humidity threshold: {THRESHOLD_HUMID_MAX}\n"
   f"3) Low bright threshold:{THRESHOLD_BRIGHT_MIN} \n"
   f"4) High bright threshold: {THRESHOLD_BRIGHT_MAX}\n"
   f"5) Low temperature threshold: {THRESHOLD_TEMPER_MIN} \n"
   f"6) High temperature threshold:{THRESHOLD_TEMPER_MAX} \n"
-  "\nScrivi 'Principale' se vuoi tornare al menu principale")
+  "\n scrivi 'Principale' se vuoi tornare al menu principale")
+    
   return ADMIN_TYPING_2
 
 def Item_message(update: Update, context: CallbackContext) -> int:
