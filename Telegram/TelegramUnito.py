@@ -732,7 +732,7 @@ def NewThreshold_info(update: Update, context: CallbackContext) -> int:
   "se vuoi modificare il valore massimo scrivi nome pianta+ max+ nuovo valore\n"
   "ad esempio 'peperoncino min 54'\n"
   "oppure scegli un'opzione nei bottoni in basso",reply_markup=reply_markup)
-  return FARMER
+  return FARMER_TYPING_2
 
 def NewThreshold_reply(update: Update, context: CallbackContext) -> int:
   user_data=context.user_data
@@ -751,7 +751,6 @@ def NewThreshold_reply(update: Update, context: CallbackContext) -> int:
   reply_markup = InlineKeyboardMarkup(keyboard)
   #update.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup    )
   
-
   if text[0] == "Principale":
     update.message.reply_text('Scegli tra:', reply_markup=reply_markupPrincipale)
     return FARMER
@@ -765,7 +764,8 @@ def NewThreshold_reply(update: Update, context: CallbackContext) -> int:
           requests.post(url=f"{SERVER}/plant/{plantid}",json=modified_dict)
     lista=listaCROPS(farmerid)
     update.message.reply_text(text=f"Ecco la lista aggiornata\n {lista}\n puoi continuare oppure scegliere un'opzione dal menu", reply_markup=reply_markup )
-    return FARMER
+    return FARMER_TYPING_2
+
   elif text[1]=="max":
     for crop in cropsowned:
       for plant in plants:
@@ -775,7 +775,7 @@ def NewThreshold_reply(update: Update, context: CallbackContext) -> int:
           requests.post(url=f"{SERVER}/plant/{plantid}",json=modified_dict)
     lista=listaCROPS(farmerid)
     update.message.reply_text(text=f"Ecco la lista aggiornata\n {lista}, puoi continuare con un altro comando oppure cliccare su uno dei seguenti bottoni",reply_markup=reply_markup)
-    return FARMER
+    return FARMER_TYPING_2
   
 
 def Statistiche_first(update: Update, context: CallbackContext) -> int:
