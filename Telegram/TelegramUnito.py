@@ -852,6 +852,7 @@ def main():
                       CallbackQueryHandler(PompaOFF, pattern='PompaOFF'),
                       CallbackQueryHandler(PompaON, pattern='PompaON'),
                       CallbackQueryHandler(NewThreshold_info, pattern='newthreshold'),
+                      CallbackQueryHandler(NewThreshold_reply, pattern='threshold_stat'),
                       CallbackQueryHandler(menuprincipaleFarmer, pattern='principale'),
                     
                       CallbackQueryHandler(Statistiche_first, pattern='SF'),
