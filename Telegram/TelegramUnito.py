@@ -668,7 +668,7 @@ def pompaonoff(update: Update, context: CallbackContext) -> int:
         [
             InlineKeyboardButton("Pompa ON", callback_data="PompaON"),
             InlineKeyboardButton("Pompa OFF", callback_data="PompaOFF"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_2")
+            InlineKeyboardButton("Torna al menù precedente", callback_data="AS")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
@@ -683,7 +683,7 @@ def PompaON(update: Update, context: CallbackContext) -> int:
   keyboard = [
         [
             InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_2")
+            InlineKeyboardButton("Torna al menù precedente", callback_data="AS")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
@@ -695,7 +695,7 @@ def PompaOFF(update: Update, context: CallbackContext) -> int:
   keyboard = [
         [
             InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_2")
+            InlineKeyboardButton("Torna al menù precedente", callback_data="AS")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
@@ -720,18 +720,12 @@ def NewThreshold_humidity_info(update: Update, context: CallbackContext) -> int:
   user_data=context.user_data
   farmerid=user_data["LOGID"]
   listacrops=listaCROPS(farmerid)
-  keyboard = [
-        [
-            InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_2")
-        ]
-    ]
-  reply_markup = InlineKeyboardMarkup(keyboard)
+  
   update.callback_query.message.edit_text(text=f"{listacrops}")
   update.callback_query.message.reply_text(text="Se vuoi modificare il valore minimo scrivi nome pianta+min + nuovo valore\n"
   "se vuoi modificare il valore massimo scrivi nome pianta+ max+ nuovo valore\n"
   "ad esempio 'peperoncino min 54'\n"
-  "oppure scegli un'opzione nei bottoni in basso",reply_markup=reply_markup)
+  "oppure scrivi 'principale' per tornare al menu principale")
   return FARMER_TYPING_2
 
 def NewThreshold_humidity_reply(update: Update, context: CallbackContext) -> int:
@@ -745,7 +739,7 @@ def NewThreshold_humidity_reply(update: Update, context: CallbackContext) -> int
   keyboard = [
         [
             InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_2")
+            InlineKeyboardButton("Torna al menù precedente", callback_data="AS")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
