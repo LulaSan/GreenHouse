@@ -749,8 +749,7 @@ def NewThreshold_humidity_reply(update: Update, context: CallbackContext) -> int
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  #update.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup    )
-  
+
   if text[0] == "Principale":
     update.message.reply_text('Scegli tra:', reply_markup=reply_markupPrincipale)
     return FARMER
@@ -802,7 +801,9 @@ def ThingsBoard(update: Update, context: CallbackContext) -> int:
   reply_markup = InlineKeyboardMarkup(keyboard)
   update.callback_query.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup    )
   return FARMER
+
 def Threshold_sampling(update: Update, context: CallbackContext) -> int:
+  pass
     
 
 def main():
