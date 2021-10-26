@@ -1,0 +1,8 @@
+Nome dispositivo:	Token:			Parametri:
+Umidità peperoncino	svOmnwGu4RlAydXbdMHf	battery, humidity, status
+Umidità aloe		FgbOm7jGYMFUENoeISR0	battery, humidity, status
+Umidità greenhouse	ekxDWtLAM4pk9THRDS3u	battery, humidity, status (from controller)
+Temperature greenhouse	WUOpEuPr4xeKahmfrzwv	battery, temperature, status (from controler)
+Luminosità greenhouse	Wsx4vSU7SCBUPqH4BRN6	battery,brightness
+
+-Io aggiungerei gli status sulla greenhouse relativi a windows & vent

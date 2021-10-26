@@ -1,0 +1,5 @@
+{
+	"broker" : "p4iotgreenhouse.ddns.net",
+	"port" : 2000,
+	"path" : "/plants"
+}
