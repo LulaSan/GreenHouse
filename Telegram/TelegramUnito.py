@@ -583,8 +583,7 @@ def Item_message(update: Update, context: CallbackContext) -> int:
   for plant in plants:
     if plant["GREENHOUSE_ID"]==greenhouse_id:
       plant_in_greenhouse.append(plant)
-  update.callback_query.message.reply_text(text=f"\nEcco gli items disponibili \n{plant_in_greenhouse}"####   !!!!!!!!!!!!
-                          
+  update.callback_query.message.reply_text(text=f"\nEcco gli items disponibili \n{plant_in_greenhouse}"                         
                                      "per tornare al menu principale digita 'Principale' ")
   return ADMIN_TYPING_3
 
@@ -830,6 +829,7 @@ def main():
                          CallbackQueryHandler(first_menu_keyboard, pattern='first_menu'),
                          CallbackQueryHandler(first_menu, pattern='main_fm'),
                          CallbackQueryHandler(Statistics, pattern='b1_1'),
+                         CallbackQueryHandler(Item_message, pattern='b1_3'),
                          CallbackQueryHandler(ThingsBoard, pattern='b2_1'),
                          CallbackQueryHandler(NewThreshold_message, pattern='b2_2'),
                          CallbackQueryHandler(Actuators, pattern='b1_4'),
