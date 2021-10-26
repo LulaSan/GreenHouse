@@ -583,10 +583,8 @@ def Item_message(update: Update, context: CallbackContext) -> int:
   for plant in plants:
     if plant["GREENHOUSE_ID"]==greenhouse_id:
       plant_in_greenhouse.append(plant)
-  update.callback_query.message.reply_text(text=f"\nEcco gli items disponibili \n{items}"####   !!!!!!!!!!!!
-                                     "se devi aggiungere, scrivi 'aggiungi <nome item>, <prezzo> e <quantità> separati da spazi\n"
-                                     "oppure se devi modificare, scrivi ad esempio 'modifica prezzo patate 2' oppure' modifica quantità patate 3'\n "
-                                     "se devi rimuovere scrivi rimuovi item, ad esempio 'rimuovi patate'\n"
+  update.callback_query.message.reply_text(text=f"\nEcco gli items disponibili \n{plant_in_greenhouse}"####   !!!!!!!!!!!!
+                          
                                      "per tornare al menu principale digita 'Principale' ")
   return ADMIN_TYPING_3
 
