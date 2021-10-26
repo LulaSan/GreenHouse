@@ -793,7 +793,7 @@ def Statistiche_first(update: Update, context: CallbackContext) -> int:
   update.callback_query.message.edit_text(text="Cosa vuoi fare?", reply_markup=reply_markup)
   return FARMER
 
-def ThingsBoard(update: Update, context: CallbackContext) -> int:
+def ThingsBoardFarmer(update: Update, context: CallbackContext) -> int:
   update.callback_query.message.edit_text(text="Ecco il link di thingsboard")
   keyboard = [
         [
@@ -859,7 +859,7 @@ def main():
                       CallbackQueryHandler(menuprincipaleFarmer, pattern='principale'),
                     
                       CallbackQueryHandler(Statistiche_first, pattern='SF'),
-                      CallbackQueryHandler(ThingsBoard, pattern='thingsboard'),
+                      CallbackQueryHandler(ThingsBoardFarmer, pattern='thingsboard'),
 
                       ],
                 USER: [ MessageHandler(Filters.regex('^start$'), start),
