@@ -670,8 +670,8 @@ def uporadditemfarmer(update: Update, context: CallbackContext) -> int:
     
     return FARMER_TYPING
 
-  elif text[0] == "principale":
-    update.message.reply_text('Scegli tra:', reply_markup=reply_markupPrincipale)
+  elif text[0] == "Principale":
+    update.message.reply_text('Scegli tra:', reply_markup=reply_markupPrincipale_FARMER)
     return FARMER
 
   
@@ -685,7 +685,6 @@ def attuatoriscelte(update: Update, context: CallbackContext) -> int:
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
   update.callback_query.message.edit_text(text="Cosa vuoi fare?", reply_markup=reply_markup
-    )
   return FARMER
 
 def pompaonoff(update: Update, context: CallbackContext) -> int:
