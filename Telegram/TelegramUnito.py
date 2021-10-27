@@ -581,14 +581,17 @@ def ItemMessage(update: Update, context: CallbackContext) -> int:
   plant_in_greenhouse = []
   plants = json.loads(requests.get(url=f"{SERVER}/plants").text)
   items_greenhouse=  json.loads(requests.get(url=f"{SERVER}/items_greenhouse/{greenhouse_id}").text)
+  farmers_ids=  json.loads(requests.get(url=f"{SERVER}/farmers_greenhouse/{greenhouse_id}").text)
   for plant in plants:
     if plant["GREENHOUSE_ID"]==greenhouse_id:
       plant_in_greenhouse.append(plant["PLANT_NAME"])
-  
+   
+  keyboard = [[ InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm") ]]
+  reply_markup = InlineKeyboardMarkup(keyboard)
   update.callback_query.message.reply_text(text=f"\n The plants in this GreenHouse are : \n{plant_in_greenhouse}" 
-                                          f" The items for sale in this GreenHouse are: \n {items_greenhouse}"
-                                     "per tornare al menu principale digita 'Principale' ")
-  return ADMIN_TYPING_3
+                                           f"The farmers in this GreenHouse are: \n {farmers_ids}"
+                                          f" The items for sale in this GreenHouse are: \n {items_greenhouse}",reply_markup=reply_markup)
+  return LEVEL_1
 
 
     ####################################################### FARMER ###################################
@@ -844,7 +847,7 @@ def main():
                     
                 ADMIN_TYPING : [MessageHandler(Filters.text, callback= NewThreshold_period)],
                 ADMIN_TYPING_2 : [MessageHandler(Filters.text, callback= NewParametersGreenhouse)],
-                ADMIN_TYPING_3 : [MessageHandler(Filters.text, callback= add_remove_modify_item)],
+                ADMIN_TYPING_3 : [MessageHandler(Filters.text, callback= principale)],
                 
                 FARMER_TYPING : [MessageHandler(Filters.text, callback= uporadditemfarmer)],
                 FARMER_TYPING_2 : [MessageHandler(Filters.text, callback= NewThreshold_humidity_reply)],
