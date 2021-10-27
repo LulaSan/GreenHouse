@@ -238,6 +238,15 @@ class FarmerClient():
                 items_in_greenhouse.append(self.FarmersList[i]["ITEMS_SELL"])
         displayjson=json.dumps(items_in_greenhouse,indent=4)
         return displayjson
+    
+     def farmers_greenhouse(self,GreenhouseID):
+        trovato=0
+        farmers_in_greenhouse=[]
+        for i in range(len(self.FarmersList)):
+            if GreenhouseID == self.FarmersList[i]["GREENHOUSE_ID"]:
+                farmers_in_greenhouse.append(self.FarmersList[i]["FARMER_ID"])
+        displayjson=json.dumps(farmers_in_greenhouse,indent=4)
+        return displayjson
                 
     
     def farmerslist(self):
