@@ -239,8 +239,8 @@ class FarmerClient():
         displayjson=json.dumps(items_in_greenhouse,indent=4)
         return displayjson
     
-     def farmers_greenhouse(self,GreenhouseID):
-        trovato=0
+    
+    def farmers_greenhouse(self,GreenhouseID):
         farmers_in_greenhouse=[]
         for i in range(len(self.FarmersList)):
             if GreenhouseID == self.FarmersList[i]["GREENHOUSE_ID"]:
