@@ -597,9 +597,9 @@ def ItemMessage(update: Update, context: CallbackContext) -> int:
    
   keyboard = [[ InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm") ]]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.reply_text(text=f"\n The plants in this GreenHouse are : \n{plant_in_greenhouse}" 
-                                           f"The farmers in this GreenHouse are: \n {farmers_ids}"
-                                          f" The items for sale in this GreenHouse are: \n {items_greenhouse}",reply_markup=reply_markup)
+  update.callback_query.message.reply_text(text=f"\n The plants in this GreenHouse are : \n{plant_in_greenhouse} \n" 
+                                           f"\n The farmers in this GreenHouse are: \n {farmers_ids} \n"
+                                          f"\n The items for sale in this GreenHouse are: \n {items_greenhouse} \n",reply_markup=reply_markup)
   return LEVEL_1
 
 
