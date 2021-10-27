@@ -684,7 +684,7 @@ def attuatoriscelte(update: Update, context: CallbackContext) -> int:
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.edit_text(text="Cosa vuoi fare?", reply_markup=reply_markup
+  update.callback_query.message.edit_text(text="Cosa vuoi fare?", reply_markup=reply_markup)
   return FARMER
 
 def pompaonoff(update: Update, context: CallbackContext) -> int:
