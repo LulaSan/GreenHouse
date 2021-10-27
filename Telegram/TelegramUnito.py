@@ -522,7 +522,7 @@ def main_menu_keyboard():
 def first_menu_keyboard():
     keyboard = [[InlineKeyboardButton(text=f'Statistics', callback_data='b1_1')],
                 [InlineKeyboardButton(text=f'Modify parameters of Greenhouse', callback_data='b1_2')],
-                [InlineKeyboardButton(text=f'Add/remove/modify items', callback_data='b1_3')],
+                [InlineKeyboardButton(text=f'Visualize plants and items sold', callback_data='b1_3')],
                 [InlineKeyboardButton(text=f'Manage actuators', callback_data='b1_4')]]
     return InlineKeyboardMarkup(inline_keyboard=keyboard) 
 
@@ -577,13 +577,16 @@ def Green_House_Parameters(update: Update, context: CallbackContext) -> int:
     
   return ADMIN_TYPING_2
 
-def Item_message(update: Update, context: CallbackContext) -> int:
+def ItemMessage(update: Update, context: CallbackContext) -> int:
   plant_in_greenhouse = []
-  plants = json.loads(requests.get(url=f"http://localhost:2000/plants").text)
+  plants = json.loads(requests.get(url=f"{SERVER}/plants").text)
+  items_greenhouse=  json.loads(requests.get(url=f"{SERVER}/items_greenhouse/{greenhouse_id}").text)
   for plant in plants:
     if plant["GREENHOUSE_ID"]==greenhouse_id:
-      plant_in_greenhouse.append(plant)
-  update.callback_query.message.reply_text(text=f"\nEcco gli items disponibili \n{plant_in_greenhouse}"                         
+      plant_in_greenhouse.append(plant["PLANT_NAME"])
+  
+  update.callback_query.message.reply_text(text=f"\n The plants in this GreenHouse are : \n{plant_in_greenhouse}" 
+                                          f" The items for sale in this GreenHouse are: \n {items_greenhouse}"
                                      "per tornare al menu principale digita 'Principale' ")
   return ADMIN_TYPING_3
 
@@ -829,7 +832,7 @@ def main():
                          CallbackQueryHandler(first_menu_keyboard, pattern='first_menu'),
                          CallbackQueryHandler(first_menu, pattern='main_fm'),
                          CallbackQueryHandler(Statistics, pattern='b1_1'),
-                         CallbackQueryHandler(Item_message, pattern='b1_3'),
+                         CallbackQueryHandler(ItemMessage, pattern='b1_3'),
                          CallbackQueryHandler(ThingsBoard, pattern='b2_1'),
                          CallbackQueryHandler(NewThreshold_message, pattern='b2_2'),
                          CallbackQueryHandler(Actuators, pattern='b1_4'),
@@ -837,9 +840,8 @@ def main():
                          CallbackQueryHandler(OpenWindows, pattern='OpenWindow'),
                          CallbackQueryHandler(CloseWindows, pattern='CloseWindow'),
                          CallbackQueryHandler(VentOFF, pattern='VentOFF'),
-                         CallbackQueryHandler(VentON, pattern='VentON'),
-                         CallbackQueryHandler(Item_message, pattern='item')],
-
+                         CallbackQueryHandler(VentON, pattern='VentON')],
+                    
                 ADMIN_TYPING : [MessageHandler(Filters.text, callback= NewThreshold_period)],
                 ADMIN_TYPING_2 : [MessageHandler(Filters.text, callback= NewParametersGreenhouse)],
                 ADMIN_TYPING_3 : [MessageHandler(Filters.text, callback= add_remove_modify_item)],
