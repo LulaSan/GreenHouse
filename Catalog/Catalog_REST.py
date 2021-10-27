@@ -105,7 +105,7 @@ class CHERRY_CATALOG():
         if uri[0]=='uporadditem':
             output_post=str(self.farmer.addItem(uri[1],uri[2],uri[3],uri[4]))
         if uri[0]=='buyitem':
-            output_del=self.user.buyitem(uri[1],uri[2],uri[3])
+            output_del=str(self.user.buyitem(uri[1],uri[2],uri[3]))
 
         return output_post
 
