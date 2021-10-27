@@ -270,6 +270,7 @@ def Statistics(update: Update, context: CallbackContext) -> int:
 
 def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
   text = update.message.text.split(" ")
+  user_data=context.user_data
   greenhouse_id=user_data["CHOSEN_GREENHOUSEID"]
   greenhouse = json.loads(requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}").text)
 
@@ -566,6 +567,7 @@ def NewThreshold_message(update: Update, context: CallbackContext) -> int:
   return ADMIN_TYPING
 
 def Green_House_Parameters(update: Update, context: CallbackContext) -> int:
+  user_data=context.user_data
   greenhouse_id=user_data["CHOSEN_GREENHOUSEID"]
   THRESHOLD_HUMID_MIN=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_HUMID_MIN").text
   THRESHOLD_HUMID_MAX=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_HUMID_MAX").text
@@ -586,6 +588,7 @@ def Green_House_Parameters(update: Update, context: CallbackContext) -> int:
   return ADMIN_TYPING_2
 
 def ItemMessage(update: Update, context: CallbackContext) -> int:
+  user_data=context.user_data
   greenhouse_id=user_data["CHOSEN_GREENHOUSEID"]
   plant_in_greenhouse = []
   plants = json.loads(requests.get(url=f"{SERVER}/plants").text)
@@ -597,10 +600,10 @@ def ItemMessage(update: Update, context: CallbackContext) -> int:
    
   keyboard = [[ InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm") ]]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.reply_text(text=f"\n The plants in this GreenHouse are : \n{plant_in_greenhouse} \n" 
-                                           f"\n The farmers in this GreenHouse are: \n {farmers_ids} \n"
-                                          f"\n The items for sale in this GreenHouse are: \n {items_greenhouse} \n",reply_markup=reply_markup)
-  return LEVEL1
+  update.callback_query.message.reply_text(text=f"\n The plants in this GreenHouse are : \n{plant_in_greenhouse}" 
+                                           f"The farmers in this GreenHouse are: \n {farmers_ids}"
+                                          f" The items for sale in this GreenHouse are: \n {items_greenhouse}",reply_markup=reply_markup)
+  return LEVEL_1
 
 
     ####################################################### FARMER ###################################
