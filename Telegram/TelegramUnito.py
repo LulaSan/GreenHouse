@@ -53,8 +53,6 @@ def start(update: Update, context: CallbackContext) -> int:
   update.message.reply_text("Chi sei?",reply_markup=main_menu_keyboard())
   return SIGNIN_PULSANTI
  
-  
-
 
 def update_catalog(loggedUsers):
   fp=open("telegram_catalog.json",'r')
@@ -122,7 +120,7 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
                 pprint(listaFarmers[i])
                 trovato=1
                 user_data=context.user_data # li salvo o qui
-                user_data["LOGID"]= text
+                user_data["LOGID"]= text # Il LOGID è l'input da tastiera, ed è nel catalog il FARMER_ID
                 pprint(user_data)
 
             for j in range(len(loggedUsers)):  # o qui
@@ -140,7 +138,7 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
                 pprint(listaAdmins[i])
                 trovato=1
                 user_data=context.user_data # li salvo o qui
-                user_data["LOGID"]= text
+                user_data["ADMIN_ID"]= text
                 pprint(user_data)
 
                 for j in range(len(loggedUsers)):  # o qui
@@ -160,7 +158,7 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
                 pprint(listaUsers[i])
                 trovato=1
                 user_data=context.user_data # li salvo o qui
-                user_data["LOGID"]= text
+                user_data["USER_ID"]= text
                 pprint(user_data)
 
                 for j in range(len(loggedUsers)):  # o qui
@@ -242,19 +240,27 @@ def buyitemuser(update: Update, context: CallbackContext) -> int:
 
 greenhousesinfo = json.loads(requests.get(url=SERVER+f"/greenhouses").text) 
 greenhouselist = [] 
-greenhouselist.append(greenhousesinfo[0]["GREENHOUSE_ID"])
-greenhouse_id = greenhousesinfo[0]["GREENHOUSE_ID"]
+for greenhouse in greenhousesinfo:
+    greenhouselist.append(greenhouse["GREENHOUSE_ID"])
+    
+    
+   
+#greenhouse_id = greenhousesinfo[0]["GREENHOUSE_ID"] ########## il primo sempre?
 
 def id_greenhouse(update: Update, context: CallbackContext) -> int:
       text = update.message.text # splitto il testo
+       
       if text in greenhouselist :
         update.message.reply_text(text=first_menu_message(),reply_markup=first_menu_keyboard())
+        user_data=context.user_data # APRO IL DIZIONARIO DEGLI APPUNTI
+        user_data["CHOSEN_GREENHOUSEID"]= text # questa è la greenhouse di cui l'admin vuole sapere di più
+        greenhouse_id=user_data["CHOSEN_GREENHOUSEID"]
+        pprint(user_data)
         return LEVEL1
       else:
         update.message.reply_text(text=f"La greenhouse scelta non corrisponde, riprovare.")
         return ADMIN
-      #se verificato-> return nuovo MENU
-      #altrimenti return ADMIN e update.message.reply_text('LOG_ID sbagliato, riprova')
+   
 
 # funzioni primo menu:
 def Statistics(update: Update, context: CallbackContext) -> int:
@@ -264,6 +270,7 @@ def Statistics(update: Update, context: CallbackContext) -> int:
 
 def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
   text = update.message.text.split(" ")
+  greenhouse_id=user_data["CHOSEN_GREENHOUSEID"]
   greenhouse = json.loads(requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}").text)
 
   if text[0] == "Principale":
@@ -559,6 +566,7 @@ def NewThreshold_message(update: Update, context: CallbackContext) -> int:
   return ADMIN_TYPING
 
 def Green_House_Parameters(update: Update, context: CallbackContext) -> int:
+  greenhouse_id=user_data["CHOSEN_GREENHOUSEID"]
   THRESHOLD_HUMID_MIN=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_HUMID_MIN").text
   THRESHOLD_HUMID_MAX=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_HUMID_MAX").text
   THRESHOLD_BRIGHT_MIN=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_BRIGHT_MIN").text
@@ -578,6 +586,7 @@ def Green_House_Parameters(update: Update, context: CallbackContext) -> int:
   return ADMIN_TYPING_2
 
 def ItemMessage(update: Update, context: CallbackContext) -> int:
+  greenhouse_id=user_data["CHOSEN_GREENHOUSEID"]
   plant_in_greenhouse = []
   plants = json.loads(requests.get(url=f"{SERVER}/plants").text)
   items_greenhouse=  json.loads(requests.get(url=f"{SERVER}/items_greenhouse/{greenhouse_id}").text)
