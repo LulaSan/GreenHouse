@@ -13,7 +13,7 @@ import requests
 ##AGGIUNGERE MESSAGGIO INIZIALE CHE DICE DI SCRIVERE /start
 # listaFarmers=lista["list"]
 
-SIGNIN, SIGNIN_PULSANTI, ADMIN , ADMIN_TYPING, ADMIN_TYPING_2, ADMIN_TYPING_3, LEVEL1, FARMER , FARMER_TYPING, FARMER_TYPING_2 , USER, USER_TYPING= range(12)
+SIGNIN, SIGNIN_PULSANTI, ADMIN , ADMIN_TYPING, ADMIN_TYPING_2, LEVEL1, FARMER , FARMER_TYPING, FARMER_TYPING_2 , USER, USER_TYPING= range(11)
 
 SERVER_file=json.load(open('utils.json','r'))
 SERVER=SERVER_file['SERVER']
@@ -847,8 +847,7 @@ def main():
                     
                 ADMIN_TYPING : [MessageHandler(Filters.text, callback= NewThreshold_period)],
                 ADMIN_TYPING_2 : [MessageHandler(Filters.text, callback= NewParametersGreenhouse)],
-                ADMIN_TYPING_3 : [MessageHandler(Filters.text, callback= principale)],
-                
+                               
                 FARMER_TYPING : [MessageHandler(Filters.text, callback= uporadditemfarmer)],
                 FARMER_TYPING_2 : [MessageHandler(Filters.text, callback= NewThreshold_humidity_reply)],
                 FARMER : [ #premo aggiungi e legge il messaggio
