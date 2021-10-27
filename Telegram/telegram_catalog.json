@@ -2,7 +2,7 @@
     "LOGGED_USERS": [
         {
             "CHATID": "12345654321",
-            "TYPE": "F"
+            "TYPE": "F",
             "LOGID": "1234"
         },
         {
