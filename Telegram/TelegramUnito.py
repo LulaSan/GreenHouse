@@ -704,7 +704,7 @@ def PompaON(update: Update, context: CallbackContext) -> int:
   
   update.callback_query.message.edit_text(" Pump ON")
   #comando che attiva la pompa
-   keyboard = [
+  keyboard = [
         [
             InlineKeyboardButton("Main Menu", callback_data="main_fm"),
             InlineKeyboardButton("Last Menu", callback_data="b1_4")
@@ -716,7 +716,7 @@ def PompaON(update: Update, context: CallbackContext) -> int:
 def PompaOFF(update: Update, context: CallbackContext) -> int:
   update.callback_query.message.edit_text(" Pump OFF")
   #comando che disattiva la pompa
-    keyboard = [
+  keyboard = [
         [
             InlineKeyboardButton("Main Menu", callback_data="main_fm"),
             InlineKeyboardButton("Last Menu", callback_data="b1_4")
