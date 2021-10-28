@@ -50,7 +50,7 @@ def start(update: Update, context: CallbackContext) -> int:
     update.message.reply_text(f"Hey, it seems that you are new here! Welcome!")
 
   update_catalog(loggedUsers)
-  update.message.reply_text("Chi sei?",reply_markup=main_menu_keyboard())
+  update.message.reply_text("Who are you?",reply_markup=main_menu_keyboard())
   return SIGNIN_PULSANTI
  
 
@@ -95,12 +95,12 @@ def sign_in(update: Update, context: CallbackContext) -> int:
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.edit_text(f"Ok now log in write your id or go back writing 'start'")
+  update.callback_query.message.edit_text(f"Ok! To Log in just write your ID or to go back write 'start'")
 
   return SIGNIN
 
 def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
-    pprint("sto entrando del sign_in_credd")
+    pprint("sto entrando del sign_in_cred")
     text = update.message.text # splitto il testo
     global tipo
     print(tipo)
@@ -129,7 +129,7 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
                     update_catalog(loggedUsers)
                     pprint(loggedUsers)
                             
-            update.message.reply_text('Scegli tra:', reply_markup=reply_markupPrincipale_FARMER)
+            update.message.reply_text(f'Welcome {user_data["LOGID"]}! \n Choose between:', reply_markup=reply_markupPrincipale_FARMER)
             return FARMER
         
     elif tipo=='A':
@@ -149,7 +149,7 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
                         
                     #display greenhouse list
                     pprint(greenhouselist)
-                    update.message.reply_text(text=f"\nBenvenuto!\nEcco le greenhouse disponibili \n{greenhouselist}\nA quale greenhouse sei interessato?\n")
+                    update.message.reply_text(text=f"\Welcome Admin!\n Here there are the available greenhouses \n{greenhouselist}\n Which greenhouse do you want to manage?\n")
                     return ADMIN
 
     elif tipo=='U':
@@ -168,13 +168,13 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
                         pprint(loggedUsers)
                         
                     #display greenhouse list
-                    update.message.reply_text(text=f"\nWelcome, choose an option or digit 'start' to come back to LOG IN",reply_markup=keyboardPrincipale_USER())
+                    update.message.reply_text(text=f"\nWelcome User {user_data["USER_ID"]}\n, choose an option or digit 'start' to come back to LOG IN",reply_markup=keyboardPrincipale_USER())
                     return USER
 
         
 
     if trovato==0:
-      update.message.reply_text('LOG_ID sbagliato, riprova')
+      update.message.reply_text('Ups! Wrong LOG_ID, try again.')
       return SIGNIN
 
 
@@ -187,12 +187,12 @@ def update_catalog(loggedUsers):
   json.dump(catalog,open("telegram_catalog.json","w"),indent=4)
 
 def done(update: Update, _: CallbackContext) -> int:
-    update.message.reply_text("niente")
+    update.message.reply_text("nothing")
 
 ################ USER#############################################################################################
 
 def keyboardPrincipale_USER():
-  keyboardPrincipale= [[InlineKeyboardButton(text=f'Compra un prodotto', callback_data='compra_user')]]
+  keyboardPrincipale= [[InlineKeyboardButton(text=f'Buy something', callback_data='compra_user')]]
   return InlineKeyboardMarkup(keyboardPrincipale) 
 
 def displaylist_USER(update: Update, context: CallbackContext) -> int:
@@ -201,8 +201,8 @@ def displaylist_USER(update: Update, context: CallbackContext) -> int:
   #3. chiedo di scrivere "modifica prezzo patate 2/ modifica quantità patate 3 "
   # farmerid=user_data["LOGID"]
   itemstobuy=json.loads(requests.get(url=f"{SERVER}/itemstobuy").text)
-  update.callback_query.message.edit_text(text=f"\nEcco gli items disponibili \n{itemstobuy}"
-                                     "Se vuoi acquistare un prodotto, scrivi in ordine : ID del contadino, nome dell'item e quantità desiderata \n ")
+  update.callback_query.message.edit_text(text=f"\nHere there are available items: \n{itemstobuy}"
+                                     "If you want to buy something, write in this order :  Farmer ID, item name and desired quantity \n ")
   return USER_TYPING
 
 def buyitemuser(update: Update, context: CallbackContext) -> int:
@@ -211,7 +211,7 @@ def buyitemuser(update: Update, context: CallbackContext) -> int:
   # farmerid=user_data["LOGID"]
   text = update.message.text.split(" ")
   if text[0] == "principale":
-    update.message.reply_text('Scegli tra:', reply_markup=keyboardPrincipale_USER)
+    update.message.reply_text('Choose between:', reply_markup=keyboardPrincipale_USER)
     return USER
   farmerID=text[0]
   item=text[1]
@@ -219,7 +219,7 @@ def buyitemuser(update: Update, context: CallbackContext) -> int:
   requests.post(f"{SERVER}/buyitem/{farmerID}/{item}/{quantita}")
   
   itemstobuy=json.loads(requests.get(url=f"{SERVER}/itemstobuy").text)
-  update.message.reply_text(f"Ok,fatto. Ecco la lista modificata\n {itemstobuy} \n Riprova se vuoi modificare altro\n digita 'principale' per tornare al menu inziale")
+  update.message.reply_text(f"Ok, done! . Here there is the modified list : \n {itemstobuy} \n Try again if you want to modify something else \n Write 'principale' to go pack to the main menu")
 
   return USER_TYPING
 
@@ -258,13 +258,13 @@ def id_greenhouse(update: Update, context: CallbackContext) -> int:
         pprint(user_data)
         return LEVEL1
       else:
-        update.message.reply_text(text=f"La greenhouse scelta non corrisponde, riprovare.")
+        update.message.reply_text(text=f"Ups! Greenhouse not found, try again.")
         return ADMIN
    
 
 # funzioni primo menu:
 def Statistics(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text("Cosa vuoi fare?",reply_markup=Statistics_keyboard())
+  update.callback_query.message.edit_text("Choose an option: ",reply_markup=Statistics_keyboard())
   return LEVEL1
 
 
@@ -286,14 +286,14 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
     if res.status_code == 200:
       update.message.reply_text(text="New threshold updated")
       keyboard = [[
-          InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
+          InlineKeyboardButton("Main menu", callback_data="main_fm"),
           ]]
       reply_markup = InlineKeyboardMarkup(keyboard)
-      update.message.reply_text(text="Torna al menu principale", reply_markup=reply_markup)
+      update.message.reply_text(text="Main menu", reply_markup=reply_markup)
       return LEVEL1
 
     else:
-      update.message.reply_text(text="Parametro non aggiornato, problema con il server riprovare più tardi")
+      update.message.reply_text(text="Server Error")
       return ADMIN_TYPING_2
        
   elif text[0] == "2":
@@ -303,14 +303,14 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
     if res.status_code == 200:
       update.message.reply_text(text="New threshold updated")
       keyboard = [[
-          InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
+          InlineKeyboardButton("Main Menu", callback_data="main_fm"),
           ]]
       reply_markup = InlineKeyboardMarkup(keyboard)
-      update.message.reply_text(text="Torna al menu principale", reply_markup=reply_markup)
+      update.message.reply_text(text="Main menu", reply_markup=reply_markup)
       return LEVEL1
       
     else:
-      update.message.reply_text(text="Parametro non aggiornato, problema con il server riprovare più tardi")
+      update.message.reply_text(text="Server Error")
       return ADMIN_TYPING_2
 
   elif text[0] == "3":
@@ -320,14 +320,14 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
     if res.status_code == 200:
       update.message.reply_text(text="New threshold updated")
       keyboard = [[
-          InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
+          InlineKeyboardButton("Main Menu", callback_data="main_fm"),
           ]]
       reply_markup = InlineKeyboardMarkup(keyboard)
-      update.message.reply_text(text="Torna al menu principale", reply_markup=reply_markup)
+      update.message.reply_text(text="Main Menu", reply_markup=reply_markup)
       return LEVEL1
       
     else:
-      update.message.reply_text(text="Parametro non aggiornato, problema con il server riprovare più tardi")
+      update.message.reply_text(text="Server Error")
       return ADMIN_TYPING_2
   elif text[0] == "4":
     new_value = {"THRESHOLD_BRIGHT_MAX": int(text[1])}
@@ -336,14 +336,14 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
     if res.status_code == 200:
       update.message.reply_text(text="New threshold updated")
       keyboard = [[
-          InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
+          InlineKeyboardButton("Main Menu", callback_data="main_fm"),
           ]]
       reply_markup = InlineKeyboardMarkup(keyboard)
-      update.message.reply_text(text="Torna al menu principale", reply_markup=reply_markup)
+      update.message.reply_text(text="Main Menu", reply_markup=reply_markup)
       return LEVEL1
       
     else:
-      update.message.reply_text(text="Parametro non aggiornato, problema con il server riprovare più tardi")
+      update.message.reply_text(text="Server Error")
       return ADMIN_TYPING_2
   elif text[0] == "5":
     new_value = {"THRESHOLD_TEMPER_MIN": int(text[1])}
@@ -352,14 +352,14 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
     if res.status_code == 200:
       update.message.reply_text(text="New threshold updated")
       keyboard = [[
-          InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
+          InlineKeyboardButton("Main Menu", callback_data="main_fm"),
           ]]
       reply_markup = InlineKeyboardMarkup(keyboard)
-      update.message.reply_text(text="Torna al menu principale", reply_markup=reply_markup)
+      update.message.reply_text(text="Main Menu", reply_markup=reply_markup)
       return LEVEL1
       
     else:
-      update.message.reply_text(text="Parametro non aggiornato, problema con il server riprovare più tardi")
+      update.message.reply_text(text="Server Error")
       return ADMIN_TYPING_2
   elif text[0] == "6":
     new_value = {"THRESHOLD_TEMPER_MAX": int(text[1])}
@@ -368,29 +368,29 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
     if res.status_code == 200:
       update.message.reply_text(text="New threshold updated")
       keyboard = [[
-          InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
+          InlineKeyboardButton("Main Menu", callback_data="main_fm"),
           ]]
       reply_markup = InlineKeyboardMarkup(keyboard)
-      update.message.reply_text(text="Torna al menu principale", reply_markup=reply_markup)
+      update.message.reply_text(text="Main Menu", reply_markup=reply_markup)
       return LEVEL1
       
     else:
-      update.message.reply_text(text="Parametro non aggiornato, problema con il server riprovare più tardi")
+      update.message.reply_text(text="Server Error")
       return ADMIN_TYPING_2
   else:
-    update.message.reply_text('Comando non valido, riprovare')
+    update.message.reply_text('Wrong command, try again')
     return ADMIN_TYPING_2
  
 
 
 def Actuators(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text("Cosa vuoi fare?",reply_markup=actuator_control_keyboard())
+  update.callback_query.message.edit_text("Choose an option:",reply_markup=actuator_control_keyboard())
   return LEVEL1
 
 
 # funzioni secondo livello:
 def ThingsBoard(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text(text="Ecco il link di thingsboard: ")
+  update.callback_query.message.edit_text(text="Thingsboard link: ")
   keyboard = [
         [
             InlineKeyboardButton("Main menu", callback_data="main_fm"),
@@ -398,7 +398,7 @@ def ThingsBoard(update: Update, context: CallbackContext) -> int:
         ]
     ]
   reply_markup = InlineKeyboardMarkup(inline_keyboard=keyboard)
-  update.callback_query.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup)
+  update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup)
   return LEVEL1
 
 def NewThreshold_period(update: Update, context: CallbackContext) -> int:
@@ -408,10 +408,10 @@ def NewThreshold_period(update: Update, context: CallbackContext) -> int:
   tipologia=text[0]
   
   if text[0] == "Principale":
-    update.message.reply_text('Scegli tra:', reply_markup=first_menu_keyboard())
+    update.message.reply_text('Choose an option:', reply_markup=first_menu_keyboard())
     return LEVEL1
   elif text[0] != "Principale" and text[0] != "water" and text[0] != "temperature" :
-    update.message.reply_text('Comando non valido, riprovare')
+    update.message.reply_text('Wrong command, try again.')
     return ADMIN_TYPING
   elif text[0] == 'water':
     res = requests.post(SERVER+f"/statistic/water_period/{text[1]}")
@@ -445,16 +445,16 @@ def OpenWindows(update: Update, context: CallbackContext) -> int:
 
   keyboard = [
         [
-            InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_4")
+            InlineKeyboardButton("Main Menu", callback_data="main_fm"),
+            InlineKeyboardButton("Last Menu", callback_data="b1_4")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup    )
+  update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup    )
   return LEVEL1
 
 def CloseWindows(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text("Finestra chiusa")
+  update.callback_query.message.edit_text("Window closed")
   #comando che disattiva la pompa
   with open("Sensors.json", "r+") as outfile:
     data = json.load(outfile)
@@ -465,17 +465,17 @@ def CloseWindows(update: Update, context: CallbackContext) -> int:
   
   keyboard = [
         [
-            InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_4")
+            InlineKeyboardButton("Main Menu",callback_data="main_fm"),
+            InlineKeyboardButton("Last Menu", callback_data="b1_4")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup
+  update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup
     )
   return LEVEL1
 
 def VentOFF(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text(" Ventola spenta")
+  update.callback_query.message.edit_text("Fan OFF")
   #comando che disattiva la pompa
   with open("Sensors.json", "r+") as outfile:
     data = json.load(outfile)
@@ -486,17 +486,17 @@ def VentOFF(update: Update, context: CallbackContext) -> int:
 
   keyboard = [
         [
-            InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_4")
+            InlineKeyboardButton("Main Menu", callback_data="main_fm"),
+            InlineKeyboardButton("Last Menu", callback_data="b1_4")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup
+  update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup
     )
   return LEVEL1
 
 def VentON(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text(" Ventola accesa")
+  update.callback_query.message.edit_text("Fan ON")
   #comando che disattiva la pompa
   with open("Sensors.json", "r+") as outfile:
     data = json.load(outfile)
@@ -507,12 +507,12 @@ def VentON(update: Update, context: CallbackContext) -> int:
 
   keyboard = [
         [
-            InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="b1_4")
+            InlineKeyboardButton("Main Menu", callback_data="main_fm"),
+            InlineKeyboardButton("Last Menu", callback_data="b1_4")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup
+  update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup
     )
   return LEVEL1
 
@@ -535,8 +535,8 @@ def first_menu_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=keyboard) 
 
 def Statistics_keyboard():
-  keyboard = [[InlineKeyboardButton("ThingsBoard - Grafici Statistiche", callback_data="b2_1")],
-              [InlineKeyboardButton("Modificare threshold di sampling", callback_data="b2_2")],
+  keyboard = [[InlineKeyboardButton("ThingsBoard - Statistics ", callback_data="b2_1")],
+              [InlineKeyboardButton("Modify sampling threshold ", callback_data="b2_2")],
               [InlineKeyboardButton("Main menu", callback_data="main_fm")]]
   return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -575,7 +575,7 @@ def Green_House_Parameters(update: Update, context: CallbackContext) -> int:
   THRESHOLD_BRIGHT_MAX=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_BRIGHT_MAX").text
   THRESHOLD_TEMPER_MIN=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_TEMPER_MIN").text
   THRESHOLD_TEMPER_MAX=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_TEMPER_MAX").text
-  update.callback_query.message.reply_text(text=f"Se vuoi modificare i parametri della greenhouse digita il numero relativo al parametro da modificare + il nuovo valore:\n"
+  update.callback_query.message.reply_text(text=f"If you want to modify some parameter write the correspondant number + new value:\n"
   "Accanto è indicato il valore attuale"
   f"1) Low humidity threshold: {THRESHOLD_HUMID_MIN}\n"
   f"2) High humidity threshold: {THRESHOLD_HUMID_MAX}\n"
@@ -598,7 +598,7 @@ def ItemMessage(update: Update, context: CallbackContext) -> int:
     if plant["GREENHOUSE_ID"]==greenhouse_id:
       plant_in_greenhouse.append(plant["PLANT_NAME"])
    
-  keyboard = [[ InlineKeyboardButton("Tornare al menu principale", callback_data="main_fm") ]]
+  keyboard = [[ InlineKeyboardButton("Main Menu", callback_data="main_fm") ]]
   reply_markup = InlineKeyboardMarkup(keyboard)
   update.callback_query.message.reply_text(text=f"\n The plants in this GreenHouse are : \n{plant_in_greenhouse}" 
                                            f"The farmers in this GreenHouse are: \n {farmers_ids}"
@@ -625,11 +625,11 @@ def displaylist(update: Update, context: CallbackContext) -> int:
   farmerid=user_data["LOGID"]
   singolo=json.loads(requests.get(url=SERVER+f"/farmer/{farmerid}").text)
   items=singolo["ITEMS_SELL"]
-  update.callback_query.message.edit_text(text=f"\nEcco gli items disponibili \n{items}"
-                                     "se devi aggiungere, scrivi 'aggiungi <nome item>, <prezzo> e <quantità> separati da spazi\n"
-                                     "oppure se devi modificare, scrivi ad esempio 'modifica prezzo patate 2' oppure' modifica quantità patate 3'\n "
-                                     "se devi rimuovere scrivi rimuovi item, ad esempio 'rimuovi patate'\n"
-                                     "per tornare al menu principale digita 'principale'  ")
+  update.callback_query.message.edit_text(text=f"\n Here there are your available items  \n{items}"
+                                     "● To add something write:  write 'add <item name>, <price> e <quanity> separated by one space\n"
+                                     "● To modify something write:  write 'modify <item name>, <price> e <quanity> separated by one space\n "
+                                     "● To remove something write:  write 'remove <item name> separated by one space\n"
+                                     "● To go back to main menu write Principale  ")
   return FARMER_TYPING
 
 def uporadditemfarmer(update: Update, context: CallbackContext) -> int:
@@ -638,92 +638,92 @@ def uporadditemfarmer(update: Update, context: CallbackContext) -> int:
   farmerid=user_data["LOGID"]
   text = update.message.text.split(" ")
 
-  if text[0] == "modifica":
+  if text[0] == "modify":
     item=text[2]
-    if text[1]== "prezzo":
+    if text[1]== "price":
       prezzo= int(text[3])
       r=requests.post(url=SERVER+f"/uporadditem/{farmerid}/{item}/{prezzo}/None")
-    elif text[1]== "quantità" :
+    elif text[1]== "quantity" :
       quantita=int(text[3])
       p=requests.post(url=f"{SERVER}/uporadditem/{farmerid}/{item}/None/{quantita}")
     
     singolo=json.loads(requests.get(url=f"{SERVER}/farmer/{farmerid}").text)
     items=singolo["ITEMS_SELL"]
-    update.message.reply_text(f"Ok,fatto. Ecco la lista modificata\n {items} \n Riprova se vuoi modificare altro\n digita 'principale' per tornare al menu inziale")
+    update.message.reply_text(f"Ok,done.Here there is the modified list\n {items} \n Try again if you want to modify something else or write Principale to go back to the main menu")
     return FARMER_TYPING
-  elif text[0] == "aggiungi":
+  elif text[0] == "add":
     item=text[1]
     prezzo=int(text[2])
     quantita=int(text[3])
     requests.post(f"{SERVER}/uporadditem/{farmerid}/{item}/{prezzo}/{quantita}")
     singolo=json.loads(requests.get(url=f"{SERVER}/farmer/{farmerid}").text)
     items=singolo["ITEMS_SELL"]
-    update.message.reply_text(f"Ok,fatto. Ecco la lista modificata\n {items} \n Riprova se vuoi modificare altro\n digita 'principale' per tornare al menu inziale")
+    update.message.reply_text(f"Ok,done.Here there is the modified list\n {items} \n Try again if you want to modify something else or write Principale to go back to the main menu")
     
     return FARMER_TYPING
-  elif text[0] =="rimuovi":
+  elif text[0] =="remove":
     item=text[1]
     requests.delete(f"{SERVER}/deleteitem/{farmerid}/{item}")
     singolo=json.loads(requests.get(url=f"{SERVER}/farmer/{farmerid}").text)
     items=singolo["ITEMS_SELL"]
-    update.message.reply_text(f"Ok,fatto. Ecco la lista modificata\n {items} \n Riprova se vuoi modificare altro\n digita 'principale' per tornare al menu inziale")
+    update.message.reply_text(f"Ok,done.Here there is the modified list\n {items} \n Try again if you want to modify something else or write Principale to go back to the main menu")
     
     return FARMER_TYPING
 
   elif text[0] == "Principale":
-    update.message.reply_text('Scegli tra:', reply_markup=reply_markupPrincipale_FARMER)
+    update.message.reply_text('Choose between:', reply_markup=reply_markupPrincipale_FARMER)
     return FARMER
 
   
 def attuatoriscelte(update: Update, context: CallbackContext) -> int:
   keyboard = [
         [
-            InlineKeyboardButton("Modificare la soglia dell'umidità", callback_data="newthreshold_humidity"),
-            InlineKeyboardButton("Accendere o spegnere la pompa", callback_data="pompaonoff"),
-            InlineKeyboardButton("Tornare al menu principale", callback_data="principale")
+            InlineKeyboardButton("Modify humidity threshold", callback_data="newthreshold_humidity"),
+            InlineKeyboardButton("Turn ON or OFF the pump", callback_data="pompaonoff"),
+            InlineKeyboardButton("Main Menu", callback_data="principale")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.edit_text(text="Cosa vuoi fare?", reply_markup=reply_markup)
+  update.callback_query.message.edit_text(text="Choose an option:", reply_markup=reply_markup)
   return FARMER
 
 def pompaonoff(update: Update, context: CallbackContext) -> int:
   keyboard = [
         [
-            InlineKeyboardButton("Pompa ON", callback_data="PompaON"),
-            InlineKeyboardButton("Pompa OFF", callback_data="PompaOFF"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="AS")
+            InlineKeyboardButton("Pump ON", callback_data="PompaON"),
+            InlineKeyboardButton("Pump OFF", callback_data="PompaOFF"),
+            InlineKeyboardButton("Last Menu", callback_data="AS")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.edit_text(text="Cosa vuoi fare?", reply_markup=reply_markup
+  update.callback_query.message.edit_text(text="Choose an option:", reply_markup=reply_markup
     )
   return FARMER
 
 def PompaON(update: Update, context: CallbackContext) -> int:
   
-  update.callback_query.message.edit_text(" Pompa accesa")
+  update.callback_query.message.edit_text(" Pump ON")
   #comando che attiva la pompa
-  keyboard = [
+   keyboard = [
         [
-            InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="AS")
+            InlineKeyboardButton("Main Menu", callback_data="main_fm"),
+            InlineKeyboardButton("Last Menu", callback_data="b1_4")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup    )
+  update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup    )
   return FARMER
 def PompaOFF(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text(" Pompa spenta")
+  update.callback_query.message.edit_text(" Pump OFF")
   #comando che disattiva la pompa
-  keyboard = [
+    keyboard = [
         [
-            InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="AS")
+            InlineKeyboardButton("Main Menu", callback_data="main_fm"),
+            InlineKeyboardButton("Last Menu", callback_data="b1_4")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup
+  update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup    )
     )
   return FARMER
 def listaCROPS(farmerid):
@@ -746,10 +746,10 @@ def NewThreshold_humidity_info(update: Update, context: CallbackContext) -> int:
   listacrops=listaCROPS(farmerid)
   
   update.callback_query.message.edit_text(text=f"{listacrops}")
-  update.callback_query.message.reply_text(text="Se vuoi modificare il valore minimo scrivi nome pianta+min + nuovo valore\n"
-  "se vuoi modificare il valore massimo scrivi nome pianta+ max+ nuovo valore\n"
-  "ad esempio 'peperoncino min 54'\n"
-  "oppure scrivi 'principale' per tornare al menu principale")
+  update.callback_query.message.reply_text(text="● If you want to modify the minimum value, write <plant name> + min + new value \n"
+  "● If you want to modify the maximum value, write <plant name> + max + new value \n"
+  "Example: 'Peperoncino min 44'\n"
+  "● Write Principale to go back to the main menu")
   return FARMER_TYPING_2
 
 def NewThreshold_humidity_reply(update: Update, context: CallbackContext) -> int:
@@ -760,13 +760,7 @@ def NewThreshold_humidity_reply(update: Update, context: CallbackContext) -> int
   farmer=json.loads(requests.get(url=f"{SERVER}/farmer/{farmerid}").text)
   plants=json.loads(requests.get(url=f"{SERVER}/plants").text)
   cropsowned=farmer["CROPS_OWNED"]
-  #keyboard = [
-       # [
-      #      InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
-     #       InlineKeyboardButton("Torna al menù precedente", callback_data="AS")
-    #    ]
-   # ]
-  #reply_markup = InlineKeyboardMarkup(keyboard)
+
 
   if text[0] == "Principale":
     update.message.reply_text('Scegli tra:', reply_markup=reply_markupPrincipale_FARMER)
@@ -780,7 +774,7 @@ def NewThreshold_humidity_reply(update: Update, context: CallbackContext) -> int
           modified_dict={"THRESHOLD_MOIST_MIN": int(text[2])}
           requests.post(url=f"{SERVER}/plant/{plantid}",json=modified_dict)
     lista=listaCROPS(farmerid)
-    update.message.reply_text(text=f"Ecco la lista aggiornata\n {lista}\n puoi continuare oppure scrivere 'principale' per tornare al menu principale")
+    update.message.reply_text(f"Ok,done.Here there is the modified list\n {lista} \n Try again if you want to modify something else or write Principale to go back to the main menu")
     return FARMER_TYPING_2
 
   elif text[1]=="max":
@@ -791,32 +785,32 @@ def NewThreshold_humidity_reply(update: Update, context: CallbackContext) -> int
           modified_dict={"THRESHOLD_MOIST_MAX": int(text[2])}
           requests.post(url=f"{SERVER}/plant/{plantid}",json=modified_dict)
     lista=listaCROPS(farmerid)
-    update.message.reply_text(text=f"Ecco la lista aggiornata\n {lista}, puoi continuare con un altro comando oppure  'principale' per tornare al menu principale")
+    update.message.reply_text(f"Ok,done.Here there is the modified list\n {lista} \n Try again if you want to modify something else or write Principale to go back to the main menu")
     return FARMER_TYPING_2
   return FARMER
 
 def Statistiche_first(update: Update, context: CallbackContext) -> int:
   keyboard = [
       [
-          InlineKeyboardButton("ThingsBoard - Grafici Statistiche", callback_data="thingsboard"),
-          InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
+          InlineKeyboardButton("ThingsBoard - Statistics", callback_data="thingsboard"),
+          InlineKeyboardButton("Main Menu", callback_data="principale"),
 
       ]
   ]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.edit_text(text="Cosa vuoi fare?", reply_markup=reply_markup)
+  update.callback_query.message.edit_text(text="Choose an option:", reply_markup=reply_markup)
   return FARMER
 
 def ThingsBoardFarmer(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text(text="Ecco il link di thingsboard")
+  update.callback_query.message.edit_text(text="Thingsboard link:")
   keyboard = [
-        [
-            InlineKeyboardButton("Tornare al menu principale", callback_data="principale"),
-            InlineKeyboardButton("Torna al menù precedente", callback_data="SF")
-        ]
-    ]
+         [
+            InlineKeyboardButton("Main Menu", callback_data="main_fm"),
+            InlineKeyboardButton("Last Menu", callback_data="b1_4")
+         ]
+     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.reply_text(text="Cosa vuoi fare?", reply_markup=reply_markup    )
+  update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup    )
   return FARMER
 
 
