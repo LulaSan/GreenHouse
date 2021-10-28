@@ -231,14 +231,13 @@ class FarmerClient():
         return  dispjson
     
     def items_greenhouse(self,GreenhouseID):
-        trovato=0
+        
         items_in_greenhouse=[]
         for i in range(len(self.FarmersList)):
             if GreenhouseID == self.FarmersList[i]["GREENHOUSE_ID"]:
                 items_in_greenhouse.append(self.FarmersList[i]["ITEMS_SELL"])
         displayjson=json.dumps(items_in_greenhouse,indent=4)
         return displayjson
-    
     
     def farmers_greenhouse(self,GreenhouseID):
         farmers_in_greenhouse=[]
@@ -326,7 +325,32 @@ class FarmerClient():
         self.FarmersList=farmerlistcopia
         self.updateJson()
         return f"ho rimosso {item}"
-                                    
+
+    def buyitem(self,FarmerID,item,quantity):
+        self.FarmerID=FarmerID
+        self.quantity=(quantity)
+        self.item=item
+        farmerlistcopia=self.FarmersList.copy()        
+        for i in range(len(self.FarmersList)):
+            if FarmerID==self.FarmersList[i]["FARMER_ID"]:
+                for j in range(len(self.FarmersList[i]["ITEMS_SELL"])):
+                    if self.item == self.FarmersList[i]["ITEMS_SELL"][j]["item"]:
+                        if int(quantity)<int(self.FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]): #se ne vuole meno, aggiorno la quantità disponibile
+                            self.FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]=int(self.FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"])-int(self.quantity)
+                            nuovadisponibile=self.FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]
+                            self.updateJson()
+                            print("ok")
+                            return( f" la quantità rimanente di {self.item} è {nuovadisponibile}")
+                        elif int(quantity)==int(self.FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]):
+                            #se vuole tutto ciò che è disponibile, elimino l'item
+                            del farmerlistcopia[i]["ITEMS_SELL"][j]
+                            self.FarmersList=farmerlistcopia
+                            self.updateJson()
+                            return ("hai chiesto tutta la quanittà disponibile, l'item è ora terminato")
+                        elif int(quantity)>int(self.FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]): # se ne vuole trppo --> error
+                            quantitadisponibile=self.FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]
+                            return (f"Quantità richiesta non disponibile, la quantità disponibile è {quantitadisponibile}")
+                                                        
     def updateJson(self):
         fp=open("Catalog.json",'r')
         catalog=json.load(fp)
@@ -344,42 +368,6 @@ class UserClient():
         prettylist=json.dumps(listausers,indent=4)
         return prettylist
     
-    def buyitem(self,FarmerID,item,quantity):
-        self.FarmerID=FarmerID
-        self.quantity=(quantity)
-        self.item=item
-        fp=open("Catalog.json",'r')
-        catalog=json.load(fp)
-        FarmersList=catalog["Farmers"]
-        farmerlistcopia=FarmersList.copy()
-        fp.close()
-        for i in range(len(FarmersList)):
-            if FarmerID==FarmersList[i]["FARMER_ID"]:
-                for j in range(len(FarmersList[i]["ITEMS_SELL"])):
-                    if self.item == FarmersList[i]["ITEMS_SELL"][j]["item"]:
-                        if int(quantity)<FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]: #se ne vuole meno, aggiorno la quantità disponibile
-                            FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]+= -int(self.quantity)
-                            nuovadisponibile=FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]
-                            self.updateJson(FarmersList)
-                            return f" la quantità rimanente di {self.item} è {nuovadisponibile}"
-
-                        elif int(quantity)==FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]:#se vuole tutto ciò che è disponibile, elimino l'item
-                                del farmerlistcopia[i]["ITEMS_SELL"][j]
-                                FarmersList=farmerlistcopia
-                                self.updateJson(FarmersList)
-                                return "hai chiesto tutta la quanittà disponibile, l'item è ora terminato"
-
-                        elif int(quantity)>FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]: # se ne vuole trppo --> error
-                            quantitadisponibile=FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]
-                            return f"Quantità richiesta non disponibile, la quantità disponibile è {quantitadisponibile}"
-                        
-    def updateJson(self,FarmersList):
-        self.FarmersList=FarmersList
-        fp=open("Catalog.json",'r')
-        catalog=json.load(fp)
-        fp.close()
-        catalog["Farmers"]=self.FarmersList
-        json.dump(catalog,open("Catalog.json",'w'),indent=4)
 
 
 
