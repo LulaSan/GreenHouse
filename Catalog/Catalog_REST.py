@@ -104,8 +104,9 @@ class CHERRY_CATALOG():
             output_post=str(self.farmer.addfarmer(uri[1],jsonBody_f))
         if uri[0]=='uporadditem':
             output_post=str(self.farmer.addItem(uri[1],uri[2],uri[3],uri[4]))
+        
         if uri[0]=='buyitem':
-            output_del=str(self.user.buyitem(uri[1],uri[2],uri[3]))
+            output_post=str(self.farmer.buyitem(uri[1],uri[2],uri[3]))
 
         return output_post
 
@@ -130,7 +131,7 @@ if __name__=="__main__":
 		    }
         }
     cherrypy.config.update({'server.socket_host': '0.0.0.0'})
-    cherrypy.config.update({'server.socket_port': 2000})
+    cherrypy.config.update({'server.socket_port': 3000})
     
     #cherrypy.engine.exit()
     cherrypy.quickstart(CHERRY_CATALOG(),'/',conf)
