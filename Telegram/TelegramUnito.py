@@ -711,7 +711,7 @@ def PompaON(update: Update, context: CallbackContext) -> int:
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup    )
+  update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup)
   return FARMER
 def PompaOFF(update: Update, context: CallbackContext) -> int:
   update.callback_query.message.edit_text(" Pump OFF")
