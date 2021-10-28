@@ -723,8 +723,7 @@ def PompaOFF(update: Update, context: CallbackContext) -> int:
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup    )
-    )
+  update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup)
   return FARMER
 def listaCROPS(farmerid):
   farmer=json.loads(requests.get(url=f"{SERVER}/farmer/{farmerid}").text)
