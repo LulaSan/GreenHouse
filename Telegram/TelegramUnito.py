@@ -168,7 +168,7 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
                         pprint(loggedUsers)
                         
                     #display greenhouse list
-                    update.message.reply_text(text=f"\nWelcome User {user_data["USER_ID"]}\n, choose an option or digit 'start' to come back to LOG IN",reply_markup=keyboardPrincipale_USER())
+                    update.message.reply_text(text=f"\nWelcome User\n, choose an option or digit 'start' to come back to LOG IN", reply_markup=keyboardPrincipale_USER())
                     return USER
 
         
