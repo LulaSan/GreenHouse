@@ -109,6 +109,7 @@ class Client():
             }
             #publish the new statistics
             self.client.myPublish("/p4iot/plants/{}/pump/statistics".format(bn), result)
+            # public to TB with API: /api/plugins/telemetry/ASSET/{assetId}/timeseries/SERVER_SCOPE
         else:
             return f"the device {bn} is not registered"
       
