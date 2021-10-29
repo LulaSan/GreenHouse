@@ -217,7 +217,6 @@ def buyitemuser(update: Update, context: CallbackContext) -> int:
   item=text[1]
   quantita=text[2]
   r=requests.post(f"{SERVER}/buyitem/{farmerID}/{item}/{quantita}").text
-  pprint(r)
   itemstobuy=json.loads(requests.get(url=f"{SERVER}/itemstobuy").text)
   update.message.reply_text(f"Ok, done! . Here there is the modified list : \n {itemstobuy} \n Try again if you want to modify something else \n Write 'principale' to go pack to the main menu")
 
