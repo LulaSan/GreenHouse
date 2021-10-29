@@ -1,0 +1,137 @@
+{
+    "Greenhouses": [
+        {
+            "GREENHOUSE_ID": "84F3EB33D049",
+            "NAME":"Sassari's Greenhouse",
+            "GREENHOUSE_LATITUDE": 42.067,
+            "GREENHOUSE_LONGITUDE": 8.9,
+            "STATUS_CONTROLL_HUMIDITY": 1,
+            "Status_actuor":1,##
+            "THRESHOLD_HUMID_MIN": 20,
+            "THRESHOLD_HUMID_MAX": 40,
+            "STATUS_CONTROLL_BRIGTH": 1, 
+            "THRESHOLD_BRIGHT_MIN": 20,
+            "THRESHOLD_BRIGHT_MAX": 50,
+            "STATUS_CONTROLL_TEMPER": 0, 
+            "THRESHOLD_TEMPER_MIN": 20,
+            "THRESHOLD_TEMPER_MAX": 35,
+            "BROKER_HOST": "127.0.0.1",
+            "BROKER_PORT": 1883,
+            "STATUS_TOPIC": "/p4iot/greenhouses/84F3EB33D049/status",
+            "COMMANDS_TOPIC": "/p4iot/greenhouses/84F3EB33D049/commands/+",
+            "SENSORS_TOPIC": "/p4iot/greenhouses/84F3EB33D049/sensors"
+        }
+    ],
+    "Plants": [
+        
+        {
+            "PLANT_ID": "aAAAAAAAAAAA",
+            "PLANT_NAME": "Peperoncino",
+            "GREENHOUSE_ID": "30AEA426603",
+            "BROKER_HOST": "p4iotgreenhouse.ddns.net",
+            "BROKER_PORT": 1884,
+            "STATUS_TOPIC": "/p4iot/plants/aAAAAAAAAAAA/status",
+            "COMMANDS_TOPIC": "/p4iot/plants/aAAAAAAAAAAA/commands/+",
+            "SENSORS_TOPIC": "/p4iot/plants/aAAAAAAAAAAA/sensors",
+            "OWNERS": [
+                1,
+                2
+            ],
+            "THRESHOLD_MOIST_MIN": 0,
+            "THRESHOLD_MOIST_MAX": 0
+        },
+        {
+            "PLANT_ID": "84F3EB33DB49",
+            "PLANT_NAME": "Peperoncino",
+            "GREENHOUSE_ID": "30AEA4266030",
+            "BROKER_HOST": "p4iotgreenhouse.ddns.net",
+            "BROKER_PORT": 1884,
+            "Pump_Statsu": 1, #ààà
+            "STATUS_TOPIC": "/p4iot/plants/84F3EB33DB49/status",
+            "COMMANDS_TOPIC": "/p4iot/plants/84F3EB33DB49/commands/+",
+            "SENSORS_TOPIC": "/p4iot/plants/84F3EB33DB49/sensors",
+            "OWNERS": [
+                1,
+                2
+            ],
+            "THRESHOLD_MOIST_MIN": 0,
+            "THRESHOLD_MOIST_MAX": 0
+        },
+        {
+            "PLANT_ID": "84F3EB33DCEB",
+            "PLANT_NAME": "Peperoncino",
+            "GREENHOUSE_ID": "30AEA4266030",
+            "BROKER_HOST": "p4iotgreenhouse.ddns.net",
+            "BROKER_PORT": 1884,
+            "STATUS_TOPIC": "/p4iot/plants/84F3EB33DCEB/status",
+            "COMMANDS_TOPIC": "/p4iot/plants/84F3EB33DCEB/commands/+",
+            "SENSORS_TOPIC": "/p4iot/plants/84F3EB33DCEB/sensors",
+            "OWNERS": [
+                1,
+                2
+            ],
+            "THRESHOLD_MOIST_MIN": 0,
+            "THRESHOLD_MOIST_MAX": 0
+        }
+    ],
+    "Farmers": [
+        {
+            "FARMER_ID": "1234",
+            "CROPS_OWNED": ["84F3EB33DB49"],
+
+            "ITEMS_SELL": [
+                {
+                    "item": "patate",
+                    "price": 13,
+                    "quantityAvailable": 45
+                },
+                {
+                    "item": "avocado",
+                    "price": 2,
+                    "quantityAvailable": 22
+                },
+                {
+                    "item": "avocfragoleado",
+                    "price": 2,
+                    "quantityAvailable": 22
+                }
+                
+            ]
+        },
+        {
+            "FARMER_ID": "5678",
+            "CROPS_OWNED": "aAAAAAAAAAAA",
+            "ITEMS_SELL": [
+                {
+                    "item": "patate",
+                    "price": 13,
+                    "quantityAvailable": 45
+                },
+                {
+                    "item": "avocado",
+                    "price": 2,
+                    "quantityAvailable": 22
+                },
+                {
+                    "item": "fragole",
+                
+                    "price": 2,
+                    "quantityAvailable": 22
+                }
+            
+    ]}],
+
+    "Users": [
+        {
+            "USER_ID": "123456"
+        }
+    ],
+
+    "Statistics": [
+        {
+            "water_period": "50",
+            "temperature_period": "60"
+        }
+    ]
+}
+
