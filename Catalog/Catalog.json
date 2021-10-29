@@ -36,101 +36,109 @@
     "Plants": [
         {
             "PLANT_ID": "84F3EB33DB49",
-            "PLANT_NAME": "Peperoncino",
+            "PLANT_NAME": "Pomodoro",
             "GREENHOUSE_ID": "30AEA4266030",
             "BROKER_HOST": "10.42.0.1",
             "BROKER_PORT": 1884,
             "STATUS_TOPIC": "/p4iot/plants/84F3EB33DB49/status",
             "COMMANDS_TOPIC": "/p4iot/plants/84F3EB33DB49/commands/+",
             "SENSORS_TOPIC": "/p4iot/plants/84F3EB33DB49/sensors",
-            "OWNERS": [
-                1,
-                2
-            ],
+            "OWNER": "Farmer1234",
             "THRESHOLD_MOIST_MIN": 1,
             "THRESHOLD_MOIST_MAX": 33
         },
         {
-            "PLANT_ID": "aAAAAAAAAAAA",
+            "PLANT_ID": "CFYG4567YGH",
             "PLANT_NAME": "Peperoncino",
-            "GREENHOUSE_ID": "30AEA426603",
+            "GREENHOUSE_ID": "ABCDEFG",
             "BROKER_HOST": "10.42.0.1",
             "BROKER_PORT": 1884,
-            "STATUS_TOPIC": "/p4iot/plants/aAAAAAAAAAAA/status",
-            "COMMANDS_TOPIC": "/p4iot/plants/aAAAAAAAAAAA/commands/+",
-            "SENSORS_TOPIC": "/p4iot/plants/aAAAAAAAAAAA/sensors",
-            "OWNERS": [
-                1,
-                2
-            ],
+            "STATUS_TOPIC": "/p4iot/plants/CFYG4567YGH/status",
+            "COMMANDS_TOPIC": "/p4iot/plants/CFYG4567YGH/commands/+",
+            "SENSORS_TOPIC": "/p4iot/plants/CFYG4567YGH/sensors",
+            "OWNER":"Farmer5678",
+            "THRESHOLD_MOIST_MIN": 0,
+            "THRESHOLD_MOIST_MAX": 0
+        },
+        {
+            "PLANT_ID": "CFYG4567YGBB",
+            "PLANT_NAME": "Fragola",
+            "GREENHOUSE_ID": "ABCDEFG",
+            "BROKER_HOST": "10.42.0.1",
+            "BROKER_PORT": 1884,
+            "STATUS_TOPIC": "/p4iot/plants/CFYG4567YGBB/status",
+            "COMMANDS_TOPIC": "/p4iot/plants/CFYG4567YGBB/commands/+",
+            "SENSORS_TOPIC": "/p4iot/plants/CFYG4567YGBB/sensors",
+            "OWNER": "Farmer5678",
             "THRESHOLD_MOIST_MIN": 0,
             "THRESHOLD_MOIST_MAX": 0
         },
         {
             "PLANT_ID": "84F3EB33D049",
-            "PLANT_NAME": "Bergamotto",
+            "PLANT_NAME": "Lattuga",
             "GREENHOUSE_ID": "30AEA4266030",
             "BROKER_HOST": "10.42.0.1",
             "BROKER_PORT": 1884,
             "STATUS_TOPIC": "/p4iot/plants/84F3EB33DB49/status",
             "COMMANDS_TOPIC": "/p4iot/plants/84F3EB33DB49/commands/+",
             "SENSORS_TOPIC": "/p4iot/plants/84F3EB33DB49/sensors",
-            "OWNERS": [
-                1,
-                2
-            ],
+            "OWNER": "Farmer1234",
+            "THRESHOLD_MOIST_MIN": 54,
+            "THRESHOLD_MOIST_MAX": 0
+        },
+        {
+            "PLANT_ID": "84F3EB35GBD88",
+            "PLANT_NAME": "Fragola",
+            "GREENHOUSE_ID": "30AEA4266030",
+            "BROKER_HOST": "10.42.0.1",
+            "BROKER_PORT": 1884,
+            "STATUS_TOPIC": "/p4iot/plants/84F3EB35GBD88/status",
+            "COMMANDS_TOPIC": "/p4iot/plants/84F3EB35GBD88/commands/+",
+            "SENSORS_TOPIC": "/p4iot/plants/84F3EB35GBD88/sensors",
+            "OWNER":  "Farmer1234",
             "THRESHOLD_MOIST_MIN": 54,
             "THRESHOLD_MOIST_MAX": 0
         }
     ],
     "Farmers": [
         {
-            "FARMER_ID": "1234",
+            "FARMER_ID": "Farmer1234",
             "GREENHOUSE_ID":"30AEA4266030",
             "CROPS_OWNED": [
                 "84F3EB33DB49",
-                "84F3EB33D049"
+                "84F3EB33D049",
+                "84F3EB35GBD88"
             ],
             "ITEMS_SELL": [
                 {   
-                    "item": "avocado",
+                    "item": "Pomodoro",
                     "price": 2,
                     "quantityAvailable": 22
                 },
                 {   
-                    "item": "pompelmo",
-                    "price": 87,
+                    "item": "Lattuga",
+                    "price": 1,
                     "quantityAvailable": 7
                 },
                 {
-                    "item": "fragole",
-                    "price": 2000,
+                    "item": "Fragole",
+                    "price": 3,
                     "quantityAvailable": 15
-                },
-                {
-                    "item": "patate",
-                    "price": 2,
-                    "quantityAvailable": 20
                 }
             ]
         },
         {
-            "FARMER_ID": "5678",
+            "FARMER_ID": "Farmer5678",
             "GREENHOUSE_ID":"ABCDEFG",
-            "CROPS_OWNED": "",
+            "CROPS_OWNED": ["CFYG4567YGH","CFYG4567YGBB"],
             "ITEMS_SELL": [
                 {
-                    "item": "patate",
-                    "price": 13,
+                    "item": "Peperoncino",
+                    "price": 5,
                     "quantityAvailable": 45
                 },
                 {
-                    "item": "avocado",
-                    "price": 2,
-                    "quantityAvailable": 22
-                },
-                {
-                    "item": "fragole",
+                    "item": "Fragole",
                     "price": 2,
                     "quantityAvailable": 22
                 }
@@ -139,17 +147,17 @@
     ],
     "Users": [
         {
-            "USER_ID": "123456"
+            "USER_ID": "User1234"
         },
-        { "USER_ID": "luisa97"
+        { "USER_ID": "User5678"
         }
     ],
     "Admins": [
         {
-            "ADMIN_ID":"1234"
+            "ADMIN_ID":"Admin1234"
         },
         {
-            "ADMIN_ID":"4567"
+            "ADMIN_ID":"Admin5678"
         }
     ],
     "Statistics": [
