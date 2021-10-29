@@ -102,7 +102,7 @@
     ],
     "Farmers": [
         {
-            "FARMER_ID": "Farmer1234",
+            "FARMER_ID": "1234",
             "GREENHOUSE_ID":"30AEA4266030",
             "CROPS_OWNED": [
                 "84F3EB33DB49",
@@ -128,7 +128,7 @@
             ]
         },
         {
-            "FARMER_ID": "Farmer5678",
+            "FARMER_ID": "5678",
             "GREENHOUSE_ID":"ABCDEFG",
             "CROPS_OWNED": ["CFYG4567YGH","CFYG4567YGBB"],
             "ITEMS_SELL": [
@@ -147,17 +147,17 @@
     ],
     "Users": [
         {
-            "USER_ID": "User1234"
+            "USER_ID": "12344"
         },
-        { "USER_ID": "User5678"
+        { "USER_ID": "56788"
         }
     ],
     "Admins": [
         {
-            "ADMIN_ID":"Admin1234"
+            "ADMIN_ID":"12345"
         },
         {
-            "ADMIN_ID":"Admin5678"
+            "ADMIN_ID":"56789"
         }
     ],
     "Statistics": [
