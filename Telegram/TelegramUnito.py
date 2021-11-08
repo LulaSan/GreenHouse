@@ -596,7 +596,7 @@ def displaylist(update: Update, context: CallbackContext) -> int:
   farmerid=user_data["LOGID"]
   singolo=json.loads(requests.get(url=SERVER+f"/farmer/{farmerid}").text)
   items=singolo["ITEMS_SELL"]
-  update.callback_query.message.edit_text(text=f"\n Here there are your available items  \n{items}"
+  update.callback_query.message.edit_text(text=f"\n Here there are your available items  \n{items}\n"
                                      "● To add something write:  write 'add <item name>, <price> e <quanity> separated by one space\n"
                                      "● To modify something write:  write 'modify <item name>, <price> e <quanity> separated by one space\n "
                                      "● To remove something write:  write 'remove <item name> separated by one space\n"
