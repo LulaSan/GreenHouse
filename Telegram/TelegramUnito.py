@@ -123,14 +123,14 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
                 user_data["LOGID"]= text # Il LOGID è l'input da tastiera, ed è nel catalog il FARMER_ID
                 pprint(user_data)
 
-            for j in range(len(loggedUsers)):  # o qui
-                if oldid == loggedUsers[j]["CHATID"]:
-                    loggedUsers[j]["LOGID"]=str(text)
-                    update_catalog(loggedUsers)
-                    pprint(loggedUsers)
-                            
-                    update.message.reply_text(f'Welcome {user_data["LOGID"]}! \n Write "start" if you want to go back to log in \nChoose between:', reply_markup=reply_markupPrincipale_FARMER)
-                    return FARMER
+                for j in range(len(loggedUsers)):  # o qui
+                    if oldid == loggedUsers[j]["CHATID"]:
+                        loggedUsers[j]["LOGID"]=str(text)
+                        update_catalog(loggedUsers)
+                        pprint(loggedUsers)
+
+                        update.message.reply_text(f'Welcome {user_data["LOGID"]}! \n Write "start" if you want to go back to log in \nChoose between:', reply_markup=reply_markupPrincipale_FARMER)
+                        return FARMER
         
     elif tipo=='A':
         for i in range(len(listaAdmins)):
