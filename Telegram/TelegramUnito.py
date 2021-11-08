@@ -305,67 +305,47 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
   elif text[0] == "3":
     new_value = {"THRESHOLD_BRIGHT_MIN": int(text[1])}
     res = requests.post(SERVER+f"/greenhouse/{greenhouse_id}",json=new_value)
-
-    if res.status_code == 500:
-      update.message.reply_text(text="New threshold updated")
-      keyboard = [[
-          InlineKeyboardButton("Main Menu", callback_data="main_fm"),
-          ]]
-      reply_markup = InlineKeyboardMarkup(keyboard)
-      update.message.reply_text(text="Main Menu", reply_markup=reply_markup)
-      return LEVEL1
-      
-    else:
-      update.message.reply_text(text="Server Error")
-      return ADMIN_TYPING_2
+    update.message.reply_text(text="New threshold updated")
+    
+    keyboard = [[
+      InlineKeyboardButton("Main menu", callback_data="main_fm"),
+      ]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.message.reply_text(text="Main menu", reply_markup=reply_markup)
+    return LEVEL1
   elif text[0] == "4":
     new_value = {"THRESHOLD_BRIGHT_MAX": int(text[1])}
     res = requests.post(SERVER+f"/greenhouse/{greenhouse_id}",json=new_value)
-
-    if res.status_code == 500:
-      update.message.reply_text(text="New threshold updated")
-      keyboard = [[
-          InlineKeyboardButton("Main Menu", callback_data="main_fm"),
-          ]]
-      reply_markup = InlineKeyboardMarkup(keyboard)
-      update.message.reply_text(text="Main Menu", reply_markup=reply_markup)
-      return LEVEL1
-      
-    else:
-      update.message.reply_text(text="Server Error")
-      return ADMIN_TYPING_2
+    update.message.reply_text(text="New threshold updated")
+    
+    keyboard = [[
+      InlineKeyboardButton("Main menu", callback_data="main_fm"),
+      ]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.message.reply_text(text="Main menu", reply_markup=reply_markup)
+    return LEVEL1
   elif text[0] == "5":
     new_value = {"THRESHOLD_TEMPER_MIN": int(text[1])}
     res = requests.post(SERVER+f"/greenhouse/{greenhouse_id}",json=new_value)
-
-    if res.status_code == 200:
-      update.message.reply_text(text="New threshold updated")
-      keyboard = [[
-          InlineKeyboardButton("Main Menu", callback_data="main_fm"),
-          ]]
-      reply_markup = InlineKeyboardMarkup(keyboard)
-      update.message.reply_text(text="Main Menu", reply_markup=reply_markup)
-      return LEVEL1
-      
-    else:
-      update.message.reply_text(text="Server Error")
-      return ADMIN_TYPING_2
+    update.message.reply_text(text="New threshold updated")
+    
+    keyboard = [[
+      InlineKeyboardButton("Main menu", callback_data="main_fm"),
+      ]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.message.reply_text(text="Main menu", reply_markup=reply_markup)
+    return LEVEL1
   elif text[0] == "6":
     new_value = {"THRESHOLD_TEMPER_MAX": int(text[1])}
     res = requests.post(SERVER+f"/greenhouse/{greenhouse_id}",json=new_value)
-
-    if res.status_code == 500:
-      update.message.reply_text(text="New threshold updated")
-      keyboard = [[
-          InlineKeyboardButton("Main Menu", callback_data="main_fm"),
-          ]]
-      reply_markup = InlineKeyboardMarkup(keyboard)
-      update.message.reply_text(text="Main Menu", reply_markup=reply_markup)
-      return LEVEL1
-      
-    else:
-      update.message.reply_text(text="Server Error")
-      return ADMIN_TYPING_2
+    update.message.reply_text(text="New threshold updated")
+    
+    keyboard = [[
+      InlineKeyboardButton("Main menu", callback_data="main_fm"),
+      ]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.message.reply_text(text="Main menu", reply_markup=reply_markup)
+    return LEVEL1
   else:
     update.message.reply_text('Wrong command, try again')
     return ADMIN_TYPING_2
@@ -589,9 +569,9 @@ def ItemMessage(update: Update, context: CallbackContext) -> int:
    
   keyboard = [[ InlineKeyboardButton("Main Menu", callback_data="main_fm") ]]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.reply_text(text=f"\n The plants in this GreenHouse are : \n{plant_in_greenhouse}" 
-                                           f"The farmers in this GreenHouse are: \n {farmers_ids}"
-                                          f" The items for sale in this GreenHouse are: \n {items_greenhouse}",reply_markup=reply_markup)
+  update.callback_query.message.reply_text(text=f"\n The plants in this GreenHouse are : \n{plant_in_greenhouse} \n" 
+                                           f"\n The farmers in this GreenHouse are: \n {farmers_ids} \n"
+                                          f" \n The items for sale in this GreenHouse are: \n {items_greenhouse} \n",reply_markup=reply_markup)
   return LEVEL1
 
 
