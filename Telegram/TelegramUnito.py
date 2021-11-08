@@ -299,7 +299,7 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
     new_value = {"THRESHOLD_HUMID_MAX": int(text[1])}
     res = requests.post(SERVER+f"/greenhouse/{greenhouse_id}",json=new_value)
 
-    if res.status_code == 200:
+    if res.status_code == 500:
       update.message.reply_text(text="New threshold updated")
       keyboard = [[
           InlineKeyboardButton("Main Menu", callback_data="main_fm"),
@@ -316,7 +316,7 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
     new_value = {"THRESHOLD_BRIGHT_MIN": int(text[1])}
     res = requests.post(SERVER+f"/greenhouse/{greenhouse_id}",json=new_value)
 
-    if res.status_code == 200:
+    if res.status_code == 500:
       update.message.reply_text(text="New threshold updated")
       keyboard = [[
           InlineKeyboardButton("Main Menu", callback_data="main_fm"),
@@ -332,7 +332,7 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
     new_value = {"THRESHOLD_BRIGHT_MAX": int(text[1])}
     res = requests.post(SERVER+f"/greenhouse/{greenhouse_id}",json=new_value)
 
-    if res.status_code == 200:
+    if res.status_code == 500:
       update.message.reply_text(text="New threshold updated")
       keyboard = [[
           InlineKeyboardButton("Main Menu", callback_data="main_fm"),
@@ -364,7 +364,7 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
     new_value = {"THRESHOLD_TEMPER_MAX": int(text[1])}
     res = requests.post(SERVER+f"/greenhouse/{greenhouse_id}",json=new_value)
 
-    if res.status_code == 200:
+    if res.status_code == 500:
       update.message.reply_text(text="New threshold updated")
       keyboard = [[
           InlineKeyboardButton("Main Menu", callback_data="main_fm"),
@@ -422,7 +422,7 @@ def ThingsBoard(update: Update, context: CallbackContext) -> int:
 
 def NewThreshold_period(update: Update, context: CallbackContext) -> int:
   user_data=context.user_data
-  adminid=user_data["LOGID"]
+  adminid=user_data["ADMINID"]
   text = update.message.text.split(" ")
   tipologia=text[0]
   
