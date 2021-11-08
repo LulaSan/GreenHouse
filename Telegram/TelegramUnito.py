@@ -282,7 +282,7 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
     new_value = {"THRESHOLD_HUMID_MIN": int(text[1])}
     res = requests.post(SERVER+f"/greenhouse/{greenhouse_id}",json=new_value)
 
-    if res.status_code == 200:
+    if res.status_code == 500:
       update.message.reply_text(text="New threshold updated")
       keyboard = [[
           InlineKeyboardButton("Main menu", callback_data="main_fm"),
@@ -381,6 +381,26 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
     return ADMIN_TYPING_2
  
 
+def Green_House_Parameters(update: Update, context: CallbackContext) -> int:
+  user_data=context.user_data
+  greenhouse_id=user_data["CHOSEN_GREENHOUSEID"]
+  THRESHOLD_HUMID_MIN=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_HUMID_MIN").text
+  THRESHOLD_HUMID_MAX=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_HUMID_MAX").text
+  THRESHOLD_BRIGHT_MIN=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_BRIGHT_MIN").text
+  THRESHOLD_BRIGHT_MAX=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_BRIGHT_MAX").text
+  THRESHOLD_TEMPER_MIN=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_TEMPER_MIN").text
+  THRESHOLD_TEMPER_MAX=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_TEMPER_MAX").text
+  update.callback_query.message.reply_text(text=f"If you want to modify some parameter write the correspondant number + new value:\n"
+  "Accanto è indicato il valore attuale"
+  f"1) Low humidity threshold: {THRESHOLD_HUMID_MIN}\n"
+  f"2) High humidity threshold: {THRESHOLD_HUMID_MAX}\n"
+  f"3) Low bright threshold:{THRESHOLD_BRIGHT_MIN} \n"
+  f"4) High bright threshold: {THRESHOLD_BRIGHT_MAX}\n"
+  f"5) Low temperature threshold: {THRESHOLD_TEMPER_MIN} \n"
+  f"6) High temperature threshold:{THRESHOLD_TEMPER_MAX} \n"
+  "\n scrivi 'Principale' se vuoi tornare al menu principale")
+    
+  return ADMIN_TYPING_2
 
 def Actuators(update: Update, context: CallbackContext) -> int:
   update.callback_query.message.edit_text("Choose an option:",reply_markup=actuator_control_keyboard())
@@ -565,26 +585,6 @@ def NewThreshold_message(update: Update, context: CallbackContext) -> int:
                                            "or write 'principale' to go back to main menu")
   return ADMIN_TYPING
 
-def Green_House_Parameters(update: Update, context: CallbackContext) -> int:
-  user_data=context.user_data
-  greenhouse_id=user_data["CHOSEN_GREENHOUSEID"]
-  THRESHOLD_HUMID_MIN=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_HUMID_MIN").text
-  THRESHOLD_HUMID_MAX=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_HUMID_MAX").text
-  THRESHOLD_BRIGHT_MIN=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_BRIGHT_MIN").text
-  THRESHOLD_BRIGHT_MAX=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_BRIGHT_MAX").text
-  THRESHOLD_TEMPER_MIN=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_TEMPER_MIN").text
-  THRESHOLD_TEMPER_MAX=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_TEMPER_MAX").text
-  update.callback_query.message.reply_text(text=f"If you want to modify some parameter write the correspondant number + new value:\n"
-  "Accanto è indicato il valore attuale"
-  f"1) Low humidity threshold: {THRESHOLD_HUMID_MIN}\n"
-  f"2) High humidity threshold: {THRESHOLD_HUMID_MAX}\n"
-  f"3) Low bright threshold:{THRESHOLD_BRIGHT_MIN} \n"
-  f"4) High bright threshold: {THRESHOLD_BRIGHT_MAX}\n"
-  f"5) Low temperature threshold: {THRESHOLD_TEMPER_MIN} \n"
-  f"6) High temperature threshold:{THRESHOLD_TEMPER_MAX} \n"
-  "\n scrivi 'Principale' se vuoi tornare al menu principale")
-    
-  return ADMIN_TYPING_2
 
 def ItemMessage(update: Update, context: CallbackContext) -> int:
   user_data=context.user_data
