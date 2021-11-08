@@ -281,36 +281,26 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
     #greenhouse[0]["THRESHOLD_HUMID_MIN"]= int(text[1])
     new_value = {"THRESHOLD_HUMID_MIN": int(text[1])}
     res = requests.post(SERVER+f"/greenhouse/{greenhouse_id}",json=new_value)
-
-    if res.status_code == 500:
-      update.message.reply_text(text="New threshold updated")
-      keyboard = [[
-          InlineKeyboardButton("Main menu", callback_data="main_fm"),
-          ]]
-      reply_markup = InlineKeyboardMarkup(keyboard)
-      update.message.reply_text(text="Main menu", reply_markup=reply_markup)
-      return LEVEL1
-
-    else:
-      update.message.reply_text(text="Server Error")
-      return ADMIN_TYPING_2
+    update.message.reply_text(text="New threshold updated")
+    
+    keyboard = [[
+      InlineKeyboardButton("Main menu", callback_data="main_fm"),
+      ]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.message.reply_text(text="Main menu", reply_markup=reply_markup)
+    return LEVEL1
        
   elif text[0] == "2":
     new_value = {"THRESHOLD_HUMID_MAX": int(text[1])}
     res = requests.post(SERVER+f"/greenhouse/{greenhouse_id}",json=new_value)
-
-    if res.status_code == 500:
-      update.message.reply_text(text="New threshold updated")
-      keyboard = [[
-          InlineKeyboardButton("Main Menu", callback_data="main_fm"),
-          ]]
-      reply_markup = InlineKeyboardMarkup(keyboard)
-      update.message.reply_text(text="Main menu", reply_markup=reply_markup)
-      return LEVEL1
-      
-    else:
-      update.message.reply_text(text="Server Error")
-      return ADMIN_TYPING_2
+    update.message.reply_text(text="New threshold updated")
+    
+    keyboard = [[
+      InlineKeyboardButton("Main menu", callback_data="main_fm"),
+      ]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.message.reply_text(text="Main menu", reply_markup=reply_markup)
+    return LEVEL1
 
   elif text[0] == "3":
     new_value = {"THRESHOLD_BRIGHT_MIN": int(text[1])}
