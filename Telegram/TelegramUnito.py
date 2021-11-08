@@ -677,8 +677,8 @@ def PompaON(update: Update, context: CallbackContext) -> int:
   #comando che attiva la pompa
   keyboard = [
         [
-            InlineKeyboardButton("Main Menu", callback_data="main_fm"),
-            InlineKeyboardButton("Last Menu", callback_data="b1_4")
+            InlineKeyboardButton("Main Menu", callback_data="principale"),
+            InlineKeyboardButton("Last Menu", callback_data="AS")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
@@ -689,8 +689,8 @@ def PompaOFF(update: Update, context: CallbackContext) -> int:
   #comando che disattiva la pompa
   keyboard = [
         [
-            InlineKeyboardButton("Main Menu", callback_data="main_fm"),
-            InlineKeyboardButton("Last Menu", callback_data="b1_4")
+            InlineKeyboardButton("Main Menu", callback_data="principale"),
+            InlineKeyboardButton("Last Menu", callback_data="AS")
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
