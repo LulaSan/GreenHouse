@@ -129,8 +129,8 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
                     update_catalog(loggedUsers)
                     pprint(loggedUsers)
                             
-                update.message.reply_text(f'Welcome {user_data["LOGID"]}! \n Choose between:', reply_markup=reply_markupPrincipale_FARMER)
-                return FARMER
+                    update.message.reply_text(f'Welcome {user_data["LOGID"]}! \n Choose between:', reply_markup=reply_markupPrincipale_FARMER)
+                    return FARMER
         
     elif tipo=='A':
         for i in range(len(listaAdmins)):
