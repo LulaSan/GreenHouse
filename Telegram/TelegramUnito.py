@@ -643,7 +643,7 @@ def uporadditemfarmer(update: Update, context: CallbackContext) -> int:
     return FARMER_TYPING
 
   elif text[0] == "Principale":
-    update.message.reply_text('Choose between:', reply_markup=reply_markupPrincipale_FARMER)
+    update.message.reply_text('Write "start" if you want to go back to LOG IN \n Choose between:', reply_markup=reply_markupPrincipale_FARMER)
     return FARMER
 
   
