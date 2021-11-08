@@ -129,8 +129,8 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
                     update_catalog(loggedUsers)
                     pprint(loggedUsers)
                             
-            update.message.reply_text(f'Welcome {user_data["LOGID"]}! \n Choose between:', reply_markup=reply_markupPrincipale_FARMER)
-            return FARMER
+                update.message.reply_text(f'Welcome {user_data["LOGID"]}! \n Choose between:', reply_markup=reply_markupPrincipale_FARMER)
+                return FARMER
         
     elif tipo=='A':
         for i in range(len(listaAdmins)):
@@ -151,6 +151,7 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
                     pprint(greenhouselist)
                     update.message.reply_text(text=f"\Welcome Admin!\n Here there are the available greenhouses \n{greenhouselist}\n Which greenhouse do you want to manage?\n")
                     return ADMIN
+                
 
     elif tipo=='U':
         for i in range(len(listaUsers)):
@@ -170,12 +171,13 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
                     #display greenhouse list
                     update.message.reply_text(text=f"\nWelcome User\n, choose an option or digit 'start' to come back to LOG IN", reply_markup=keyboardPrincipale_USER())
                     return USER
+    if trovato==0:
+        update.message.reply_text('Ups! Wrong LOG_ID, try again.')
+        return SIGNIN
 
         
 
-    if trovato==0:
-      update.message.reply_text('Ups! Wrong LOG_ID, try again.')
-      return SIGNIN
+        
 
 
 
