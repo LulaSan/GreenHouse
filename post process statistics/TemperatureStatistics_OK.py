@@ -6,31 +6,31 @@ import time
 import paho.mqtt.client as mqtt
 
 class TemperatureStatistics():
-    #def __init__(self,bn,minimum,maximum,avarage,act_time,moisture):
-    def __init__(self,moisture,data,bn,ts):
-        #ho tutti i valori precedenti delle medie, corrispondenti a bn
+    def __init__(self,temperature,data,bn,ts):
         self.bn=bn
-        self.moisture=moisture
+        self.temperature=temperature
         self.time=ts
         self.minimum=data['min']
         self.maximum=data['max']
         self.total=data['total']
         self.samples=data['sample']
-        self.status=data['status']
+        
 
     def avarage(self):
         avg = self.total / self.samples
         return avg
+
     def max(self,):
-        if self.moisture > self.maximum:
-            self.maximum = self.moisture
+        if self.temperature > self.maximum:
+            self.maximum = self.temperature
         return self.maximum
+        
     def min(self,):
-        if self.moisture < self.minimum:
-            self.minimum = self.moisture
+        if self.temperature < self.minimum:
+            self.minimum = self.temperature
         return self.minimum
 
-class Client():
+class Client_temperature():
     def __init__(self,clientID,topic,broker,port):
         register={}
         self.clientID=clientID
@@ -53,6 +53,10 @@ class Client():
         self.client=MyMQTT(clientID,broker,port,self)
         self.client.start()
         self.client.mySubscribe(self.topic)
+        #TB start
+        self.TBclient = mqtt.Client()
+        self.TBclient.connect('demo.thingsboard.io',1883,60)
+        self.TBclient.loop_start()
     
 
     def notify(self,topic,msg):
@@ -69,8 +73,8 @@ class Client():
                 print(f"The level of the battery is less than 10%. Please recharge the battery related to the sensor {bn}")
             self.register[bn]['total'] += temperature
             self.register[bn]['sample'] += 1
-            #creo un oggetto con i dati correnti per poter calcolare le statistiche
-            current_data=TemperatureStatistics(moisture,self.register[bn],bn,ts)
+            current_data=TemperatureStatistics(temperature,self.register[bn],bn,ts)
+
             #aggiorno le statistiche per pubblicarle
             self.register[bn].update({
                 'bn':bn,
@@ -86,7 +90,9 @@ class Client():
                 'avg':current_data.avarage()
             }
             #publish the new statistics
-            self.client.myPublish("/p4iot/greenhouse/{}/temperature/statistics".format(bn), result)
+            #self.client.myPublish("/p4iot/greenhouse/{}/temperature/statistics".format(bn), result)
+            self.TBclient.username_pw_set(bn)
+            self.TBclient.publish('v1/devices/me/telemetry',json.dumps(result))
         else:
             return f"the device {bn} is not registered"
       
@@ -103,14 +109,15 @@ if __name__=="__main__":
     # Si accede al catalog per ottenere l'IP e la porta del broker e il periodo di aggiornamento dati
     json_dic = json.loads(json_str)
     #response=requests.get("http://p4iotgreenhouse.ddns.net:2000/plants")
-    response = requests.get(str("http://"+str(json_dic["broker"])+':'+str(json_dic["port"])+str(json_dic["path"])))
-    
+    #response = requests.get(str("http://"+str(json_dic["broker"])+':'+str(json_dic["port"])+str(json_dic["path"])))
+    response = requests.get(str("http://localhost:2000/plants"))
+
     if response.status_code == 200:
         content=json.loads(response.text)
-        broker = str(content[0]["BROKER_HOST"]) 
-        port = int(content[0]["BROKER_PORT"])
-        #broker="3.139.73.64"
-        #port=1884
+        #broker = str(content[0]["BROKER_HOST"]) 
+        #port = int(content[0]["BROKER_PORT"])
+        broker="localhost"
+        port=1883
         print( response.status_code)
         #ottengo la lista completa delle piante registrate nel catalog
         for p in range(len(content)):
@@ -118,13 +125,12 @@ if __name__=="__main__":
         
         print(IDlist)
     else:
-        print(f'status code:{r.status_code} error during the request')
+        print(f'status code:{response.status_code} error during the request')
         
 
     clientID='TemperatureStatistics'
-    c=Client(clientID,"/p4iot/greenhouses/+/sensors",broker,port)
+    c=Client_temperature(clientID,"/p4iot/greenhouses/+/sensors",broker,port)
     c.start()
 
-    ####while connect_flag==1: #aggiungere connect_flag in MyMQTT in on_connect function (better?)
     while True:
-        time.sleep(1)
+        time.sleep(5)
