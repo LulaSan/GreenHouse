@@ -41,7 +41,7 @@ class PumpStatistics():
             self.toff = self.time
         
         return self.activation_time , self.toff ,self.ton
-class Client():
+class Client_statistics():
     def __init__(self,clientID,topic,broker,port):
         register = {}
         self.clientID=clientID
@@ -68,13 +68,19 @@ class Client():
         self.client=MyMQTT(clientID,broker,port,self)
         self.client.start()
         self.client.mySubscribe(self.topic)
+        #TB start
+        self.TBclient = mqtt.Client()
+        self.TBclient.connect('demo.thingsboard.io',1883,60)
+        self.TBclient.loop_start()
+        
     
 
     def notify(self,topic,msg):
         payload=json.loads(msg) #from payload i receive a string message-> convert it in a json 
         moisture=payload["moisture"] #from the payload.json i set all the variable 
         bn=str(payload["bn"])#id
-        ts=float(payload["ts"])
+        self.bn=bn
+        ts=payload["ts"]
         status=payload["pump"]
         battery=payload["batt"]
         
@@ -108,10 +114,11 @@ class Client():
                 'activation_time':current_data.activation()[0],
             }
             #publish the new statistics
-            self.client.myPublish("/p4iot/plants/{}/pump/statistics".format(bn), result)
+            #self.client.myPublish("p4iot/plants/{}/pump/statistics".format(bn), result)
             # public to TB with API:
-            self.client.username_pw_set(bn)
-            self.client.publish('v1/devices/me/telemetry',json.dumps(result))
+            self.TBclient.username_pw_set(bn)
+            self.TBclient.publish('v1/devices/me/telemetry',json.dumps(result))
+            print(bn)
         else:
             return f"the device {bn} is not registered"
       
@@ -129,14 +136,14 @@ if __name__=="__main__":
 
     json_dic = json.loads(json_str)
     #response=requests.get("http://p4iotgreenhouse.ddns.net:2000/plants")
-    response = requests.get(str("http://"+str(json_dic["broker"])+':'+str(json_dic["port"])+str(json_dic["path"])))
-    
+    #response = requests.get(str("http://"+str(json_dic["broker"])+':'+str(json_dic["port"])+str(json_dic["path"])))
+    response = requests.get(str("http://localhost:2000/plants"))
     if response.status_code == 200:
         content=json.loads(response.text)
-        broker = str(content[0]["BROKER_HOST"]) #quello sul catalog è sbagliato
-        port = int(content[0]["BROKER_PORT"])
-        #broker="3.139.73.64"
-        #port=1884
+        #broker = str(content[0]["BROKER_HOST"]) #quello sul catalog è sbagliato
+        #port = int(content[0]["BROKER_PORT"])
+        broker="localhost"
+        port=1883
         
         #ottengo la lista completa delle piante registrate nel catalog
         for p in range(len(content)):
@@ -148,9 +155,8 @@ if __name__=="__main__":
         
 
     clientID='Statistics'       #devo prenderlo dal catalog?
-    c=Client(clientID,"/p4iot/plants/+/sensors",broker,port)
+    c=Client_statistics('Claudio',"/p4iot/plants/+/sensors",broker,port)
     c.start()
 
-    #while connect_flag==1: #aggiungere connect_flag in MyMQTT in on_connect function
     while True:
         time.sleep(5)
