@@ -144,7 +144,7 @@ if __name__=="__main__":
         
         print(IDlist)
     else:
-        print(f'status code:{r.status_code} error during the request')
+        print(f'status code:{response.status_code} error during the request')
         
 
     clientID='Statistics'       #devo prenderlo dal catalog?
