@@ -121,7 +121,7 @@ if __name__=="__main__":
         json_str = file.read()
         file.close()
     except:
-        print("Error in reading settings_temperature.json file!")
+        print("Error in reading settings_watering.json file!")
     
     # Si accede al catalog per ottenere l'IP e la porta del broker e il periodo di aggiornamento dati
 
