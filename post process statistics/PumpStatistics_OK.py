@@ -145,8 +145,8 @@ if __name__=="__main__":
         print(f'status code:{r.status_code} error during the request')
         
 
-    clientID='ADMIN'#devo prenderlo dal catalog?
-    c=Client("Claudio","/p4iot/plants/+/sensors",broker,port)
+    clientID='Statistics'       #devo prenderlo dal catalog?
+    c=Client(clientID,"/p4iot/plants/+/sensors",broker,port)
     c.start()
 
     #while connect_flag==1: #aggiungere connect_flag in MyMQTT in on_connect function
