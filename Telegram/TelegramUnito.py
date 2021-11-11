@@ -199,9 +199,6 @@ def keyboardPrincipale_USER():
 
 def displaylist_USER(update: Update, context: CallbackContext) -> int:
   user_data=context.user_data
-  #1. stampo lista  2. chiedo di scrivere se nuovo nome item, prezzo e quantità separati da spazi
-  #3. chiedo di scrivere "modifica prezzo patate 2/ modifica quantità patate 3 "
-  # farmerid=user_data["LOGID"]
   itemstobuy=json.loads(requests.get(url=f"{SERVER}/itemstobuy").text)
   update.callback_query.message.edit_text(text=f"\nHere there are available items: \n{itemstobuy}\n"
                                      "If you want to buy something, write in this order :  Farmer ID, item name and desired quantity \n ")
@@ -212,15 +209,15 @@ def buyitemuser(update: Update, context: CallbackContext) -> int:
   user_data=context.user_data
   # farmerid=user_data["LOGID"]
   text = update.message.text.split(" ")
-  if text[0] == "principale":
-    update.message.reply_text('Choose between:', reply_markup=keyboardPrincipale_USER)
+  if text[0] == "Principale":
+    update.message.reply_text('Choose between:', reply_markup=keyboardPrincipale_USER())
     return USER
   farmerID=text[0]
   item=text[1]
   quantita=text[2]
   r=requests.post(f"{SERVER}/buyitem/{farmerID}/{item}/{quantita}").text
   itemstobuy=json.loads(requests.get(url=f"{SERVER}/itemstobuy").text)
-  update.message.reply_text(f"Ok, done! . Here there is the modified list : \n {itemstobuy} \n Try again if you want to modify something else \n Write 'principale' to go pack to the main menu")
+  update.message.reply_text(f"Ok, done! . Here there is the modified list : \n {itemstobuy} \n Try again if you want to modify something else \n Write 'Principale' to go pack to the main menu")
 
   return USER_TYPING
 
