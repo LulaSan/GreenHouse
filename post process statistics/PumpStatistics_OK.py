@@ -136,8 +136,8 @@ if __name__=="__main__":
 
     json_dic = json.loads(json_str)
     #response=requests.get("http://p4iotgreenhouse.ddns.net:2000/plants")
-    #response = requests.get(str("http://"+str(json_dic["broker"])+':'+str(json_dic["port"])+str(json_dic["path"])))
-    response = requests.get(str("http://localhost:2000/plants"))
+    response = requests.get(str("http://"+str(json_dic["broker"])+':'+str(json_dic["port"])+str(json_dic["path"])))
+    #response = requests.get(str("http://localhost:2000/plants"))
     if response.status_code == 200:
         content=json.loads(response.text)
         #broker = str(content[0]["BROKER_HOST"]) #quello sul catalog è sbagliato
@@ -154,8 +154,8 @@ if __name__=="__main__":
         print(f'status code:{response.status_code} error during the request')
         
 
-    clientID='Statistics'       #devo prenderlo dal catalog?
-    c=Client_statistics('Claudio',"/p4iot/plants/+/sensors",broker,port)
+    clientID='WateringStatistics'       #devo prenderlo dal catalog?
+    c=Client_statistics(clientID,"/p4iot/plants/+/sensors",broker,port)
     c.start()
 
     while True:
