@@ -140,10 +140,10 @@ if __name__=="__main__":
     #response = requests.get(str("http://localhost:2000/plants"))
     if response.status_code == 200:
         content=json.loads(response.text)
-        #broker = str(content[0]["BROKER_HOST"]) #quello sul catalog è sbagliato
-        #port = int(content[0]["BROKER_PORT"])
-        broker="localhost"
-        port=1883
+        broker = str(content[0]["BROKER_HOST"]) #quello sul catalog è sbagliato
+        port = int(content[0]["BROKER_PORT"])
+        #broker="localhost"
+        #port=1883
         
         #ottengo la lista completa delle piante registrate nel catalog
         for p in range(len(content)):
