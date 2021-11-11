@@ -104,20 +104,20 @@ if __name__=="__main__":
         json_str = file.read()
         file.close()
     except:
-        print("Error in reading settings.json file!")
+        print("Error in reading settings_temperature.json file!")
     
     # Si accede al catalog per ottenere l'IP e la porta del broker e il periodo di aggiornamento dati
     json_dic = json.loads(json_str)
     #response=requests.get("http://p4iotgreenhouse.ddns.net:2000/plants")
-    #response = requests.get(str("http://"+str(json_dic["broker"])+':'+str(json_dic["port"])+str(json_dic["path"])))
-    response = requests.get(str("http://localhost:2000/plants"))
+    response = requests.get(str("http://"+str(json_dic["broker"])+':'+str(json_dic["port"])+str(json_dic["path"])))
+    #response = requests.get(str("http://localhost:2000/plants"))
 
     if response.status_code == 200:
         content=json.loads(response.text)
-        #broker = str(content[0]["BROKER_HOST"]) 
-        #port = int(content[0]["BROKER_PORT"])
-        broker="localhost"
-        port=1883
+        broker = str(content[0]["BROKER_HOST"]) 
+        port = int(content[0]["BROKER_PORT"])
+        #broker="localhost"
+        #port=1883
         print( response.status_code)
         #ottengo la lista completa delle piante registrate nel catalog
         for p in range(len(content)):
