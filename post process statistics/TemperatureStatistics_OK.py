@@ -10,10 +10,10 @@ class TemperatureStatistics():
         self.bn=bn
         self.temperature=temperature
         self.time=ts
-        self.minimum=data['min']
-        self.maximum=data['max']
-        self.total=data['total']
-        self.samples=data['sample']
+        self.minimum=data['min_t']
+        self.maximum=data['max_t']
+        self.total=data['total_t']
+        self.samples=data['sample_t']
         
 
     def avarage(self):
@@ -42,11 +42,11 @@ class Client_temperature():
         for k in self.register:
             self.register[k]={
                     #'bn':'',
-                    'min':100000,
-                    'max':0,
-                    'avg':1,
-                    'total':0,
-                    'sample':0
+                    'min_t':100000,
+                    'max_t':0,
+                    'avg_t':1,
+                    'total_t':0,
+                    'sample_t':0
                 }
         
     def start(self):
@@ -71,23 +71,23 @@ class Client_temperature():
             print(f"The level of the battery is: {battery}")
             if battery < 10:
                 print(f"The level of the battery is less than 10%. Please recharge the battery related to the sensor {bn}")
-            self.register[bn]['total'] += temperature
-            self.register[bn]['sample'] += 1
+            self.register[bn]['total_t'] += temperature
+            self.register[bn]['sample_t'] += 1
             current_data=TemperatureStatistics(temperature,self.register[bn],bn,ts)
 
             #aggiorno le statistiche per pubblicarle
             self.register[bn].update({
                 'bn':bn,
-                'min':current_data.min(),
-                'max':current_data.max(),
-                'avg':current_data.avarage()
+                'min_t':current_data.min(),
+                'max_t':current_data.max(),
+                'avg_t':current_data.avarage()
                  })
 
             result={
                 'bn':bn,
-                'min':current_data.min(),
-                'max':current_data.max(),
-                'avg':current_data.avarage()
+                'min_t':current_data.min(),
+                'max_t':current_data.max(),
+                'avg_t':current_data.avarage()
             }
             #publish the new statistics
             #self.client.myPublish("/p4iot/greenhouse/{}/temperature/statistics".format(bn), result)
