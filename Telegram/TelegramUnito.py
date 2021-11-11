@@ -794,7 +794,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('start', start))
     #updater.dispatcher.add_handler(CallbackQueryHandler(main_menu, pattern='main'))
   
-    conv_handler = ConversationHandler(
+    conv_handler = ConversationHandler(allow_reentry=True,
         entry_points=[CallbackQueryHandler(sign_in, pattern='signin'),CommandHandler('start', start)],
             states={
                 SIGNIN_PULSANTI:[CallbackQueryHandler(sign_in, pattern='signin')],
