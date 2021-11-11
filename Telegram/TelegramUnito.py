@@ -201,7 +201,8 @@ def displaylist_USER(update: Update, context: CallbackContext) -> int:
   user_data=context.user_data
   itemstobuy=json.loads(requests.get(url=f"{SERVER}/itemstobuy").text)
   update.callback_query.message.edit_text(text=f"\nHere there are available items: \n{itemstobuy}\n"
-                                     "If you want to buy something, write in this order :  Farmer ID, item name and desired quantity \n ")
+                                     "\n If you want to buy something, write in this order :  Farmer ID, item name and desired quantity \n "
+                                         "\n If you want to go back to main menu write 'Principale' ")
   return USER_TYPING
 
 def buyitemuser(update: Update, context: CallbackContext) -> int:
