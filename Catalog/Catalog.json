@@ -63,7 +63,7 @@
             "PLANT_NAME": "Peperoncino",
             "GREENHOUSE_ID": "ABCDEFG",
             "BROKER_HOST": "10.42.0.1",
-            "BROKER_PORT": 1884,
+            "BROKER_PORT": 1883,
             "STATUS_TOPIC": "/p4iot/plants/CFYG4567YGH/status",
             "COMMANDS_TOPIC": "/p4iot/plants/CFYG4567YGH/commands/+",
             "SENSORS_TOPIC": "/p4iot/plants/CFYG4567YGH/sensors",
