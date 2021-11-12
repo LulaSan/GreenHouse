@@ -774,8 +774,8 @@ def ThingsBoardFarmer(update: Update, context: CallbackContext) -> int:
   update.callback_query.message.edit_text(text="Thingsboard link:")
   keyboard = [
          [
-            InlineKeyboardButton("Main Menu", callback_data="main_fm"),
-            InlineKeyboardButton("Last Menu", callback_data="b1_4")
+            InlineKeyboardButton("Main Menu", callback_data="principale"),
+            InlineKeyboardButton("Last Menu", callback_data="SF")
          ]
      ]
   reply_markup = InlineKeyboardMarkup(keyboard)
