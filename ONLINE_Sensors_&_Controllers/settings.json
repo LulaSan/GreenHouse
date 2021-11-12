@@ -1,0 +1,7 @@
+{
+    "broker": "13.59.136.106",
+    "port": 1883,
+    "baseTopic": "IoT_project",
+    "ledTopic":"",
+    "messageTemplate":{}
+}
