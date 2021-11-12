@@ -95,7 +95,7 @@ def sign_in(update: Update, context: CallbackContext) -> int:
         ]
     ]
   reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.edit_text(f"Ok! To Log in just write your ID or to go back write 'start'")
+  update.callback_query.message.edit_text(f"Ok! To Log in just write your ID or to go back write 'Start'")
 
   return SIGNIN
 
@@ -129,7 +129,7 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
                         update_catalog(loggedUsers)
                         pprint(loggedUsers)
 
-                        update.message.reply_text(f'Welcome {user_data["LOGID"]}! \n Write "start" if you want to go back to log in \nChoose between:', reply_markup=reply_markupPrincipale_FARMER)
+                        update.message.reply_text(f'Welcome {user_data["LOGID"]}! \n Write "Start" if you want to go back to log in \nChoose between:', reply_markup=reply_markupPrincipale_FARMER)
                         return FARMER
         
     elif tipo=='A':
@@ -169,7 +169,7 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
                         pprint(loggedUsers)
                         
                     #display greenhouse list
-                    update.message.reply_text(text=f"\nWelcome User\n, choose an option or digit 'start' to come back to LOG IN", reply_markup=keyboardPrincipale_USER())
+                    update.message.reply_text(text=f"\nWelcome User\n, choose an option or digit 'Start' to come back to LOG IN", reply_markup=keyboardPrincipale_USER())
                     return USER
     if trovato==0:
         update.message.reply_text('Ups! Wrong LOG_ID, try again.')
@@ -542,7 +542,7 @@ def main_menu_message():
   return 'Who are you? Please, choose the option in main menu:'
 
 def first_menu_message():
-  return 'Please, select one of the following action or write "start" to go back to LOG IN : '
+  return 'Please, select one of the following action or write "Start" to go back to LOG IN : '
 
 def actuator_control_message():
   return 'Which actuator do you want to control? '
@@ -584,7 +584,7 @@ keyboardPrincipale= [[InlineKeyboardButton(text=f'Aggiungere, modificare, rimuov
 reply_markupPrincipale_FARMER = InlineKeyboardMarkup(keyboardPrincipale)
 
 def menuprincipaleFarmer(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text('Choose an action or write "start" to go back to LOG IN', reply_markup=reply_markupPrincipale_FARMER)
+  update.callback_query.message.edit_text('Choose an action or write "Start" to go back to LOG IN', reply_markup=reply_markupPrincipale_FARMER)
   return FARMER  
 
 def displaylist(update: Update, context: CallbackContext) -> int:
@@ -641,7 +641,7 @@ def uporadditemfarmer(update: Update, context: CallbackContext) -> int:
     return FARMER_TYPING
 
   elif text[0] == "Principale":
-    update.message.reply_text('Write "start" if you want to go back to LOG IN \n Choose between:', reply_markup=reply_markupPrincipale_FARMER)
+    update.message.reply_text('Write "Start" if you want to go back to LOG IN \n Choose between:', reply_markup=reply_markupPrincipale_FARMER)
     return FARMER
 
   
@@ -798,14 +798,14 @@ def main():
         entry_points=[CallbackQueryHandler(sign_in, pattern='signin'),CommandHandler('start', start)],
             states={
                 SIGNIN_PULSANTI:[CallbackQueryHandler(sign_in, pattern='signin')],
-                SIGNIN: [MessageHandler(Filters.regex('^start$'), start),
+                SIGNIN: [MessageHandler(Filters.regex('^Start$'), start),
                          MessageHandler(Filters.text,sign_in_credenziali),
                         ],
                 #da sign in vado a sign in credenziali che legge il messaggio input
                 ADMIN: [MessageHandler(Filters.text, callback= id_greenhouse)],
 
                 LEVEL1 :[
-                         MessageHandler(Filters.regex('^start$'), start),
+                         MessageHandler(Filters.regex('^Start$'), start),
                          CallbackQueryHandler(first_menu_keyboard, pattern='first_menu'),
                          CallbackQueryHandler(first_menu, pattern='main_fm'),
                          CallbackQueryHandler(Statistics, pattern='b1_1'),
@@ -825,7 +825,7 @@ def main():
                 FARMER_TYPING : [MessageHandler(Filters.text, callback= uporadditemfarmer)],
                 FARMER_TYPING_2 : [MessageHandler(Filters.text, callback= NewThreshold_humidity_reply)],
                 FARMER : [ #premo aggiungi e legge il messaggio
-                      MessageHandler(Filters.regex('^start$'), start),
+                      MessageHandler(Filters.regex('^Start$'), start),
                       CallbackQueryHandler(displaylist, pattern='AMR'),
                       CallbackQueryHandler(attuatoriscelte, pattern='AS'),
                       CallbackQueryHandler(pompaonoff, pattern='pompaonoff'),
@@ -838,7 +838,7 @@ def main():
                       CallbackQueryHandler(ThingsBoardFarmer, pattern='thingsboard'),
 
                       ],
-                USER: [ MessageHandler(Filters.regex('^start$'), start),
+                USER: [ MessageHandler(Filters.regex('^Start$'), start),
                         CallbackQueryHandler(displaylist_USER, pattern='compra_user')],
                 USER_TYPING : [MessageHandler(Filters.text, callback= buyitemuser)]
                     
