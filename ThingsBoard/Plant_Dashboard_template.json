@@ -619,6 +619,286 @@
         "row": 0,
         "col": 0,
         "id": "6c5c311b-5c03-0174-6322-97952208e0ee"
+      },
+      "ff98a2f3-509c-8186-3c34-9e812538997c": {
+        "isSystemType": true,
+        "bundleAlias": "cards",
+        "typeAlias": "entities_table",
+        "type": "latest",
+        "title": "New widget",
+        "image": null,
+        "description": null,
+        "sizeX": 7.5,
+        "sizeY": 6.5,
+        "config": {
+          "timewindow": {
+            "realtime": {
+              "interval": 1000,
+              "timewindowMs": 86400000
+            },
+            "aggregation": {
+              "type": "NONE",
+              "limit": 200
+            }
+          },
+          "showTitle": true,
+          "backgroundColor": "rgb(255, 255, 255)",
+          "color": "rgba(0, 0, 0, 0.87)",
+          "padding": "4px",
+          "settings": {
+            "enableSearch": false,
+            "displayPagination": false,
+            "defaultPageSize": 10,
+            "defaultSortOrder": "entityName",
+            "displayEntityName": true,
+            "displayEntityType": false,
+            "enableSelectColumnDisplay": false,
+            "enableStickyHeader": false,
+            "enableStickyAction": false,
+            "reserveSpaceForHiddenAction": "false",
+            "entityNameColumnTitle": "Termometer"
+          },
+          "title": "Moisture statistics",
+          "dropShadow": true,
+          "enableFullscreen": true,
+          "titleStyle": {
+            "fontSize": "16px",
+            "fontWeight": 400,
+            "padding": "5px 10px 5px 10px"
+          },
+          "useDashboardTimewindow": false,
+          "showLegend": false,
+          "datasources": [
+            {
+              "type": "entity",
+              "name": null,
+              "entityAliasId": "1efed3e9-ff6a-8c38-c55d-b347e9e56be1",
+              "filterId": null,
+              "dataKeys": [
+                {
+                  "name": "min_t",
+                  "type": "timeseries",
+                  "label": "min_t",
+                  "color": "#2196f3",
+                  "settings": {
+                    "columnWidth": "0px",
+                    "useCellStyleFunction": false,
+                    "cellStyleFunction": "",
+                    "useCellContentFunction": false,
+                    "cellContentFunction": "",
+                    "defaultColumnVisibility": "visible",
+                    "columnSelectionToDisplay": "enabled"
+                  },
+                  "_hash": 0.7649460214460402,
+                  "units": null,
+                  "decimals": null,
+                  "funcBody": null,
+                  "usePostProcessing": null,
+                  "postFuncBody": null
+                },
+                {
+                  "name": "max_t",
+                  "type": "timeseries",
+                  "label": "max_t",
+                  "color": "#4caf50",
+                  "settings": {
+                    "columnWidth": "0px",
+                    "useCellStyleFunction": false,
+                    "cellStyleFunction": "",
+                    "useCellContentFunction": false,
+                    "cellContentFunction": "",
+                    "defaultColumnVisibility": "visible",
+                    "columnSelectionToDisplay": "enabled"
+                  },
+                  "_hash": 0.7861142530526124,
+                  "units": null,
+                  "decimals": null,
+                  "funcBody": null,
+                  "usePostProcessing": null,
+                  "postFuncBody": null
+                },
+                {
+                  "name": "avg_t",
+                  "type": "timeseries",
+                  "label": "avg_t",
+                  "color": "#f44336",
+                  "settings": {
+                    "columnWidth": "0px",
+                    "useCellStyleFunction": false,
+                    "cellStyleFunction": "",
+                    "useCellContentFunction": false,
+                    "cellContentFunction": "",
+                    "defaultColumnVisibility": "visible",
+                    "columnSelectionToDisplay": "enabled"
+                  },
+                  "_hash": 0.5614792729326612,
+                  "units": null,
+                  "decimals": null,
+                  "funcBody": null,
+                  "usePostProcessing": null,
+                  "postFuncBody": null
+                }
+              ]
+            }
+          ],
+          "showTitleIcon": true,
+          "iconColor": "rgba(0, 0, 0, 0.87)",
+          "iconSize": "24px",
+          "titleTooltip": "Moisture statistics",
+          "widgetStyle": {},
+          "titleIcon": ""
+        },
+        "row": 0,
+        "col": 0,
+        "id": "ff98a2f3-509c-8186-3c34-9e812538997c"
+      },
+      "e1496994-a984-79c1-b9fe-8bfe65c60511": {
+        "isSystemType": true,
+        "bundleAlias": "cards",
+        "typeAlias": "entities_table",
+        "type": "latest",
+        "title": "New widget",
+        "image": null,
+        "description": null,
+        "sizeX": 7.5,
+        "sizeY": 6.5,
+        "config": {
+          "timewindow": {
+            "realtime": {
+              "interval": 1000,
+              "timewindowMs": 86400000
+            },
+            "aggregation": {
+              "type": "NONE",
+              "limit": 200
+            }
+          },
+          "showTitle": true,
+          "backgroundColor": "rgb(255, 255, 255)",
+          "color": "rgba(0, 0, 0, 0.87)",
+          "padding": "4px",
+          "settings": {
+            "enableSearch": false,
+            "displayPagination": false,
+            "defaultPageSize": 10,
+            "defaultSortOrder": "entityName",
+            "displayEntityName": true,
+            "displayEntityType": false,
+            "enableSelectColumnDisplay": false,
+            "enableStickyHeader": false,
+            "enableStickyAction": false,
+            "reserveSpaceForHiddenAction": "false",
+            "entityNameColumnTitle": "Pump"
+          },
+          "title": "Moisture statistics",
+          "dropShadow": true,
+          "enableFullscreen": true,
+          "titleStyle": {
+            "fontSize": "16px",
+            "fontWeight": 400,
+            "padding": "5px 10px 5px 10px"
+          },
+          "useDashboardTimewindow": false,
+          "showLegend": false,
+          "datasources": [
+            {
+              "type": "entity",
+              "name": null,
+              "entityAliasId": "af7bcb2e-9018-f7c2-cbf9-7b526f5b717f",
+              "filterId": null,
+              "dataKeys": [
+                {
+                  "name": "min",
+                  "type": "timeseries",
+                  "label": "min",
+                  "color": "#2196f3",
+                  "settings": {
+                    "columnWidth": "0px",
+                    "useCellStyleFunction": false,
+                    "cellStyleFunction": "",
+                    "useCellContentFunction": false,
+                    "cellContentFunction": "",
+                    "defaultColumnVisibility": "visible",
+                    "columnSelectionToDisplay": "enabled"
+                  },
+                  "_hash": 0.7649460214460402,
+                  "units": null,
+                  "decimals": null,
+                  "funcBody": null,
+                  "usePostProcessing": null,
+                  "postFuncBody": null
+                },
+                {
+                  "name": "max",
+                  "type": "timeseries",
+                  "label": "max",
+                  "color": "#4caf50",
+                  "settings": {
+                    "columnWidth": "0px",
+                    "useCellStyleFunction": false,
+                    "cellStyleFunction": "",
+                    "useCellContentFunction": false,
+                    "cellContentFunction": "",
+                    "defaultColumnVisibility": "visible",
+                    "columnSelectionToDisplay": "enabled"
+                  },
+                  "_hash": 0.7861142530526124,
+                  "units": null,
+                  "decimals": null,
+                  "funcBody": null,
+                  "usePostProcessing": null,
+                  "postFuncBody": null
+                },
+                {
+                  "name": "avg",
+                  "type": "timeseries",
+                  "label": "avg",
+                  "color": "#f44336",
+                  "settings": {
+                    "columnWidth": "0px",
+                    "useCellStyleFunction": false,
+                    "cellStyleFunction": "",
+                    "useCellContentFunction": false,
+                    "cellContentFunction": "",
+                    "defaultColumnVisibility": "visible",
+                    "columnSelectionToDisplay": "enabled"
+                  },
+                  "_hash": 0.5614792729326612,
+                  "units": null,
+                  "decimals": null,
+                  "funcBody": null,
+                  "usePostProcessing": null,
+                  "postFuncBody": null
+                },
+                {
+                  "name": "activation_time",
+                  "type": "timeseries",
+                  "label": "activation_time",
+                  "color": "#ffc107",
+                  "settings": {
+                    "columnWidth": "0px",
+                    "useCellStyleFunction": false,
+                    "cellStyleFunction": "",
+                    "useCellContentFunction": false,
+                    "cellContentFunction": "",
+                    "defaultColumnVisibility": "visible",
+                    "columnSelectionToDisplay": "enabled"
+                  },
+                  "_hash": 0.45694884065712293
+                }
+              ]
+            }
+          ],
+          "showTitleIcon": true,
+          "iconColor": "rgba(0, 0, 0, 0.87)",
+          "iconSize": "24px",
+          "titleTooltip": "Moisture statistics",
+          "widgetStyle": {},
+          "titleIcon": ""
+        },
+        "row": 0,
+        "col": 0,
+        "id": "e1496994-a984-79c1-b9fe-8bfe65c60511"
       }
     },
     "states": {
@@ -663,6 +943,18 @@
                 "sizeY": 7,
                 "row": 7,
                 "col": 13
+              },
+              "ff98a2f3-509c-8186-3c34-9e812538997c": {
+                "sizeX": 11,
+                "sizeY": 5,
+                "row": 14,
+                "col": 12
+              },
+              "e1496994-a984-79c1-b9fe-8bfe65c60511": {
+                "sizeX": 12,
+                "sizeY": 5,
+                "row": 14,
+                "col": 0
               }
             },
             "gridSettings": {
@@ -697,6 +989,66 @@
           "singleEntity": {
             "entityType": "DEVICE",
             "id": "bba1da30-130a-11ec-854e-7b2ffbd53e50"
+          }
+        }
+      },
+      "019d205b-0124-0271-9cab-43a510761104": {
+        "id": "019d205b-0124-0271-9cab-43a510761104",
+        "alias": "Temp Statistics",
+        "filter": {
+          "type": "singleEntity",
+          "resolveMultiple": false,
+          "singleEntity": {
+            "entityType": "ASSET",
+            "id": "92aa56d0-38ac-11ec-a8d7-7db293f1afb9"
+          }
+        }
+      },
+      "1361b70d-0126-d2d7-f5f8-56f18b2483e8": {
+        "id": "1361b70d-0126-d2d7-f5f8-56f18b2483e8",
+        "alias": "Pump Statistics",
+        "filter": {
+          "type": "singleEntity",
+          "resolveMultiple": false,
+          "singleEntity": {
+            "entityType": "ASSET",
+            "id": "286a7ac0-38ac-11ec-a8d7-7db293f1afb9"
+          }
+        }
+      },
+      "b3950887-a41f-92cc-e2de-690e8a75e2de": {
+        "id": "b3950887-a41f-92cc-e2de-690e8a75e2de",
+        "alias": "Temp Statistics 2",
+        "filter": {
+          "type": "singleEntity",
+          "resolveMultiple": false,
+          "singleEntity": {
+            "entityType": "DEVICE",
+            "id": "c7e5aff0-426d-11ec-830d-913fa28daca0"
+          }
+        }
+      },
+      "af7bcb2e-9018-f7c2-cbf9-7b526f5b717f": {
+        "id": "af7bcb2e-9018-f7c2-cbf9-7b526f5b717f",
+        "alias": "Temp Statistics Aloe",
+        "filter": {
+          "type": "singleEntity",
+          "resolveMultiple": false,
+          "singleEntity": {
+            "entityType": "DEVICE",
+            "id": "45f42630-4253-11ec-830d-913fa28daca0"
+          }
+        }
+      },
+      "1efed3e9-ff6a-8c38-c55d-b347e9e56be1": {
+        "id": "1efed3e9-ff6a-8c38-c55d-b347e9e56be1",
+        "alias": "Statistics Aloe",
+        "filter": {
+          "type": "singleEntity",
+          "resolveMultiple": false,
+          "singleEntity": {
+            "entityType": "DEVICE",
+            "id": "45f42630-4253-11ec-830d-913fa28daca0"
           }
         }
       }
