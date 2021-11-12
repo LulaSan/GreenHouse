@@ -578,9 +578,9 @@ def ItemMessage(update: Update, context: CallbackContext) -> int:
     ####################################################### FARMER ###################################
     #####################################################################################
     #################################################
-keyboardPrincipale= [[InlineKeyboardButton(text=f'Aggiungere, modificare, rimuovere un item', callback_data='AMR')],
-            [InlineKeyboardButton(text=f'Controllare attuatori', callback_data='AS')],
-            [InlineKeyboardButton(text=f'Statistiche', callback_data='SF')]]
+keyboardPrincipale= [[InlineKeyboardButton(text=f'Add, modify or remove an item', callback_data='AMR')],
+            [InlineKeyboardButton(text=f'Manage actuators', callback_data='AS')],
+            [InlineKeyboardButton(text=f'Statistics', callback_data='SF')]]
 reply_markupPrincipale_FARMER = InlineKeyboardMarkup(keyboardPrincipale)
 
 def menuprincipaleFarmer(update: Update, context: CallbackContext) -> int:
