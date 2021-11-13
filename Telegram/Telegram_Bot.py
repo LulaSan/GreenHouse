@@ -429,7 +429,7 @@ def OpenWindows(update: Update, context: CallbackContext) -> int:
     window_status={"STATUS_WINDOW":1}
     user_data=context.user_data
     greenhouse_id=user_data["CHOSEN_GREENHOUSEID"]
-    r=requests.post(url=SERVER+f"greenhouse/{greenhouse_id}",json=window_status)
+    r=requests.post(url=SERVER+f"/greenhouse/{greenhouse_id}",json=window_status)
     keyboard = [
         [
             InlineKeyboardButton("Main Menu", callback_data="main_fm"),
@@ -445,7 +445,7 @@ def CloseWindows(update: Update, context: CallbackContext) -> int:
     window_status={"STATUS_WINDOW":0}
     user_data=context.user_data
     greenhouse_id=user_data["CHOSEN_GREENHOUSEID"]
-    r=requests.post(url=SERVER+f"greenhouse/{greenhouse_id}",json=window_status)
+    r=requests.post(url=SERVER+f"/greenhouse/{greenhouse_id}",json=window_status)
     keyboard = [
         [
             InlineKeyboardButton("Main Menu",callback_data="main_fm"),
@@ -462,7 +462,7 @@ def VentOFF(update: Update, context: CallbackContext) -> int:
     vent_status={"STATUS_VENT":0}
     user_data=context.user_data
     greenhouse_id=user_data["CHOSEN_GREENHOUSEID"]
-    r=requests.post(url=SERVER+f"greenhouse/{greenhouse_id}",json=vent_status)
+    r=requests.post(url=SERVER+f"/greenhouse/{greenhouse_id}",json=vent_status)
     keyboard = [
         [
             InlineKeyboardButton("Main Menu",callback_data="main_fm"),
@@ -479,7 +479,7 @@ def VentON(update: Update, context: CallbackContext) -> int:
     vent_status={"STATUS_VENT":1}
     user_data=context.user_data
     greenhouse_id=user_data["CHOSEN_GREENHOUSEID"]
-    r=requests.post(url=SERVER+f"greenhouse/{greenhouse_id}",json=vent_status)
+    r=requests.post(url=SERVER+f"/greenhouse/{greenhouse_id}",json=vent_status)
     keyboard = [
         [
             InlineKeyboardButton("Main Menu",callback_data="main_fm"),
