@@ -1,7 +1,7 @@
 {
     "Greenhouses": [
         {
-            "GREENHOUSE_ID": "84F3EB33D049",
+            "GREENHOUSE_ID": "30AEA4266030",
             "GREENHOUSE_LATITUDE": 42.067,
             "GREENHOUSE_LONGITUDE": 8.9,
             "STATUS_CONTROLL_HUMIDITY": 1,
@@ -18,9 +18,9 @@
             "THRESHOLD_TEMPER_MAX": 35,
             "BROKER_HOST": "13.59.136.106",
             "BROKER_PORT": 1883,
-            "STATUS_TOPIC": "/p4iot/greenhouses/84F3EB33D049/status",
-            "COMMANDS_TOPIC": "/p4iot/greenhouses/84F3EB33D049/commands/+",
-            "SENSORS_TOPIC": "/p4iot/greenhouses/84F3EB33D049/sensors"
+            "STATUS_TOPIC": "/p4iot/greenhouses/30AEA4266030/status",
+            "COMMANDS_TOPIC": "/p4iot/greenhouses/30AEA4266030/commands/+",
+            "SENSORS_TOPIC": "/p4iot/greenhouses/30AEA4266030/sensors"
         }, 
         {
             "GREENHOUSE_ID": "ABCDEFG",
@@ -56,7 +56,7 @@
             "STATUS_TOPIC": "/p4iot/plants/84F3EB33DB49/status",
             "COMMANDS_TOPIC": "/p4iot/plants/84F3EB33DB49/commands/+",
             "SENSORS_TOPIC": "/p4iot/plants/84F3EB33DB49/sensors",
-            "OWNER": "Farmer1234",
+            "OWNER": "1234",
             "THRESHOLD_MOIST_MIN": 1,
             "THRESHOLD_MOIST_MAX": 33
         },
@@ -69,7 +69,7 @@
             "STATUS_TOPIC": "/p4iot/plants/CFYG4567YGH/status",
             "COMMANDS_TOPIC": "/p4iot/plants/CFYG4567YGH/commands/+",
             "SENSORS_TOPIC": "/p4iot/plants/CFYG4567YGH/sensors",
-            "OWNER":"Farmer5678",
+            "OWNER":"5678",
             "STATUS_PUMP": 0,
             "THRESHOLD_MOIST_MIN": 0,
             "THRESHOLD_MOIST_MAX": 0
@@ -83,21 +83,21 @@
             "STATUS_TOPIC": "/p4iot/plants/CFYG4567YGBB/status",
             "COMMANDS_TOPIC": "/p4iot/plants/CFYG4567YGBB/commands/+",
             "SENSORS_TOPIC": "/p4iot/plants/CFYG4567YGBB/sensors",
-            "OWNER": "Farmer5678",
+            "OWNER": "5678",
             "STATUS_PUMP": 0,
             "THRESHOLD_MOIST_MIN": 0,
             "THRESHOLD_MOIST_MAX": 0
         },
         {
-            "PLANT_ID": "84F3EB33D049",
+            "PLANT_ID": "CFGHJ57Y789T",
             "PLANT_NAME": "Lattuga",
             "GREENHOUSE_ID": "30AEA4266030",
             "BROKER_HOST": "10.42.0.1",
             "BROKER_PORT": 1884,
-            "STATUS_TOPIC": "/p4iot/plants/84F3EB33DB49/status",
-            "COMMANDS_TOPIC": "/p4iot/plants/84F3EB33DB49/commands/+",
-            "SENSORS_TOPIC": "/p4iot/plants/84F3EB33DB49/sensors",
-            "OWNER": "Farmer1234",
+            "STATUS_TOPIC": "/p4iot/plants/CFGHJ57Y789T/status",
+            "COMMANDS_TOPIC": "/p4iot/plants/CFGHJ57Y789T/commands/+",
+            "SENSORS_TOPIC": "/p4iot/plants/CFGHJ57Y789T/sensors",
+            "OWNER": "1234",
             "STATUS_PUMP": 0,
             "THRESHOLD_MOIST_MIN": 54,
             "THRESHOLD_MOIST_MAX": 0
@@ -111,7 +111,7 @@
             "STATUS_TOPIC": "/p4iot/plants/84F3EB35GBD88/status",
             "COMMANDS_TOPIC": "/p4iot/plants/84F3EB35GBD88/commands/+",
             "SENSORS_TOPIC": "/p4iot/plants/84F3EB35GBD88/sensors",
-            "OWNER":  "Farmer1234",
+            "OWNER":  "1234",
             "STATUS_PUMP": 0,
             "THRESHOLD_MOIST_MIN": 54,
             "THRESHOLD_MOIST_MAX": 0
@@ -123,7 +123,7 @@
             "GREENHOUSE_ID":"30AEA4266030",
             "CROPS_OWNED": [
                 "84F3EB33DB49",
-                "84F3EB33D049",
+                "CFGHJ57Y789T",
                 "84F3EB35GBD88"
             ],
             "ITEMS_SELL": [
