@@ -380,7 +380,7 @@ def Actuators(update: Update, context: CallbackContext) -> int:
 
 # funzioni secondo livello:
 def ThingsBoard(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text(text="Thingsboard link: ")
+  update.callback_query.message.edit_text(text="Thingsboard link: https://demo.thingsboard.io/home ")
   keyboard = [
         [
             InlineKeyboardButton("Main menu", callback_data="main_fm"),
