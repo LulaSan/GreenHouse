@@ -361,14 +361,15 @@ def Green_House_Parameters(update: Update, context: CallbackContext) -> int:
   THRESHOLD_TEMPER_MIN=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_TEMPER_MIN").text
   THRESHOLD_TEMPER_MAX=requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}/THRESHOLD_TEMPER_MAX").text
   update.callback_query.message.reply_text(text=f"If you want to modify some parameter write the correspondant number + new value:\n"
-  "Accanto è indicato il valore attuale"
+  "The actual value is indicated. \n"
   f"1) Low humidity threshold: {THRESHOLD_HUMID_MIN}\n"
   f"2) High humidity threshold: {THRESHOLD_HUMID_MAX}\n"
   f"3) Low bright threshold:{THRESHOLD_BRIGHT_MIN} \n"
   f"4) High bright threshold: {THRESHOLD_BRIGHT_MAX}\n"
   f"5) Low temperature threshold: {THRESHOLD_TEMPER_MIN} \n"
   f"6) High temperature threshold:{THRESHOLD_TEMPER_MAX} \n"
-  "\n scrivi 'Principale' se vuoi tornare al menu principale")
+  "\n For example: 1 32, will modify the THRESHOLD_HUMID_MIN to 32 \n"
+  "\n Write 'Principale' if you want to go back to main menu \n")
     
   return ADMIN_TYPING_2
 
@@ -424,87 +425,72 @@ def NewThreshold_period(update: Update, context: CallbackContext) -> int:
   return LEVEL1
 
 def OpenWindows(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text("Finestra aperta")
-  ### comando che attiva la pompa -> aggiungere UNA POST PER CAMBIARE LO STATO DELLA POMPA ######
-  with open("Sensors.json", "r+") as outfile:
-    data = json.load(outfile)
-    data['Windows']= 'Open'
-    outfile.seek(0)  # rewind
-    json.dump(data, outfile)
-    outfile.truncate()
-
-  keyboard = [
+    update.callback_query.message.edit_text("Finestra aperta")
+    window_status={"STATUS_WINDOW":1}
+    user_data=context.user_data
+    greenhouse_id=user_data["CHOSEN_GREENHOUSEID"]
+    r=requests.post(url=SERVER+f"greenhouse/{greenhouse_id}",json=window_status)
+    keyboard = [
         [
             InlineKeyboardButton("Main Menu", callback_data="main_fm"),
             InlineKeyboardButton("Last Menu", callback_data="b1_4")
         ]
     ]
-  reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup    )
-  return LEVEL1
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup    )
+    return LEVEL1
 
 def CloseWindows(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text("Window closed")
-  #comando che disattiva la pompa
-  with open("Sensors.json", "r+") as outfile:
-    data = json.load(outfile)
-    data['Windows']= 'Close'
-    outfile.seek(0)  # rewind
-    json.dump(data, outfile)
-    outfile.truncate()
-  
-  keyboard = [
+    update.callback_query.message.edit_text("Window closed")
+    window_status={"STATUS_WINDOW":0}
+    user_data=context.user_data
+    greenhouse_id=user_data["CHOSEN_GREENHOUSEID"]
+    r=requests.post(url=SERVER+f"greenhouse/{greenhouse_id}",json=window_status)
+    keyboard = [
         [
             InlineKeyboardButton("Main Menu",callback_data="main_fm"),
             InlineKeyboardButton("Last Menu", callback_data="b1_4")
         ]
     ]
-  reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup
     )
-  return LEVEL1
+    return LEVEL1
 
 def VentOFF(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text("Fan OFF")
-  #comando che disattiva la pompa
-  with open("Sensors.json", "r+") as outfile:
-    data = json.load(outfile)
-    data['Vent']= 'Off'
-    outfile.seek(0)  # rewind
-    json.dump(data, outfile)
-    outfile.truncate()
-
-  keyboard = [
+    update.callback_query.message.edit_text("Vent OFF")
+    vent_status={"STATUS_VENT":0}
+    user_data=context.user_data
+    greenhouse_id=user_data["CHOSEN_GREENHOUSEID"]
+    r=requests.post(url=SERVER+f"greenhouse/{greenhouse_id}",json=vent_status)
+    keyboard = [
         [
-            InlineKeyboardButton("Main Menu", callback_data="main_fm"),
+            InlineKeyboardButton("Main Menu",callback_data="main_fm"),
             InlineKeyboardButton("Last Menu", callback_data="b1_4")
         ]
     ]
-  reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup
     )
-  return LEVEL1
+    return LEVEL1
 
 def VentON(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text("Fan ON")
-  #comando che disattiva la pompa
-  with open("Sensors.json", "r+") as outfile:
-    data = json.load(outfile)
-    data['Vent']= 'On'
-    outfile.seek(0)  # rewind
-    json.dump(data, outfile)
-    outfile.truncate()
-
-  keyboard = [
+    update.callback_query.message.edit_text("Vent ON")
+    vent_status={"STATUS_VENT":1}
+    user_data=context.user_data
+    greenhouse_id=user_data["CHOSEN_GREENHOUSEID"]
+    r=requests.post(url=SERVER+f"greenhouse/{greenhouse_id}",json=vent_status)
+    keyboard = [
         [
-            InlineKeyboardButton("Main Menu", callback_data="main_fm"),
+            InlineKeyboardButton("Main Menu",callback_data="main_fm"),
             InlineKeyboardButton("Last Menu", callback_data="b1_4")
         ]
     ]
-  reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup
     )
-  return LEVEL1
+    return LEVEL1
+
 
 
 
@@ -674,7 +660,8 @@ def pompaonoff(update: Update, context: CallbackContext) -> int:
 def PompaON(update: Update, context: CallbackContext) -> int:
   
   update.callback_query.message.edit_text(" Pump ON")
-  #comando che attiva la pompa
+  status_pump={"STATUS_PUMP":1}
+  r=requests.post(url=SERVER+f"plant/
   keyboard = [
         [
             InlineKeyboardButton("Main Menu", callback_data="principale"),
@@ -684,6 +671,7 @@ def PompaON(update: Update, context: CallbackContext) -> int:
   reply_markup = InlineKeyboardMarkup(keyboard)
   update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup)
   return FARMER
+                  
 def PompaOFF(update: Update, context: CallbackContext) -> int:
   update.callback_query.message.edit_text(" Pump OFF")
   #comando che disattiva la pompa
