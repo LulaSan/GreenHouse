@@ -159,6 +159,5 @@ if __name__=="__main__":
     c.start()
 
     while True:
-        statistics_period=requests.get(str("http://"+str(json_dic["server"])+':'+str(json_dic["port"])+"/statistics")))
-        water_period = int(statistics_period['water_period']) 
+        water_period=int(requests.get(str("http://"+str(json_dic["server"])+':'+str(json_dic["port"])+"/statistic/water_period"))))
         time.sleep(water_period)
