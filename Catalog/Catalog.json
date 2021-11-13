@@ -179,8 +179,8 @@
     ],
     "Statistics": [
         {
-            "water_period": "50",
-            "temperature_period": "60"
+            "water_period": "5",
+            "temperature_period": "6"
         }
     ]
 }
