@@ -136,7 +136,7 @@ if __name__=="__main__":
 
     json_dic = json.loads(json_str)
     #response=requests.get("http://p4iotgreenhouse.ddns.net:2000/plants")
-    response = requests.get(str("http://"+str(json_dic["broker"])+':'+str(json_dic["port"])+str(json_dic["path"])))
+    response = requests.get(str("http://"+str(json_dic["server"])+':'+str(json_dic["port"])+str(json_dic["path"])))
     #response = requests.get(str("http://localhost:2000/plants"))
     if response.status_code == 200:
         content=json.loads(response.text)
@@ -159,4 +159,6 @@ if __name__=="__main__":
     c.start()
 
     while True:
-        time.sleep(5)
+        statistics_period=requests.get(str("http://"+str(json_dic["server"])+':'+str(json_dic["port"])+"/statistics")))
+        water_period = int(statistics_period['water_period']) 
+        time.sleep(water_period)
