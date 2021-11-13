@@ -760,7 +760,7 @@ def Statistiche_first(update: Update, context: CallbackContext) -> int:
   return FARMER
 
 def ThingsBoardFarmer(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text(text="Thingsboard link:")
+  update.callback_query.message.edit_text(text="Thingsboard link: https://demo.thingsboard.io/home ")
   keyboard = [
          [
             InlineKeyboardButton("Main Menu", callback_data="principale"),
