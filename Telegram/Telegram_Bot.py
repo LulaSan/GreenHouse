@@ -399,7 +399,7 @@ def NewThreshold_period(update: Update, context: CallbackContext) -> int:
   if text[0] == "Principale":
     update.message.reply_text('Choose an option:', reply_markup=first_menu_keyboard())
     return LEVEL1
-  elif text[0] != "Principale" and text[0] != "water" and text[0] != "temperature" :
+  elif text[0] != "Principale" and text[0] != "Water" and text[0] != "Temperature" :
     update.message.reply_text('Wrong command, try again.')
     return ADMIN_TYPING
 
