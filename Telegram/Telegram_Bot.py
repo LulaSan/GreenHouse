@@ -661,7 +661,7 @@ def PompaON(update: Update, context: CallbackContext) -> int:
   
   update.callback_query.message.edit_text(" Pump ON")
   status_pump={"STATUS_PUMP":1}
-  r=requests.post(url=SERVER+f"plant/
+  #r=requests.post(url=SERVER+f"plant/
   keyboard = [
         [
             InlineKeyboardButton("Main Menu", callback_data="principale"),
