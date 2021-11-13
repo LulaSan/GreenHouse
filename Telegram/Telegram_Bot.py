@@ -402,7 +402,8 @@ def NewThreshold_period(update: Update, context: CallbackContext) -> int:
   elif text[0] != "Principale" and text[0] != "water" and text[0] != "temperature" :
     update.message.reply_text('Wrong command, try again.')
     return ADMIN_TYPING
-  elif text[0] == 'water':
+
+  elif text[0] == 'Water':
     res = requests.post(SERVER+f"/statistic/water_period/{text[1]}")
     water_period=json.loads(requests.get(url=SERVER+"/statistic/water_period").text)
     
@@ -412,11 +413,11 @@ def NewThreshold_period(update: Update, context: CallbackContext) -> int:
    
 
     return ADMIN_TYPING
-  elif text[0] == 'temperature' :
+  elif text[0] == 'Temperature' :
     res = requests.post(SERVER+f"/statistic/temperature_period/{text[1]}")
     temperature_period=json.loads(requests.get(url=SERVER+"/statistic/temperature_period").text)
     update.message.reply_text(text=f" ctual temperature period = {temperature_period} \n  "
-                                           "To modify the period write temperature or water followe by the new value in seconds \n"
+                                           "To modify the period write Temperature or Water followed by the new value in seconds \n"
                                            "or write 'principale' to go back to main menu")
     return ADMIN_TYPING
 
