@@ -25,7 +25,7 @@ if __name__=="__main__":
     conf=json.load(open("settings.json"))
     id="84F3EB33D049"
     S_cat=Sensor_h(id,"/p4iot/plants/{}/sensors".format(id),"13.59.136.106", 1883)
-    S_tb = TB_Sensor_h(id,'svOmnwGu4RlAydXbdMHf','demo.thingsboard.io','v1/devices/me/telemetry',1883,60)
+    S_tb = TB_Sensor_h(id,'FgbOm7jGYMFUENoeISR0','demo.thingsboard.io','v1/devices/me/telemetry',1883,60)
     
     S_cat.run()    
     S_tb.con()
