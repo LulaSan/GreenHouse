@@ -392,7 +392,7 @@ def ThingsBoard(update: Update, context: CallbackContext) -> int:
 
 def NewThreshold_period(update: Update, context: CallbackContext) -> int:
   user_data=context.user_data
-  adminid=user_data["ADMINID"]
+  adminid=user_data["ADMIN_ID"]
   text = update.message.text.split(" ")
   tipologia=text[0]
   
