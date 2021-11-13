@@ -45,7 +45,7 @@ if __name__=="__main__":
         sensor_data = {"brigthness" : val[cnt], "battery": batt[cnt] ,"status": status}  
         S_cat.sendData(val[cnt],batt[cnt],status)
         S_tb.pub_tb(sensor_data)
-        time.sleep(1)
+        time.sleep(5)
 
     S_cat.end()
     S_tb.unconn()
