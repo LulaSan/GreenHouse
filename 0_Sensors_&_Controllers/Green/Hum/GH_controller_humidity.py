@@ -149,24 +149,24 @@ if __name__ == '__main__':
     
     
     while True:
-        for num in range(num_of_greenHouses):
-            # num = 2
-            green_ID = greenH[num]["GREENHOUSE_ID"]
-            print(green_ID)
-            connect= Subscriber_get_info_h("controller_brgth",'/p4iot/greenhouses/'+green_ID+'/sensors/humidity', '13.59.136.106', 1883)
+#        for num in range(num_of_greenHouses):
+        green_ID = greenH[num]["GREENHOUSE_ID"]
+        print(green_ID)
+        #connect= Subscriber_get_info_h("controller_brgth",'/p4iot/greenhouses/'+green_ID+'/sensors/humidity', '13.59.136.106', 1883)
+        connect= Subscriber_get_info_h("controller_brgth",'/p4iot/greenhouses/+/sensors/humidity', '13.59.136.106', 1883)
 
-            
-            server_name = 'http://ec2-13-59-136-106.us-east-2.compute.amazonaws.com'
-            port = 2000
-            # operator = Linker(clinet_id,server_name, 2000)
-            # operator = Linker(green_ID,server_name, port)
-            operator = Linker(green_ID,'13.59.136.106', 1883)
 
-            # faccio partire il flusso dati
-            connect.start()
-            time.sleep(5)
+        server_name = 'http://ec2-13-59-136-106.us-east-2.compute.amazonaws.com'
+        port = 2000
+        # operator = Linker(clinet_id,server_name, 2000)
+        # operator = Linker(green_ID,server_name, port)
+        operator = Linker(green_ID,'13.59.136.106', 1883)
 
-            humid_senor = connect.myH()
-            operator.actuator(float(humid_senor))
+        # faccio partire il flusso dati
+        connect.start()
+        time.sleep(5)
+
+        humid_senor = connect.myH()
+        operator.actuator(float(humid_senor))
 
         connect.stop()
