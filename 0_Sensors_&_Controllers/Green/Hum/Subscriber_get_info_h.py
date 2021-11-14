@@ -58,7 +58,7 @@ class Subscriber_get_info_h:
 		def myH(self):
 			h= (self.humidity)
 			return h
-		def ID(seld):
+		def ID(self):
 			id= self.humidity
 			return id 
 		
