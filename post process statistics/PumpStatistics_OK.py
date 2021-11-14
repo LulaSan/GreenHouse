@@ -155,7 +155,7 @@ if __name__=="__main__":
         
 
     clientID='WateringStatistics'       #devo prenderlo dal catalog?
-    c=Client_statistics(clientID,"/p4iot/plants/+/sensors",broker,port)
+    c=Client_statistics(clientID,"/p4iot/plants/+/sensors/+",broker,port)
     c.start()
 
     while True:
