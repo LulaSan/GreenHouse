@@ -152,14 +152,14 @@ if __name__ == '__main__':
 
         #connect= Subscriber_get_info_h("controller_brgth",'/p4iot/greenhouses/'+green_ID+'/sensors/humidity', '13.59.136.106', 1883)
         connect= Subscriber_get_info_h("controller_brgth",'/p4iot/greenhouses/+/sensors/humidity', '13.59.136.106', 1883)
-
+        green_ID= connect.myID()
 
         server_name = 'http://ec2-13-59-136-106.us-east-2.compute.amazonaws.com'
         port = 2000
         # operator = Linker(clinet_id,server_name, 2000)
         # operator = Linker(green_ID,server_name, port)
-        for num in range(num_of_greenHouses):
-        green_ID = greenH[num]["GREENHOUSE_ID"]
+        # for num in range(num_of_greenHouses):
+        # green_ID = greenH[num]["GREENHOUSE_ID"]
         print(green_ID)
         operator = Linker(green_ID,'13.59.136.106', 1883)
 
