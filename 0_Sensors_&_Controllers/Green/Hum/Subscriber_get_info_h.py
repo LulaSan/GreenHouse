@@ -38,7 +38,7 @@ class Subscriber_get_info_h:
 			# self.temperature = payload["temperature"]
 			# self.brightness = payload["brightness"]
 			self.humidity = payload["humidity"]
-			self.ID= payload["id"]
+			self.id= payload["id"]
 			# print(self.temperature)
 			print(payload)
 
@@ -59,8 +59,8 @@ class Subscriber_get_info_h:
 			h= (self.humidity)
 			return h
 		def myID(self):
-			ID= self.ID
-			return ID
+			id= self.id
+			return id
 		
 
 		# print(temperature)
