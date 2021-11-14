@@ -124,7 +124,7 @@ class Linker:
                     res =(requests.post(self.server_name + ':' + str(self.port) + f"/greenhouse/{greenhouse_id}",json=new_value).text) 
                     print(res)     
                     
-                    new_value = {"STATUS_CONTROLL_BRIGTH": 1} 
+                    new_value = {"STATUS_CONTROLL_BRIGHT": 1} 
                     # new_value = {"STATUS_WINDOW": 1}
                     greenhouse_id=self.clientID
                     res =(requests.post(self.server_name + ':' + str(self.port) + f"/greenhouse/{greenhouse_id}",json=new_value).text) 
@@ -145,7 +145,7 @@ class Linker:
                     res =(requests.post(self.server_name + ':' + str(self.port) + f"/greenhouse/{greenhouse_id}",json=new_value).text) 
                     print(res)
                     
-                    new_value = {"STATUS_CONTROLL_BRIGTH": 1} 
+                    new_value = {"STATUS_CONTROLL_BRIGHT ": 1} 
                     # new_value = {"STATUS_WINDOW": 1}
                     greenhouse_id=self.clientID
                     res =(requests.post(self.server_name + ':' + str(self.port) + f"/greenhouse/{greenhouse_id}",json=new_value).text) 
@@ -167,7 +167,7 @@ if __name__ == '__main__':
             # num = 2
             green_ID = greenH[num]["GREENHOUSE_ID"]
             print(green_ID)
-            connect= Subscriber_get_info_b("controller_brgth",'/p4iot/greenhouses/'+green_ID+'/sensors/brigthness', '13.59.136.106', 1883)
+            connect= Subscriber_get_info_b("controller_bright",'/p4iot/greenhouses/'+green_ID+'/sensors/brightness', '13.59.136.106', 1883)
 
             
             server_name = 'http://ec2-13-59-136-106.us-east-2.compute.amazonaws.com'
