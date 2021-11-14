@@ -30,3 +30,16 @@ class Subscriber_get_info_h:
         print(id)
         return id
 
+if __name__=='__main__':
+    BROKER="13.59.136.106"
+
+    coll=DatafromTemperatureSensor("controller_brght","/p4iot/greenhouses/+/sensors/humidity","13.59.136.106",1883)
+    coll.start()
+    print("here there are the value of your temperatire sensor, \n--> ")
+    finish=0;
+    while True:
+        time.sleep(1)
+        finish+=1;
+        if finish==180:
+            break
+    coll.stop()
