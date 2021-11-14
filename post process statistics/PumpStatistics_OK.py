@@ -73,7 +73,7 @@ class Client_statistics():
 
     def notify(self,topic,msg):
         payload=json.loads(msg) #from payload i receive a string message-> convert it in a json 
-        moisture=payload["moisture"] #from the payload.json i set all the variable 
+        moisture=payload["humidity"] #from the payload.json i set all the variable 
         bn=str(payload["bn"])#id
         self.bn=bn
         ts=payload["ts"]
@@ -134,14 +134,14 @@ if __name__=="__main__":
 
     json_dic = json.loads(json_str)
     #response=requests.get("http://p4iotgreenhouse.ddns.net:2000/plants")
-    response = requests.get(str("http://"+str(json_dic["server"])+':'+str(json_dic["port"])+str(json_dic["path"])))
+    response = requests.get(str("http://"+str(json_dic["server"])+':'+str(json_dic["port_s"])+str(json_dic["path"])))
     #response = requests.get(str("http://localhost:2000/plants"))
     if response.status_code == 200:
         content=json.loads(response.text)
-        broker = str(content[0]["BROKER_HOST"]) #quello sul catalog è sbagliato
-        port = int(content[0]["BROKER_PORT"])
-        #broker="localhost"
-        #port=1883
+        #broker = str(content[0]["BROKER_HOST"]) #quello sul catalog è sbagliato
+        #port = int(content[0]["BROKER_PORT"])
+        broker="13.59.136.106"
+        port=1883
         
         #ottengo la lista completa delle piante registrate nel catalog
         for p in range(len(content)):
@@ -157,5 +157,5 @@ if __name__=="__main__":
     c.start()
 
     while True:
-        water_period=int(requests.get(str("http://"+str(json_dic["server"])+':'+str(json_dic["port"])+"/statistic/water_period"))))
+        water_period=json.loads(requests.get(str("http://"+str(json_dic["server"])+':'+str(json_dic["port_s"])+"/statistic/water_period")).text)
         time.sleep(water_period)
