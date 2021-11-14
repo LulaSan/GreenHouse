@@ -35,8 +35,6 @@ class Subscriber_get_info_b:
 			# A new message is received
 			# print ("Topic:'" + msg.topic+"', QoS: '"+str(msg.qos)+"' Message: '"+str(msg.payload) + "'")
 			payload=json.loads(msg.payload)
-			# self.temperature = payload["temperature"]
-			# self.brightness = payload["brightness"]
 			self.brightness = payload["brightness"]
 			# print(self.temperature)
 			print(payload)
