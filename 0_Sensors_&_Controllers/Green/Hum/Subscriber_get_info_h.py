@@ -20,7 +20,7 @@ class Subscriber_get_info_h:
         self.new_status=payload["humidity"]
         self.id=payload["id"]
         # json.dump(datisalvati,open("mysensor.json","w"))
-        print(f"humidity: {self.new_status}  ") #the json object is printed as string
+        print(f"humidity: {self.new_status} , {self.id} ") #the json object is printed as string
     def myH(self):
         h= (self.new_status)
         print(h)
