@@ -42,7 +42,7 @@ if __name__=="__main__":
         #THRESHOLD_BRIGHT
         status = greenHouseInfo[["GREENHOUSE_ID"]==id]["STATUS_CONTROLL_BRIGTH"]
 
-        sensor_data = {"brigthness" : val[cnt], "battery": batt[cnt] ,"status": status}  
+        sensor_data = {"brightness" : val[cnt], "battery": batt[cnt] ,"status": status}  
         S_cat.sendData(val[cnt],batt[cnt],status)
         S_tb.pub_tb(sensor_data)
         time.sleep(1)
