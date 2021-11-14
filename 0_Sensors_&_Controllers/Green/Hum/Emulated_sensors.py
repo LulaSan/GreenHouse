@@ -21,7 +21,7 @@ class Sensor_h():
         message["ts"] = time.strftime("%H:%M:%S")
         message["batt"] = batt
         message["status"] = status
-        message["bn"] = binar
+        message["bn"] = "84F3EB33D049"
         self.client.myPublish(self.topic, message)
         print(message)
 
