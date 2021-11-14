@@ -60,8 +60,8 @@ class Client_temperature():
         payload=json.loads(msg) #from payload i receive a string message-> convert it in a json 
         temperature=payload["temperature"] #from the payload.json i set all the variable 
         bn=str(payload["bn"])#id
-        ts=float(payload["ts"])        
-        battery=payload["batt"]
+        ts=payload["ts"]        
+        battery=payload["battery"]
         
         if bn in self.IDlist:
             print(f"The temperature sensor {bn} sent a value of {temperature}°C at {ts}")
@@ -109,15 +109,15 @@ if __name__=="__main__":
     # Si accede al catalog per ottenere l'IP e la porta del broker e il periodo di aggiornamento dati
     json_dic = json.loads(json_str)
     #response=requests.get("http://p4iotgreenhouse.ddns.net:2000/plants")
-    response = requests.get(str("http://"+str(json_dic["server"])+':'+str(json_dic["port"])+str(json_dic["path"])))
+    response = requests.get(str("http://"+str(json_dic["server"])+':'+str(json_dic["port_s"])+str(json_dic["path"])))
     #response = requests.get(str("http://localhost:2000/plants"))
 
     if response.status_code == 200:
         content=json.loads(response.text)
-        broker = str(content[0]["BROKER_HOST"]) 
-        port = int(content[0]["BROKER_PORT"])
-        #broker="localhost"
-        #port=1883
+        #broker = str(content[0]["BROKER_HOST"]) 
+        #port = int(content[0]["BROKER_PORT"])
+        broker="13.59.136.106"
+        port=1883
         print( response.status_code)
         #ottengo la lista completa delle piante registrate nel catalog
         for p in range(len(content)):
@@ -133,5 +133,7 @@ if __name__=="__main__":
     c.start()
 
     while True:
-        temperature_period=int(requests.get(str("http://"+str(json_dic["server"])+':'+str(json_dic["port"])+"/statistics"))))
-        time.sleep(temperature_period)
+        
+        temperature_period=json.loads(requests.get(str("http://"+str(json_dic["server"])+':'+str(json_dic["port_s"])+"/statistic/temperature_period")).text)
+        print(int(temperature_period))
+        time.sleep(int(temperature_period))
