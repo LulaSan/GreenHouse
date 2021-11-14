@@ -15,13 +15,13 @@ class Sensor_h():
         self.client.start()
     def end(self):
         self.client.stop()
-    def sendData(self, hm, batt, status, binar=''):
+    def sendData(self, hm, batt, status, id):
         message = self.__message
         message["humidity"] = hm
         message["ts"] = time.strftime("%H:%M:%S")
         message["batt"] = batt
         message["status"] = status
-        message["bn"] = binar
+        message["id"] = id
         self.client.myPublish(self.topic, message)
         print(message)
 
