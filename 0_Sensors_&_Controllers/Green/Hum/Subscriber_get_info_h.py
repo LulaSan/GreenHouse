@@ -25,7 +25,7 @@ class Subscriber_get_info_h:
         h= (self.new_status)
         print(h)
         return h
-    def MyID(self):
+    def myID(self):
         id= (self.id)
         print(id)
         return id
