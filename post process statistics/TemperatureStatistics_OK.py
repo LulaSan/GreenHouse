@@ -55,10 +55,7 @@ class Client_temperature():
         self.client.mySubscribe(self.topic)
         #TB start
         self.TBclient = mqtt.Client()
-        self.TBclient.connect('demo.thingsboard.io',1883,60)
-        self.TBclient.loop_start()
-    
-
+        
     def notify(self,topic,msg):
         payload=json.loads(msg) #from payload i receive a string message-> convert it in a json 
         temperature=payload["temperature"] #from the payload.json i set all the variable 
@@ -92,7 +89,10 @@ class Client_temperature():
             #publish the new statistics
             #self.client.myPublish("/p4iot/greenhouse/{}/temperature/statistics".format(bn), result)
             self.TBclient.username_pw_set(bn)
+            self.TBclient.connect('demo.thingsboard.io',1883,60)
+            self.TBclient.loop_start()
             self.TBclient.publish('v1/devices/me/telemetry',json.dumps(result))
+            self.TBclient.loop_stop()
         else:
             return f"the device {bn} is not registered"
       
@@ -129,7 +129,7 @@ if __name__=="__main__":
         
 
     clientID='TemperatureStatistics'
-    c=Client_temperature(clientID,"/p4iot/plants/+/sensors/+",broker,port)
+    c=Client_temperature(clientID,"/p4iot/plants/#",broker,port)
     c.start()
 
     while True:
