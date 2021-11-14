@@ -21,6 +21,7 @@ class Subscriber_get_info_h:
         self.id=payload["id"]
         # json.dump(datisalvati,open("mysensor.json","w"))
         print(f"humidity: {self.new_status} , {self.id} ") #the json object is printed as string
+        return payload
     def myH(self):
         h= (self.new_status)
         print(h)
@@ -34,8 +35,10 @@ if __name__=='__main__':
     BROKER="13.59.136.106"
 
     coll=Subscriber_get_info_h("controller_brght","/p4iot/greenhouses/+/sensors/humidity","13.59.136.106",1883)
+    
     coll.start()
     print("here there are the value of your temperatire sensor, \n--> ")
+    print(coll[humidity])
     finish=0;
     while True:
         time.sleep(1)
