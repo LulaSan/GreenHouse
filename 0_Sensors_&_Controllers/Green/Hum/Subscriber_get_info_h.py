@@ -58,9 +58,9 @@ class Subscriber_get_info_h:
 		def myH(self):
 			h= (self.humidity)
 			return h
-		def ID(self):
-			id= self.humidity
-			return id 
+		def myID(self):
+			ID= self.ID
+			return ID
 		
 
 		# print(temperature)
