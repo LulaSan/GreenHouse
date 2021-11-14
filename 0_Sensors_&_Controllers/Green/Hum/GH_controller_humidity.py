@@ -147,11 +147,11 @@ if __name__ == '__main__':
     
     num_of_greenHouses = len(greenH)
     
-    
+    connect= Subscriber_get_info_h("controller_brgth",'/p4iot/greenhouses/+/sensors/humidity', '13.59.136.106', 1883)
+
     while True:
 
         #connect= Subscriber_get_info_h("controller_brgth",'/p4iot/greenhouses/'+green_ID+'/sensors/humidity', '13.59.136.106', 1883)
-        connect= Subscriber_get_info_h("controller_brgth",'/p4iot/greenhouses/+/sensors/humidity', '13.59.136.106', 1883)
         green_ID= connect.myID()
 
         server_name = 'http://ec2-13-59-136-106.us-east-2.compute.amazonaws.com'
