@@ -81,8 +81,8 @@ class Client_statistics():
         bn=str(payload["bn"])#id
         self.bn=bn
         ts=payload["ts"]
-        status=payload["pump"]
-        battery=payload["batt"]
+        status=payload["status_pump"]
+        battery=payload["battery"]
         
         if bn in self.IDlist:
             print(f"The pump has been set {status} at {ts} by {bn}")
