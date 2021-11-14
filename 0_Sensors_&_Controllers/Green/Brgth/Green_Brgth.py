@@ -24,11 +24,11 @@ if __name__=="__main__":
     # Configuration for MQTT
 
     # conf=json.load(open("settings.json"))
-    conf=json.load(open("settings.json"))
+    # conf=json.load(open("settings.json"))
     
 
     id="84F3EB33D049"
-    S_cat=Sensor_b(id,"/p4iot/greenhouses/{}/sensors/brigthness".format(id),"13.59.136.106", 1883)
+    S_cat=Sensor_b(id,"/p4iot/greenhouses/{}/sensors/brightness".format(id),"13.59.136.106", 1883)
     S_tb = TB_Sensor_b(id,'Wsx4vSU7SCBUPqH4BRN6','demo.thingsboard.io','v1/devices/me/telemetry',1883,60)
     
     S_cat.run()    
