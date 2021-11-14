@@ -129,7 +129,7 @@ if __name__=="__main__":
         
 
     clientID='TemperatureStatistics'
-    c=Client_temperature(clientID,"/p4iot/greenhouses/+/sensors",broker,port)
+    c=Client_temperature(clientID,"/p4iot/plants/+/sensors/+",broker,port)
     c.start()
 
     while True:
