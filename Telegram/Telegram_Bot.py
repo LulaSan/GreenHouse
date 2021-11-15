@@ -648,13 +648,13 @@ def listpumps(farmerid):
     plants=json.loads(requests.get(url=f"{SERVER}/plants").text)
     cropsowned=farmer["CROPS_OWNED"]
     pprint(cropsowned)
-    displaydict={"list":[]}
+    displaydict={" Your list":[]}
     #STAMPO LISTA PIANTE OWNED CON THRESHOLDS
     for crop in cropsowned:
       for plant in plants:
         if plant["PLANT_ID"] == crop:
             status= 'on' if plant["STATUS_PUMP"] == 1 else 'off'
-            displaydict["list"].append({"CROP":plant["PLANT_NAME"],"STATUS_PUMP": status})
+            displaydict["Your list"].append({"CROP":plant["PLANT_NAME"],"STATUS_PUMP": status})
     return displaydict
     
 def pompaonoff_listpumps(update: Update, context: CallbackContext) -> int:
