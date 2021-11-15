@@ -128,8 +128,7 @@ def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
                         loggedUsers[j]["LOGID"]=str(text)
                         update_catalog(loggedUsers)
                         pprint(loggedUsers)
-
-                        update.message.reply_text(f'Welcome {user_data["LOGID"]}! \n Write "Start" if you want to go back to log in \nChoose between:', reply_markup=reply_markupPrincipale_FARMER)
+                        update.message.reply_text(f'Welcome {user_data["LOGID"]}! \n Write "Start" if you want to go back to log in. \n Choose between:', reply_markup=reply_markupPrincipale_FARMER)
                         return FARMER
         
     elif tipo=='A':
@@ -565,8 +564,8 @@ def ItemMessage(update: Update, context: CallbackContext) -> int:
     ####################################################### FARMER ###################################
     #####################################################################################
     #################################################
-keyboardPrincipale= [[InlineKeyboardButton(text=f'Add, modify or remove an item', callback_data='AMR')],
-            [InlineKeyboardButton(text=f'Manage actuators', callback_data='AS')],
+keyboardPrincipale= [[InlineKeyboardButton(text=f'Add, modify or remove an item for sale', callback_data='AMR')],
+            [InlineKeyboardButton(text=f'Manage plant actuators', callback_data='AS')],
             [InlineKeyboardButton(text=f'Statistics', callback_data='SF')]]
 reply_markupPrincipale_FARMER = InlineKeyboardMarkup(keyboardPrincipale)
 
@@ -718,7 +717,7 @@ def listaCROPS(farmerid):
   for crop in cropsowned:
       for plant in plants:
         if plant["PLANT_ID"] == crop:
-          displaydict["list"].append({"CROP":plant["PLANT_NAME"],"THRESHOLD_MOIST_MIN":plant["THRESHOLD_MOIST_MIN"],"THRESHOLD_MOIST_MAX":plant["THRESHOLD_MOIST_MAX"]})
+          displaydict["list"].append({"PLANT":plant["PLANT_NAME"],"THRESHOLD_MOIST_MIN":plant["THRESHOLD_MOIST_MIN"],"THRESHOLD_MOIST_MAX":plant["THRESHOLD_MOIST_MAX"]})
   
   return displaydict
 
