@@ -214,7 +214,7 @@ class GreenhouseClient():
             "STATUS_TOPIC": "/p4iot/greenhouses/{}/status".format(GreenhouseIDnew),
             "COMMANDS_TOPIC": "/p4iot/greenhouses/{}/commands/+".format(GreenhouseIDnew),
             "SENSORS_TOPIC": "/p4iot/greenhouses/{}/sensors".format(GreenhouseIDnew)}
-            deviceCompleto = {**newDevice, **basicinformations}
+            deviceCompleto = {**basicinformations,**newDevice}
             self.GreenhousesList.append(deviceCompleto)
             #updating Json
             self.updateJson()            
