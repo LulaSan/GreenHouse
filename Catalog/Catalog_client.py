@@ -177,6 +177,7 @@ class GreenhouseClient():
     def addgreenhouse(self,newID,newDevice):
         self.newID=newID
         self.newDevice=newDevice #this must be a dictionary
+        
         modificaG=0
         for i in range(len(self.GreenhousesList)):
             if self.newID==self.GreenhousesList[i]["GREENHOUSE_ID"] :
