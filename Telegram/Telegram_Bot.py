@@ -585,7 +585,7 @@ def displaylist(update: Update, context: CallbackContext) -> int:
                                      "● To ADD something write:  write 'add <item name>, <price> e <quanity> separated by one space\n"
                                      "● To MODIFY something write:  write 'modify 'price' or 'quanity', <item name>, new value separated by one space\n "
                                      "● To REMOVE something write:  write 'remove <item name> separated by one space\n"
-                                          " >>  For Example: modify Pomodoro price 3"
+                                          "🍅 For Example: modify Pomodoro price 3 \n"
                                      "● To go back to main menu write Principale  ")
   return FARMER_TYPING
 
@@ -636,7 +636,7 @@ def attuatoriscelte(update: Update, context: CallbackContext) -> int:
   keyboard = [
         [
             InlineKeyboardButton("Modify humidity threshold", callback_data="newthreshold_humidity"),
-            InlineKeyboardButton("Turn ON or OFF the pump", callback_data="pompaonoff"),
+            InlineKeyboardButton("Turn ON or OFF the pump ", callback_data="pompaonoff"),
             InlineKeyboardButton("Main Menu", callback_data="principale")
         ]
     ]
@@ -687,7 +687,7 @@ def pompaonoff(update: Update, context: CallbackContext) -> int:
                         plantid=plant["PLANT_ID"]
                         r=requests.post(url=SERVER+f"/plant/{plantid}",json=json_mod)
                         newlist=listpumps(farmerid)
-                        update.message.reply_text(f"Pump of {plant_pump} is now OFF.\n" 
+                        update.message.reply_text(f"Pump of {plant_pump} is now OFF! 💦 \n" 
                                                   f"\n Here there is the updated list:\n {newlist} \n "
                                                   "\n Try again in you want to modify more. \n"
                                                   "\n Write 'Principale' to go back to the main menu. \n")
@@ -697,7 +697,7 @@ def pompaonoff(update: Update, context: CallbackContext) -> int:
                         plantid=plant["PLANT_ID"]
                         r=requests.post(url=SERVER+f"/plant/{plantid}",json=json_mod)
                         newlist=listpumps(farmerid)
-                        update.message.reply_text(f"Pump of {plant_pump} is now ON.\n" 
+                        update.message.reply_text(f"Pump of {plant_pump} is now ON! 💦 \n" 
                                                   f"\n Here there is the updated list:\n {newlist} \n "
                                                   "\n Try again in you want to modify more. \n"
                                                   "\n Write 'Principale' to go back to the main menu. \n")
