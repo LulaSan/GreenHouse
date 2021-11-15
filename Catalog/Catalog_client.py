@@ -72,7 +72,7 @@ class PlantClient():
             "STATUS_PUMP": 0,
             "OWNER": "1234",
             "THRESHOLD_MOIST_MIN": 1,
-            "THRESHOLD_MOIST_MAX": 33
+            "THRESHOLD_MOIST_MAX": 33,
             "BROKER_HOST": "13.59.136.106", 
             "BROKER_PORT": 1883, 
                 
