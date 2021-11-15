@@ -61,23 +61,24 @@ class PlantClient():
                     if keysDaMod[key] in self.PlantsList[i].keys(): #cerco tra le key ognuna di quelle presente nel body della richiesta
                         self.PlantsList[i][keysDaMod[key]]=valuesdaMod[key]
                 self.updateJson()
-                return f' Ho modificato quello che mi hai chiesto correttamente'
+                return f' Modified correctly'
         
         if modifica==0:
             plantIDnew=self.newDevice["PLANT_ID"]
             newinformations={
-            "BROKER_HOST": "10.42.0.1", 
-            "BROKER_PORT": 1884, 
+            "BROKER_HOST": "13.59.136.106", 
+            "BROKER_PORT": 1883, 
             "STATUS_TOPIC": "/p4iot/plants/{}/status".format(plantIDnew),
             "COMMANDS_TOPIC": "/p4iot/plants/{}/commands/+".format(plantIDnew),
-            "SENSORS_TOPIC": "/p4iot/plants/{}/sensors".format(plantIDnew)}
+            "SENSORS_TOPIC": "/p4iot/plants/{}/sensors".format(plantIDnew),
+            "STATUS_PUMP": 0}
             # newinformations=json.dumps(newinformations1)
             deviceCompleto = {**newDevice, **newinformations}
             self.PlantsList.append(deviceCompleto)
             #updating Json
             self.updateJson()
 
-            return f'Il Catalogo è stato aggiornato correttamente'
+            return f'Update correctly'
     
     def removeplant(self,deviceID):
         self.deviceID=deviceID
@@ -181,13 +182,13 @@ class GreenhouseClient():
                     if keysDaMod[key] in self.GreenhousesList[i].keys(): #cerco tra le key ognuna di quelle presente nel body della richiesta
                         self.GreenhousesList[i][keysDaMod[key]]=valuesdaMod[key]
                 self.updateJson()
-                return f' Ho modificato quello che mi hai chiesto correttamente'
+                return f' Modified correctly'
         
         if modificaG==0:
             GreenhouseIDnew=self.newDevice["GREENHOUSE_ID"]
             newinformations={
-            "BROKER_HOST": "10.42.0.1", 
-            "BROKER_PORT": 1884, 
+            "BROKER_HOST": "13.59.136.106", 
+            "BROKER_PORT": 1883, 
             "STATUS_TOPIC": "/p4iot/greenhouses/{}/status".format(GreenhouseIDnew),
             "COMMANDS_TOPIC": "/p4iot/greenhouses/{}/commands/+".format(GreenhouseIDnew),
             "SENSORS_TOPIC": "/p4iot/greenhouses/{}/sensors".format(GreenhouseIDnew)}
@@ -195,7 +196,7 @@ class GreenhouseClient():
             self.GreenhousesList.append(deviceCompleto)
             #updating Json
             self.updateJson()            
-            return f'Il Catalogo è stato aggiornato correttamente'
+            return f'Updated correctly'
 
     def removegreenhouse(self,deviceID):
         self.deviceID=deviceID
