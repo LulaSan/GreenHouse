@@ -274,7 +274,7 @@ def NewParametersGreenhouse(update: Update, context: CallbackContext) -> int:
   greenhouse = json.loads(requests.get(url=f"{SERVER}/greenhouse/{greenhouse_id}").text)
 
   if text[0] == "Principale":
-    update.message.reply_text('Scegli tra:', reply_markup=first_menu_keyboard())
+    update.message.reply_text('Choose between \n Write "Start" to go back to LOG IN:', reply_markup=first_menu_keyboard())
     return LEVEL1
 
   elif text[0] == "1":
@@ -675,7 +675,7 @@ def pompaonoff(update: Update, context: CallbackContext) -> int:
     plants=json.loads(requests.get(url=f"{SERVER}/plants").text)
     trovato=0
     if text[0] == 'Principale' :
-        update.message.reply_text('Scegli tra:', reply_markup=reply_markupPrincipale_FARMER)
+        update.message.reply_text('Choose between \n Write "Start" to go back to LOG IN:', reply_markup=reply_markupPrincipale_FARMER)
         return FARMER
     else:
         for plant in plants:
@@ -745,7 +745,7 @@ def NewThreshold_humidity_reply(update: Update, context: CallbackContext) -> int
 
 
   if text[0] == "Principale":
-    update.message.reply_text('Scegli tra:', reply_markup=reply_markupPrincipale_FARMER)
+    update.message.reply_text('Choose between \n Write "Start" to go back to LOG IN:', reply_markup=reply_markupPrincipale_FARMER)
     return FARMER
 
   elif text[1]=="min":
