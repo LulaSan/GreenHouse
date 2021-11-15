@@ -673,6 +673,7 @@ def pompaonoff(update: Update, context: CallbackContext) -> int:
     text = update.message.text.split(" ")
     plant_pump=text[0]
     plants=json.loads(requests.get(url=f"{SERVER}/plants").text)
+    trovato=0
     if text[0] == 'Principale' :
         update.message.reply_text('Scegli tra:', reply_markup=reply_markupPrincipale_FARMER)
         return FARMER
@@ -681,7 +682,7 @@ def pompaonoff(update: Update, context: CallbackContext) -> int:
             pprint ( plant_pump)
             pprint(plant["PLANT_NAME"])
             if (re.search(plant["PLANT_NAME"], plant_pump, re.IGNORECASE))!=None:
-
+                trovato=1
                 if plant["OWNER"]==farmerid:
                     if plant["STATUS_PUMP"]== 1:
                         json_mod={"STATUS_PUMP": 0}
@@ -703,9 +704,10 @@ def pompaonoff(update: Update, context: CallbackContext) -> int:
                                                   "\n Write 'Principale' to go back to the main menu. \n")
                         return FARMER_TYPING_3
 
-            else:
-                update.message.reply_text(f" This plant doesn't exist! \n Try again, please.")
-                return FARMER_TYPING_3
+        else:
+            trovato=0
+            update.message.reply_text(f" This plant doesn't exist! \n Try again, please.")
+            return FARMER_TYPING_3
 
 def listaCROPS(farmerid):
   farmer=json.loads(requests.get(url=f"{SERVER}/farmer/{farmerid}").text)
