@@ -64,15 +64,21 @@ class PlantClient():
                 return f' Modified correctly'
         
         if modifica==0:
-            plantIDnew=self.newDevice["PLANT_ID"]
+            plantIDnew=self.deviceID
             newinformations={
+            "PLANT_ID": self.deviceID,
+            "PLANT_NAME": "NewPlant",
+            "GREENHOUSE_ID": "",
+            "STATUS_PUMP": 0,
+            "OWNER": "1234",
+            "THRESHOLD_MOIST_MIN": 1,
+            "THRESHOLD_MOIST_MAX": 33
             "BROKER_HOST": "13.59.136.106", 
             "BROKER_PORT": 1883, 
+                
             "STATUS_TOPIC": "/p4iot/plants/{}/status".format(plantIDnew),
             "COMMANDS_TOPIC": "/p4iot/plants/{}/commands/+".format(plantIDnew),
-            "SENSORS_TOPIC": "/p4iot/plants/{}/sensors".format(plantIDnew),
-            "STATUS_PUMP": 0}
-            # newinformations=json.dumps(newinformations1)
+            "SENSORS_TOPIC": "/p4iot/plants/{}/sensors".format(plantIDnew)}
             deviceCompleto = {**newDevice, **newinformations}
             self.PlantsList.append(deviceCompleto)
             #updating Json
@@ -162,9 +168,9 @@ class GreenhouseClient():
                         trovato=(self.GreenhousesList[i][self.oggetto])
                         nontrovato=0
                     else:
-                        return f' Non esiste questa Key '
+                        return f' This greenhouse does not exist'
         if nontrovato==1:
-            return f' Nulla corrisponde alla tua ricerca, riprova!'
+            return f' Nothing found. Try again'
         else:
             return json.dumps(trovato,indent=4)
     
@@ -186,17 +192,32 @@ class GreenhouseClient():
         
         if modificaG==0:
             GreenhouseIDnew=self.newID
-            newinformations={
+            basicinformations={
+            "GREENHOUSE_ID": self.newID,
+            "GREENHOUSE_LATITUDE": 0,
+            "GREENHOUSE_LONGITUDE": 0,
+            "STATUS_CONTROLL_HUMIDITY": 0,
+            "STATUS_PUMP":0,
+            "THRESHOLD_HUMID_MIN": 22,
+            "THRESHOLD_HUMID_MAX": 67,
+            "STATUS_CONTROLL_BRIGTH": 0,
+            "STATUS_WINDOW":0,
+            "THRESHOLD_BRIGHT_MIN": 22,
+            "THRESHOLD_BRIGHT_MAX": 89,
+            "STATUS_CONTROLL_TEMPER": 0,
+            "STATUS_VENT": 0, 
+            "THRESHOLD_TEMPER_MIN": 28,
+            "THRESHOLD_TEMPER_MAX": 32,
             "BROKER_HOST": "13.59.136.106", 
             "BROKER_PORT": 1883, 
             "STATUS_TOPIC": "/p4iot/greenhouses/{}/status".format(GreenhouseIDnew),
             "COMMANDS_TOPIC": "/p4iot/greenhouses/{}/commands/+".format(GreenhouseIDnew),
             "SENSORS_TOPIC": "/p4iot/greenhouses/{}/sensors".format(GreenhouseIDnew)}
-            deviceCompleto = {**newDevice, **newinformations}
+            deviceCompleto = {**newDevice, **basicinformations}
             self.GreenhousesList.append(deviceCompleto)
             #updating Json
             self.updateJson()            
-            return f'Updated correctly'
+            return f'Addded correctly'
 
     def removegreenhouse(self,deviceID):
         self.deviceID=deviceID
@@ -219,7 +240,7 @@ class GreenhouseClient():
         catalog["Plants"]=plantlistcopia
         json.dump(catalog,open("Catalog.json",'w'),indent=4)
         self.updateJson()
-        return "l'elemento è stato rimosso "    
+        return "Deleted"    
     def updateJson(self):
         fp=open("Catalog.json",'r')
         catalog=json.load(fp)
@@ -288,7 +309,7 @@ class FarmerClient():
                     if keysDaMod[key] in self.FarmersList[i].keys(): #cerco tra le key ognuna di quelle presente nel body della richiesta
                         self.FarmersList[i][keysDaMod[key]]=valuesdaMod[key]
                 self.updateJson()
-                return f' Ho modificato quello che mi hai chiesto correttamente'
+                return f' Modified correctly'
         
         if modifica==0:
             self.FarmersList.append(newFarmer)
@@ -312,7 +333,7 @@ class FarmerClient():
                         if self.quantity!="None": # se uno c'è e l'altro no, è un modo per non scambiare gli input
                             self.FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]=int(self.quantity)
                         self.updateJson()
-                        return(f"ho modificato {item}")
+                        return(f"modified {item}")
 
                 if update==0: #se l'item non c'è lo aggiungo alla lista 
                     newitem={
@@ -322,7 +343,7 @@ class FarmerClient():
                     }
                     self.FarmersList[i]["ITEMS_SELL"].append(newitem)
                     self.updateJson()
-                    return (f"ho aggiunto {self.item}")
+                    return (f"added {self.item}")
     def deleteItem(self,farmerID,item):
         self.item=item
         self.farmerID=farmerID
@@ -335,7 +356,7 @@ class FarmerClient():
         
         self.FarmersList=farmerlistcopia
         self.updateJson()
-        return f"ho rimosso {item}"
+        return f"removed {item}"
 
     def buyitem(self,FarmerID,item,quantity):
         self.FarmerID=FarmerID
@@ -351,16 +372,16 @@ class FarmerClient():
                             nuovadisponibile=self.FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]
                             self.updateJson()
                             print("ok")
-                            return( f" la quantità rimanente di {self.item} è {nuovadisponibile}")
+                            return( f" quantity available {self.item} è {nuovadisponibile}")
                         elif int(quantity)==int(self.FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]):
                             #se vuole tutto ciò che è disponibile, elimino l'item
                             del farmerlistcopia[i]["ITEMS_SELL"][j]
                             self.FarmersList=farmerlistcopia
                             self.updateJson()
-                            return ("hai chiesto tutta la quanittà disponibile, l'item è ora terminato")
+                            return ("Item now is over")
                         elif int(quantity)>int(self.FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]): # se ne vuole trppo --> error
                             quantitadisponibile=self.FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]
-                            return (f"Quantità richiesta non disponibile, la quantità disponibile è {quantitadisponibile}")
+                            return (f"Quantity not available! The available quantity is {quantitadisponibile}")
                                                         
     def updateJson(self):
         fp=open("Catalog.json",'r')
