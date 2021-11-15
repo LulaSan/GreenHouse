@@ -39,7 +39,7 @@
             "THRESHOLD_TEMPER_MIN": 0,
             "THRESHOLD_TEMPER_MAX": 0,
             "BROKER_HOST": "13.59.136.106",
-            "BROKER_PORT": 1884,
+            "BROKER_PORT": 1883,
             "STATUS_TOPIC": "/p4iot/greenhouses/ABCDEFG/status",
             "COMMANDS_TOPIC": "/p4iot/greenhouses/ABCDEFG/commands/+",
             "SENSORS_TOPIC": "/p4iot/greenhouses/ABCDEFG/sensors"
