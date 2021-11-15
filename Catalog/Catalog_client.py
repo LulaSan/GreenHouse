@@ -326,7 +326,7 @@ class FarmerClient():
                         "quantityAvailable": 0
                 } ] }
             deviceCompleto = {**basicinformations,**newFarmer}
-            self.FarmersList.append(newFarmer)
+            self.FarmersList.append(deviceCompleto)
             
             #updating Json
             self.updateJson()
