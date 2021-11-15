@@ -679,13 +679,12 @@ def pompaonoff(update: Update, context: CallbackContext) -> int:
         return FARMER
     else:
         for plant in plants:
-            pprint ( plant_pump)
-            pprint(plant["PLANT_NAME"])
             if (re.search(plant["PLANT_NAME"], plant_pump, re.IGNORECASE))!=None:
                 trovato=1
                 if plant["OWNER"]==farmerid:
                     if plant["STATUS_PUMP"]== 1:
                         json_mod={"STATUS_PUMP": 0}
+                        plantid=plant["PLANT_ID"]
                         r=requests.post(url=SERVER+f"/plant/{plantid}",json=json_mod)
                         newlist=listpumps(farmerid)
                         update.message.reply_text(f"Pump of {plant_pump} is now OFF.\n" 
@@ -695,10 +694,9 @@ def pompaonoff(update: Update, context: CallbackContext) -> int:
                         return FARMER_TYPING_3
                     else:
                         json_mod={"STATUS_PUMP": 1}
-                        update.message.reply_text(f"Pump of {plant_pump} is now ON \n Write 'Principale' to go back to the main menu")
                         r=requests.post(url=SERVER+f"/plant/{plantid}",json=json_mod)
                         newlist=listpumps(farmerid)
-                        update.message.reply_text(f"Pump of {plant_pump} is now OFF.\n" 
+                        update.message.reply_text(f"Pump of {plant_pump} is now ON.\n" 
                                                   f"\n Here there is the updated list:\n {newlist} \n "
                                                   "\n Try again in you want to modify more. \n"
                                                   "\n Write 'Principale' to go back to the main menu. \n")
