@@ -321,9 +321,7 @@ class FarmerClient():
                                ],
                 "ITEMS_SELL": [
                     {   
-                        "item": "add an item",
-                        "price": 0,
-                        "quantityAvailable": 0
+                       
                 } ] }
             deviceCompleto = {**basicinformations,**newFarmer}
             self.FarmersList.append(deviceCompleto)
