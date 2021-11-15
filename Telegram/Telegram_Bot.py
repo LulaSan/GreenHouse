@@ -627,7 +627,7 @@ def uporadditemfarmer(update: Update, context: CallbackContext) -> int:
     
     return FARMER_TYPING
 
-  elif text[0] == "Principale":
+  elif (re.search('principale', text[0], re.IGNORECASE))!=None:       #text[0] == "Principale":
     update.message.reply_text('Write "Start" if you want to go back to LOG IN \n Choose between:', reply_markup=reply_markupPrincipale_FARMER)
     return FARMER
 
@@ -643,47 +643,63 @@ def attuatoriscelte(update: Update, context: CallbackContext) -> int:
   reply_markup = InlineKeyboardMarkup(keyboard)
   update.callback_query.message.edit_text(text="Choose an option:", reply_markup=reply_markup)
   return FARMER
+def listpumps(farmerid):
+    farmer=json.loads(requests.get(url=f"{SERVER}/farmer/{farmerid}").text)
+    plants=json.loads(requests.get(url=f"{SERVER}/plants").text)
+    cropsowned=farmer["CROPS_OWNED"]
+    pprint(cropsowned)
+    displaydict={"list":[]}
+    #STAMPO LISTA PIANTE OWNED CON THRESHOLDS
+    for crop in cropsowned:
+      for plant in plants:
+        if plant["PLANT_ID"] == crop:
+            status= 'on' if plant["STATUS PUMP"] == 1 else 'off'
+            displaydict["list"].append({"CROP":plant["PLANT_NAME"],"STATUS_PUMP": status})
+     return displaydict
+    
+def pompaonoff_listpumps(update: Update, context: CallbackContext) -> int:
+    user_data=context.user_data
+    farmerid=user_data["LOGID"]
+    listpumps=listpumps(farmerid)
+    update.callback_query.message.edit_text(text=f"\n Here there is the status of the pump for each plant  \n{listpumps}\n"
+                                     "● Write the name of the plant you want to modify \n ● Write 'Principale' to go back to the main menu ")
+    return FARMER_TYPING_3
 
+    
 def pompaonoff(update: Update, context: CallbackContext) -> int:
-  keyboard = [
-        [
-            InlineKeyboardButton("Pump ON", callback_data="PompaON"),
-            InlineKeyboardButton("Pump OFF", callback_data="PompaOFF"),
-            InlineKeyboardButton("Last Menu", callback_data="AS")
-        ]
-    ]
-  reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.edit_text(text="Choose an option:", reply_markup=reply_markup
-    )
-  return FARMER
+    user_data=context.user_data
+    farmerid=user_data["LOGID"]
+    #if (re.search('test', 'TeSt', re.IGNORECASE))!=None:        print("oK")
+    text = update.message.text.split(" ")
+    plant_pump=text[0]
+    plants=json.loads(requests.get(url=f"{SERVER}/plants").text)
+    for plant in plants:
+        if (re.search(plant["PLANT_NAME"], plant_pump, re.IGNORECASE))!=None:
+            if plant["OWNER"]==farmerid:
+                if plant["STATUS_PUMP"]== 1:
+                    json_mod={"STATUS_PUMP": 0}
+                    r=requests.post(url=SERVER+f"/plant/{plantid}",json=json_mod)
+                    newlist=listpumps(farmerid)
+                    update.message.reply_text(f"Pump of {plant_pump} is now OFF.\n" 
+                                              f"\n Here there is the updated list:\n {newlist} \n "
+                                              "\n Try again in you want to modify more. \n"
+                                              "\n Write 'Principale' to go back to the main menu. \n")
+                    return FARMER_TYPING_3
+                else:
+                    json_mod={"STATUS_PUMP": 1}
+                    update.message.reply_text(f"Pump of {plant_pump} is now ON \n Write 'Principale' to go back to the main menu")
+                    r=requests.post(url=SERVER+f"/plant/{plantid}",json=json_mod)
+                    newlist=listpumps(farmerid)
+                    update.message.reply_text(f"Pump of {plant_pump} is now OFF.\n" 
+                                              f"\n Here there is the updated list:\n {newlist} \n "
+                                              "\n Try again in you want to modify more. \n"
+                                              "\n Write 'Principale' to go back to the main menu. \n")
+                    return FARMER_TYPING_3
+               
+        else:
+            update.message.reply_text(f" This plant doesn't exist! \n Try again, please.")
+            return FARMER_TYPING_3
 
-def PompaON(update: Update, context: CallbackContext) -> int:
-  
-  update.callback_query.message.edit_text(" Pump ON")
-  status_pump={"STATUS_PUMP":1}
-  #r=requests.post(url=SERVER+f"plant/
-  keyboard = [
-        [
-            InlineKeyboardButton("Main Menu", callback_data="principale"),
-            InlineKeyboardButton("Last Menu", callback_data="AS")
-        ]
-    ]
-  reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup)
-  return FARMER
-                  
-def PompaOFF(update: Update, context: CallbackContext) -> int:
-  update.callback_query.message.edit_text(" Pump OFF")
-  #comando che disattiva la pompa
-  keyboard = [
-        [
-            InlineKeyboardButton("Main Menu", callback_data="principale"),
-            InlineKeyboardButton("Last Menu", callback_data="AS")
-        ]
-    ]
-  reply_markup = InlineKeyboardMarkup(keyboard)
-  update.callback_query.message.reply_text(text="Choose an option:", reply_markup=reply_markup)
-  return FARMER
 def listaCROPS(farmerid):
   farmer=json.loads(requests.get(url=f"{SERVER}/farmer/{farmerid}").text)
   plants=json.loads(requests.get(url=f"{SERVER}/plants").text)
@@ -813,11 +829,12 @@ def main():
                                
                 FARMER_TYPING : [MessageHandler(Filters.text, callback= uporadditemfarmer)],
                 FARMER_TYPING_2 : [MessageHandler(Filters.text, callback= NewThreshold_humidity_reply)],
+                FARMER_TYPING_3:[MessageHandler(Filters.text, callback= pompaonoff)],
                 FARMER : [ #premo aggiungi e legge il messaggio
                       MessageHandler(Filters.regex('^Start$'), start),
                       CallbackQueryHandler(displaylist, pattern='AMR'),
                       CallbackQueryHandler(attuatoriscelte, pattern='AS'),
-                      CallbackQueryHandler(pompaonoff, pattern='pompaonoff'),
+                      CallbackQueryHandler(pompaonoff_listpumps, pattern='pompaonoff'),
                       CallbackQueryHandler(PompaOFF, pattern='PompaOFF'),
                       CallbackQueryHandler(PompaON, pattern='PompaON'),
                       CallbackQueryHandler(NewThreshold_humidity_info, pattern='newthreshold_humidity'),
