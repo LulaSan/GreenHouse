@@ -660,8 +660,8 @@ def listpumps(farmerid):
 def pompaonoff_listpumps(update: Update, context: CallbackContext) -> int:
     user_data=context.user_data
     farmerid=user_data["LOGID"]
-    listpumps=listpumps(farmerid)
-    update.callback_query.message.edit_text(text=f"\n Here there is the status of the pump for each plant  \n{listpumps}\n"
+    listpumps_farmer=listpumps(farmerid)
+    update.callback_query.message.edit_text(text=f"\n Here there is the status of the pump for each plant  \n{listpumps_farmer}\n"
                                      "● Write the name of the plant you want to modify \n ● Write 'Principale' to go back to the main menu ")
     return FARMER_TYPING_3
 
