@@ -13,7 +13,7 @@ import requests
 ##AGGIUNGERE MESSAGGIO INIZIALE CHE DICE DI SCRIVERE /start
 # listaFarmers=lista["list"]
 
-SIGNIN, SIGNIN_PULSANTI, ADMIN , ADMIN_TYPING, ADMIN_TYPING_2, LEVEL1, FARMER , FARMER_TYPING, FARMER_TYPING_2 , USER, USER_TYPING= range(11)
+SIGNIN, SIGNIN_PULSANTI, ADMIN , ADMIN_TYPING, ADMIN_TYPING_2, LEVEL1, FARMER , FARMER_TYPING, FARMER_TYPING_2 ,FARMERTYPING_3, USER, USER_TYPING= range(12)
 
 SERVER_file=json.load(open('utils.json','r'))
 SERVER=SERVER_file['SERVER']
@@ -835,8 +835,7 @@ def main():
                       CallbackQueryHandler(displaylist, pattern='AMR'),
                       CallbackQueryHandler(attuatoriscelte, pattern='AS'),
                       CallbackQueryHandler(pompaonoff_listpumps, pattern='pompaonoff'),
-                      CallbackQueryHandler(PompaOFF, pattern='PompaOFF'),
-                      CallbackQueryHandler(PompaON, pattern='PompaON'),
+                   
                       CallbackQueryHandler(NewThreshold_humidity_info, pattern='newthreshold_humidity'),
                       CallbackQueryHandler(menuprincipaleFarmer, pattern='principale'),
                     
