@@ -79,7 +79,7 @@ class PlantClient():
             "STATUS_TOPIC": "/p4iot/plants/{}/status".format(plantIDnew),
             "COMMANDS_TOPIC": "/p4iot/plants/{}/commands/+".format(plantIDnew),
             "SENSORS_TOPIC": "/p4iot/plants/{}/sensors".format(plantIDnew)}
-            deviceCompleto = {**newDevice, **newinformations}
+            deviceCompleto = {**newinformations, **newDevice}
             self.PlantsList.append(deviceCompleto)
             #updating Json
             self.updateJson()
