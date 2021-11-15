@@ -313,10 +313,24 @@ class FarmerClient():
                 return f' Modified correctly'
         
         if modifica==0:
+            newFarmerID=self.farmerID
+            basicinformations={
+                "FARMER_ID": newFarmerID,
+                "GREENHOUSE_ID":"Insert new greenhouse id ",
+                "CROPS_OWNED": [
+                               ],
+                "ITEMS_SELL": [
+                    {   
+                        "item": "add an item",
+                        "price": 0,
+                        "quantityAvailable": 0
+                } ] }
+            deviceCompleto = {**basicinformations,**newFarmer}
             self.FarmersList.append(newFarmer)
+            
             #updating Json
             self.updateJson()
-            return f'Il Catalogo è stato aggiornato correttamente'
+            return f'Added correctly'
         
     def addItem(self,farmerID,item,price=None,quantity=None):
         self.price=price # la quantity deve essere la totale disponibile in quel momento
@@ -373,7 +387,7 @@ class FarmerClient():
                             nuovadisponibile=self.FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]
                             self.updateJson()
                             print("ok")
-                            return( f" quantity available {self.item} è {nuovadisponibile}")
+                            return( f" quantity available of {self.item} is {nuovadisponibile}")
                         elif int(quantity)==int(self.FarmersList[i]["ITEMS_SELL"][j]["quantityAvailable"]):
                             #se vuole tutto ciò che è disponibile, elimino l'item
                             del farmerlistcopia[i]["ITEMS_SELL"][j]
