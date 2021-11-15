@@ -678,7 +678,7 @@ def pompaonoff(update: Update, context: CallbackContext) -> int:
         return FARMER
     else:
         for plant in plants:
-            print(f"{plant["PLANT_NAME"]}, {plant_pump}")
+            pprint (f" { plant["PLANT_NAME"] } , {plant_pump}")
             if (re.search(plant["PLANT_NAME"], plant_pump, re.IGNORECASE))!=None:
 
                 if plant["OWNER"]==farmerid:
