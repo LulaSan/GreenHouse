@@ -3,6 +3,8 @@ import json
 import time
 import requests 
 import datetime
+SERVER_file=json.load(open('utils.json','r'))
+SERVER=SERVER_file['SERVER']
 
 class AdminClient():
     def __init__(self,AdminList):
@@ -82,7 +84,14 @@ class PlantClient():
         for i in range(len(self.PlantsList)):
             if self.deviceID==self.PlantsList[i]["PLANT_ID"] :
                 del self.PlantsList[i]
+                #
+                owner= self.PlantsList[i]["OWNER"]
+                cropsowned=requests.post(SERVER+f"farmer/{owner}/CROPS_OWNED")
+                cropsmod=cropswoned.remove(deviceID)
+               
+                
                 self.updateJson()
+        
         return "l'elemento è stato rimosso"
 
     def updateJson(self):
