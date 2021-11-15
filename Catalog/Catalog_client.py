@@ -185,7 +185,7 @@ class GreenhouseClient():
                 return f' Modified correctly'
         
         if modificaG==0:
-            GreenhouseIDnew=self.newDevice["GREENHOUSE_ID"]
+            GreenhouseIDnew=self.newID
             newinformations={
             "BROKER_HOST": "13.59.136.106", 
             "BROKER_PORT": 1883, 
