@@ -662,7 +662,7 @@ def pompaonoff_listpumps(update: Update, context: CallbackContext) -> int:
     farmerid=user_data["LOGID"]
     listpumps_farmer=listpumps(farmerid)
     update.callback_query.message.edit_text(text=f"\n Here there is the status of the pump for each plant  \n{listpumps_farmer}\n"
-                                     "● Write the name of the plant you want to modify \n ● Write 'Principale' to go back to the main menu ")
+                                     "●Write the name of the plant you want to modify \n ● Write 'Principale' to go back to the main menu ")
     return FARMER_TYPING_3
 
     
@@ -694,6 +694,7 @@ def pompaonoff(update: Update, context: CallbackContext) -> int:
                         return FARMER_TYPING_3
                     else:
                         json_mod={"STATUS_PUMP": 1}
+                        plantid=plant["PLANT_ID"]
                         r=requests.post(url=SERVER+f"/plant/{plantid}",json=json_mod)
                         newlist=listpumps(farmerid)
                         update.message.reply_text(f"Pump of {plant_pump} is now ON.\n" 
