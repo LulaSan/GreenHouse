@@ -655,7 +655,7 @@ def listpumps(farmerid):
         if plant["PLANT_ID"] == crop:
             status= 'on' if plant["STATUS PUMP"] == 1 else 'off'
             displaydict["list"].append({"CROP":plant["PLANT_NAME"],"STATUS_PUMP": status})
-     return displaydict
+    return displaydict
     
 def pompaonoff_listpumps(update: Update, context: CallbackContext) -> int:
     user_data=context.user_data
