@@ -100,7 +100,7 @@ def sign_in(update: Update, context: CallbackContext) -> int:
   return SIGNIN
 
 def sign_in_credenziali(update: Update, context: CallbackContext) -> int:
-    pprint("sto entrando del sign_in_cred")
+    pprint("sto entrando nel sign_in_cred")
     text = update.message.text # splitto il testo
     global tipo
     print(tipo)
@@ -678,7 +678,8 @@ def pompaonoff(update: Update, context: CallbackContext) -> int:
         return FARMER
     else:
         for plant in plants:
-            pprint (f" { plant["PLANT_NAME"] } , {plant_pump}")
+            pprint ( plant_pump)
+            pprint(plant["PLANT_NAME"])
             if (re.search(plant["PLANT_NAME"], plant_pump, re.IGNORECASE))!=None:
 
                 if plant["OWNER"]==farmerid:
