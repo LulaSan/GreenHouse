@@ -99,7 +99,7 @@ class PlantClient():
                 self.updateJson()
                 #update farmer list
                 json_mod={"CROPS_OWNED" : cropsmod }
-                r=requests.post(SERVER+f"farmer/{owner}",json=json_mod)           
+                r=requests.post(SERVER+f"/farmer/{owner}",json=json_mod)           
         return "l'elemento è stato rimosso"
 
     def plantsingreenhouse(self,GreenhouseID):
