@@ -1,0 +1,2 @@
+In this directory, all the files and parameters, useful for the creation and communication of the ThingsBoard platform, are collected.
+In particular, the .JSON models are shown for the creation of dashboards relating to Admin and farmer respectively. Furthermore, to facilitate the development of the project, the TOKENs used by the sensors / statistics and controllers for direct access to the communication channel of the platform, based on the MQTT protocol, were collected.
