@@ -1,5 +1,6 @@
 {
 	"server" : "ec2-13-59-136-106.us-east-2.compute.amazonaws.com",
 	"port_s" : 2000,
-	"path" : "/plants"
+	"path" : "/plants",
+	"topic_sub": "/p4iot/plants/#"
 }
