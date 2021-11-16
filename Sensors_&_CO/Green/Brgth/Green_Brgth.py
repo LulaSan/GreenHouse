@@ -28,7 +28,7 @@ if __name__=="__main__":
     
 
     id="84F3EB33D049"
-    S_cat=Sensor_b(id+'brg',"/p4iot/greenhouses/{}/brigthness".format(id),"13.59.136.106", 1883)
+    S_cat=Sensor_b(id+'brg',"/p4iot/greenhouses/{}brigthness".format(id),"13.59.136.106", 1883)
     S_tb = TB_Sensor_b(id,'Wsx4vSU7SCBUPqH4BRN6','demo.thingsboard.io','v1/devices/me/telemetry',1883,60)
     
     S_cat.run()    
