@@ -20,6 +20,7 @@ class PumpStatistics():
         self.activation_time=data['activation_time']
         self.ton=data['last_ton']
         self.toff=data['last_toff']
+        self.count=data['count']
     
     def avarage(self):
         avg = self.total / self.samples
@@ -73,7 +74,8 @@ class Client_statistics():
                     'total':0,
                     'sample':0,
                     'last_ton':0,
-                    'last_toff':0
+                    'last_toff':0,
+                    'count':0
                 }
         
     def start(self):
@@ -81,7 +83,8 @@ class Client_statistics():
         self.client.start()
         self.client.mySubscribe(self.topic)
         #TB start
-        self.TBclient = mqtt.Client()  
+        self.TBclient = mqtt.Client()
+        self.water_period=1 #####################################  
 
     def notify(self,topic,msg):
         payload=json.loads(msg) 
@@ -100,6 +103,7 @@ class Client_statistics():
             self.register[bn]['status']= status
             self.register[bn]['total'] += moisture
             self.register[bn]['sample'] += 1
+            self.register[bn]['count'] += 1
             
             #creo un oggetto con i dati correnti per poter calcolare le statistiche
             current_data=PumpStatistics(moisture,self.register[bn],bn,ts)
@@ -122,17 +126,29 @@ class Client_statistics():
                 'avg':current_data.avarage(),
                 'activation_time':current_data.activation()[0],
             }
-            #publish the new statistics
-            #self.client.myPublish("p4iot/plants/{}/pump/statistics".format(bn), result)
-            # public to TB with API:
-            self.TBclient.username_pw_set(bn)
-            self.TBclient.connect(self.TBbroker,self.TBport,60)
-            self.TBclient.loop_start()
-            self.TBclient.publish(self.TBpath,json.dumps(result))
-            self.TBclient.loop_stop()
+            # publish the new statistics
+            # pubblico a TB ogni period corrispondente a 1 s (velocità di pubblicazione sensore) :
+            ##############
+
+            if self.register[bn]['count'] == self.water_period:
+                self.register[bn]['count']=0
+                self.TBclient.username_pw_set(bn)
+                self.TBclient.connect(self.TBbroker,self.TBport,60)
+                self.TBclient.loop_start()
+                self.TBclient.publish(self.TBpath,json.dumps(result))
+                self.TBclient.loop_stop()
+                print(f'Dati inviati a TB sulla pianta {bn}')
+                
+            if self.last_water_period != self.water_period:
+                self.register[bn]['count']=0
         else:
             return f"the device {bn} is not registered"
-      
+        
+    def timing(self,server,port,topic_period):
+        self.last_water_period=self.water_period
+        self.water_period=json.loads(requests.get(str("http://"+str(server)+':'+str(port)+topic_period)).text)
+
+        return self.water_period
 
 if __name__=="__main__":
     IDlist=[]
@@ -165,9 +181,10 @@ if __name__=="__main__":
         
 
     clientID='WateringStatistics' 
-    c=Client_statistics(clientID,topic_sub",broker,port)
+    c=Client_statistics(clientID,topic_sub,broker,port)
     c.start()
 
     while True:
-        water_period=json.loads(requests.get(str("http://"+str(json_dic["server"])+':'+str(json_dic["port_s"])+"/statistic/water_period")).text)
+        water_period=c.timing(json_dic["server"],json_dic["port_s"],"/statistic/water_period")
+        print('valore aggiornamento statistiche'+':'+ str(water_period))
         time.sleep(water_period)
