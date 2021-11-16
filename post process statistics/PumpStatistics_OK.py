@@ -84,8 +84,8 @@ class Client_statistics():
         self.TBclient = mqtt.Client()  
 
     def notify(self,topic,msg):
-        payload=json.loads(msg) #from payload i receive a string message-> convert it in a json 
-        moisture=payload["humidity"] #from the payload.json i set all the variable 
+        payload=json.loads(msg) 
+        moisture=payload["humidity"] 
         bn=str(payload["bn"])#id
         self.bn=bn
         ts=payload["ts"]
@@ -164,7 +164,7 @@ if __name__=="__main__":
         print(f'status code:{response.status_code} error during the request')
         
 
-    clientID='WateringStatistics'       #devo prenderlo dal catalog?
+    clientID='WateringStatistics' 
     c=Client_statistics(clientID,topic_sub",broker,port)
     c.start()
 
