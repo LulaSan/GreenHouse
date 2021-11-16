@@ -16,6 +16,6 @@ AWS server:
 http://ec2-13-59-136-106.us-east-2.compute.amazonaws.com:2000
 
 **Contributors:**
-Claudio Mariuzzo
-Luisa Sangregorio
+Claudio Mariuzzo,
+Luisa Sangregorio,
 Gregorio Battaglia
