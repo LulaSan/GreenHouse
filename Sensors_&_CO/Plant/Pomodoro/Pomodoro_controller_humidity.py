@@ -105,7 +105,7 @@ if __name__ == '__main__':
         # num = 2
         plant_ID = '84F3EB33DB49'
         print(plant_ID)
-        connect= Subscriber_get_info_h("controller_brgth","/p4iot/plants/{}/sensors_pomo".format(id), '13.59.136.106', 1883)
+        connect= Subscriber_get_info_h("controller_brgth","/p4iot/plants/{}/sensors_pomo".format(plant_ID), '13.59.136.106', 1883)
 
         
         server_name = 'http://ec2-13-59-136-106.us-east-2.compute.amazonaws.com'
