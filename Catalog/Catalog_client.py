@@ -93,7 +93,8 @@ class PlantClient():
                
                 #removing the crop also from the list of crops owned by the farmer
                 owner= self.PlantsList[i]["OWNER"]
-                cropsowned=json.loads(requests.get(SERVER+f"/farmer/{owner}/CROPS_OWNED").text)
+                farmer=json.loads(requests.get(SERVER+f"/farmer/{owner}").text)
+                cropsowned=farmer["CROPS_OWNED"]
                 cropsmod=cropsowned.remove(deviceID)
                 json_mod={"CROPS_OWNED" : cropsmod }
                 r=requests.post(SERVER+f"/farmer/{owner}",json=json_mod)
