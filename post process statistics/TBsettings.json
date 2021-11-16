@@ -1,0 +1,5 @@
+{
+	"TBbroker" : "ec2-13-59-136-106.us-east-2.compute.amazonaws.com",
+	"TBport" : 2000,
+	"TBpath" : "v1/devices/me/telemetry"
+}
