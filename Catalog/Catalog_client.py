@@ -102,6 +102,21 @@ class PlantClient():
                 r=requests.post(SERVER+f"farmer/{owner}",json=json_mod)           
         return "l'elemento è stato rimosso"
 
+    def plantsingreenhouse(self,GreenhouseID):
+        plants_in_greenhouse=[]             
+        self.GreenhouseID=GreenhouseID
+        for i in range(len(self.PlantsList)):
+            if GreenhouseID == self.PlantsList[i]["GREENHOUSE_ID"]:
+                jsonitem={"PLANT_ID":self.PlantList[i]["PLANT_ID"],
+                          "PLANT_NAME":self.PlantList[i]["PLANT_NAME"]}
+                plants_in_greenhouse.append(jsonitem)
+              
+                
+        displayjson=json.dumps(plants_in_greenhouse,indent=4)
+        return displayjson
+        
+       
+        
     def updateJson(self):
         fp=open("Catalog.json",'r')
         catalog=json.load(fp)
