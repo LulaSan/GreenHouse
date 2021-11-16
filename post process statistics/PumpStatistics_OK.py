@@ -100,9 +100,10 @@ class Client_statistics():
             self.register[bn]['status']= status
             self.register[bn]['total'] += moisture
             self.register[bn]['sample'] += 1
+            
             #creo un oggetto con i dati correnti per poter calcolare le statistiche
-            #current_data=PumpStatistics(bn,self.register[bn]['min'],self.register[bn]['max'],self.register[bn]['avg'],self.register[bn]['activation_time'],moisture)
             current_data=PumpStatistics(moisture,self.register[bn],bn,ts)
+            
             #aggiorno le statistiche per pubblicarle
             self.register[bn].update({
                 'bn':bn,
@@ -145,15 +146,14 @@ if __name__=="__main__":
     # Si accede al catalog per ottenere l'IP e la porta del broker e il periodo di aggiornamento dati
 
     json_dic = json.loads(json_str)
-    #response=requests.get("http://p4iotgreenhouse.ddns.net:2000/plants")
+    topic_sub= json_dic['topic_sub']
     response = requests.get(str("http://"+str(json_dic["server"])+':'+str(json_dic["port_s"])+str(json_dic["path"])))
-    #response = requests.get(str("http://localhost:2000/plants"))
+
     if response.status_code == 200:
         content=json.loads(response.text)
-        #broker = str(content[0]["BROKER_HOST"]) #quello sul catalog è sbagliato
-        #port = int(content[0]["BROKER_PORT"])
-        broker="13.59.136.106"
-        port=1883
+        broker = str(content[0]["BROKER_HOST"])
+        port = int(content[0]["BROKER_PORT"])
+  
         
         #ottengo la lista completa delle piante registrate nel catalog
         for p in range(len(content)):
@@ -165,7 +165,7 @@ if __name__=="__main__":
         
 
     clientID='WateringStatistics'       #devo prenderlo dal catalog?
-    c=Client_statistics(clientID,"/p4iot/plants/#",broker,port)
+    c=Client_statistics(clientID,topic_sub",broker,port)
     c.start()
 
     while True:
