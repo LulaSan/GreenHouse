@@ -26,7 +26,7 @@ if __name__=="__main__":
     # conf=json.load(open("settings.json"))
     id="ABCDEFG"    
 
-    S_cat=Sensor_b(id+'brg',"/p4iot/greenhouses/{}/brigthness".format(id),"13.59.136.106", 1883)
+    S_cat=Sensor_b(id+'brg',"/p4iot/greenhouses/{}brigthness".format(id),"13.59.136.106", 1883)
     S_tb = TB_Sensor_b(id,'Q2SYhCCAM9DQCVSzOakH','demo.thingsboard.io','v1/devices/me/telemetry',1883,60)
     
     S_cat.run()    
