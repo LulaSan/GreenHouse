@@ -85,9 +85,12 @@ class PlantClient():
             self.updateJson()
 
             return f'Update correctly'
-    
+        
+        
     def removeplant(self,deviceID):
         self.deviceID=deviceID
+        plantslistcopia=self.PlantsList.copy()
+        
         for i in range(len(self.PlantsList)):
             if self.deviceID==self.PlantsList[i]["PLANT_ID"] :
                
@@ -99,9 +102,10 @@ class PlantClient():
                 json_mod={"CROPS_OWNED" : cropsmod }
                 r=requests.post(SERVER+f"/farmer/{owner}",json=json_mod)
                 #update plant list
-                del self.PlantsList[i]
-                self.updateJson()
-                #update farmer list
+                del plantslistcopia[i]
+        
+        self.PlantsList=plantslistcopia
+        self.updateJson()
                            
         return "l'elemento è stato rimosso"
 
