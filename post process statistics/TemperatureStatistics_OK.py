@@ -105,7 +105,7 @@ class Client_temperature():
             }
             #publish the new statistics to TB
             
-            if self.register[bn]['count'] == self.water_period:
+            if self.register[bn]['count'] == self.temperature_period:
                 self.register[bn]['count']=0
                 self.TBclient.username_pw_set(bn)
                 self.TBclient.connect(self.TBbroker,self.TBport,60)
@@ -114,16 +114,16 @@ class Client_temperature():
                 self.TBclient.loop_stop()
                 print(f'Dati inviati a TB sulla pianta {bn}')
                 
-            if self.last_water_period != self.water_period:
+            if self.last_temperature_period != self.temperature_period:
                 self.register[bn]['count']=0
         else:
             return f"the device {bn} is not registered"
         
     def timing(self,server,port,topic_period):
-        self.last_water_period=self.water_period
-        self.water_period=json.loads(requests.get(str("http://"+str(server)+':'+str(port)+topic_period)).text)
+        self.last_temperature_period=self.temperature_period
+        self.temperature_period=json.loads(requests.get(str("http://"+str(server)+':'+str(port)+topic_period)).text)
 
-        return self.water_period
+        return self.temperature_period
       
 
 if __name__=="__main__":
@@ -161,6 +161,6 @@ if __name__=="__main__":
     c.start()
 
     while True:
-        temperature_period=c.timing(json_dic["server"],json_dic["port_s"],"/statistic/water_period")
+        temperature_period=c.timing(json_dic["server"],json_dic["port_s"],"/statistic/temperature_period")
         print('valore aggiornamento statistiche'+':'+ str(temperature_period))
         time.sleep(temperature_period)
