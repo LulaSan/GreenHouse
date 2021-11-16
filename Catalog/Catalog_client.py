@@ -347,9 +347,12 @@ class FarmerClient():
                 "CROPS_OWNED": [
                                ],
                 "ITEMS_SELL": [
-                    {   
-                       
-                } ] }
+                        {   
+                    "item": "Pomodoro",
+                    "price": 2,
+                    "quantityAvailable": 0}
+                              
+                ] }
             deviceCompleto = {**basicinformations,**newFarmer}
             self.FarmersList.append(deviceCompleto)
             
