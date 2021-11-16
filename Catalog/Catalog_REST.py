@@ -40,7 +40,7 @@ class CHERRY_CATALOG():
                 output=str(self.admin.showlist())                
             
 	    if uri[0]=='plantsingreenhouse':
-			output=str(self.plant.plantsingreenhouse(uri[1]))
+		output=str(self.plant.plantsingreenhouse(uri[1]))
             if uri[0]=='plant': 
                 if len(uri)==2:
                     output=str(self.plant.search(uri[1],None)) # tutte le informazioni su quella plant http://localhost:8080/plant/84F3EB33DB49
