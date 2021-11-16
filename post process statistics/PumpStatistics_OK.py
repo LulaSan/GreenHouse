@@ -50,6 +50,18 @@ class Client_statistics():
         self.topic=topic
         self.IDlist=IDlist
         self.register=register.fromkeys(self.IDlist,0)
+        
+        try:
+            file = open("TBsettings.json", "r")
+            json_TB = json.loads(file.read())
+            file.close()
+        except:
+            print("Error in reading TBsettings.json file!")
+        
+        self.TBbroker=json_TB['TBbroker']
+        self.TBport=json_TB['TBport']
+        self.TBpath=json_TB['TBpath']
+        
         for k in self.register:
             self.register[k]={
                     #'bn':'',
@@ -113,9 +125,9 @@ class Client_statistics():
             #self.client.myPublish("p4iot/plants/{}/pump/statistics".format(bn), result)
             # public to TB with API:
             self.TBclient.username_pw_set(bn)
-            self.TBclient.connect('demo.thingsboard.io',1883,60)
+            self.TBclient.connect(self.TBbroker,self.TBport,60)
             self.TBclient.loop_start()
-            self.TBclient.publish('v1/devices/me/telemetry',json.dumps(result))
+            self.TBclient.publish(self.TBpath,json.dumps(result))
             self.TBclient.loop_stop()
         else:
             return f"the device {bn} is not registered"
