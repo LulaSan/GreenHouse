@@ -90,16 +90,18 @@ class PlantClient():
         self.deviceID=deviceID
         for i in range(len(self.PlantsList)):
             if self.deviceID==self.PlantsList[i]["PLANT_ID"] :
-                del self.PlantsList[i]
+               
                 #removing the crop also from the list of crops owned by the farmer
                 owner= self.PlantsList[i]["OWNER"]
                 cropsowned=requests.get(SERVER+f"farmer/{owner}/CROPS_OWNED")
                 cropsmod=cropswoned.remove(deviceID)
+                json_mod={"CROPS_OWNED" : cropsmod }
+                r=requests.post(SERVER+f"/farmer/{owner}",json=json_mod)
                 #update plant list
+                del self.PlantsList[i]
                 self.updateJson()
                 #update farmer list
-                json_mod={"CROPS_OWNED" : cropsmod }
-                r=requests.post(SERVER+f"/farmer/{owner}",json=json_mod)           
+                           
         return "l'elemento è stato rimosso"
 
     def plantsingreenhouse(self,GreenhouseID):
