@@ -123,7 +123,7 @@ class Client_temperature():
         self.last_water_period=self.water_period
         self.water_period=json.loads(requests.get(str("http://"+str(server)+':'+str(port)+topic_period)).text)
 
-        return self.water_period"
+        return self.water_period
       
 
 if __name__=="__main__":
