@@ -107,8 +107,8 @@ class PlantClient():
         self.GreenhouseID=GreenhouseID
         for i in range(len(self.PlantsList)):
             if GreenhouseID == self.PlantsList[i]["GREENHOUSE_ID"]:
-                jsonitem={"PLANT_ID":self.PlantList[i]["PLANT_ID"],
-                          "PLANT_NAME":self.PlantList[i]["PLANT_NAME"]}
+                jsonitem={"PLANT_ID":self.PlantsList[i]["PLANT_ID"],
+                          "PLANT_NAME":self.PlantsList[i]["PLANT_NAME"]}
                 plants_in_greenhouse.append(jsonitem)
               
                 
