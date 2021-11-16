@@ -39,7 +39,7 @@ class CHERRY_CATALOG():
             if uri[0]=='admins':
                 output=str(self.admin.showlist())                
             
-	        if uri[0]=='plantsingreenhouse':
+            if uri[0]=='plantsingreenhouse':
                 output=str(self.plant.plantsingreenhouse(uri[1]))
                 
             if uri[0]=='plant': 
