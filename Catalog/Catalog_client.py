@@ -100,8 +100,12 @@ class PlantClient():
                 print(farmer)
                 cropsowned=farmer["CROPS_OWNED"]
                 print(cropsowned)
-                cropsmod=cropsowned.remove(deviceID)
+                cropsmod=cropsowned.remove(self.deviceID)
+                print(self.deviceID)
+                print(cropsmod)
+                
                 json_mod={"CROPS_OWNED" : cropsmod }
+                
                 r=requests.post(SERVER+f"/uporaddfarmer/{owner}",json=json_mod)
                 #update plant list
                 del plantslistcopia[i]
