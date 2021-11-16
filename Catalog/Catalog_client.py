@@ -112,7 +112,7 @@ class PlantClient():
         self.PlantsList=plantslistcopia
         self.updateJson()
                            
-        return "l'elemento è stato rimosso"
+        return f"Removed plant from Catalog and from plant list of the owner {owner}, current available plants for the owner are {cropsowned}"
 
     def plantsingreenhouse(self,GreenhouseID):
         plants_in_greenhouse=[]             
