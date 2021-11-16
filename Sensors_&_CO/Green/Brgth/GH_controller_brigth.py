@@ -167,7 +167,7 @@ if __name__ == '__main__':
             # num = 2
             green_ID = greenH[num]["GREENHOUSE_ID"]
             print(green_ID)
-            connect= Subscriber_get_info_b("controller_brgth",'/p4iot/greenhouses/'+green_ID+'brigthness', '13.59.136.106', 1883)
+            connect= Subscriber_get_info_b("controller_brgth",'/p4iot/greenhouses/'+green_ID+'brightness', '13.59.136.106', 1883)
 
             
             server_name = 'http://ec2-13-59-136-106.us-east-2.compute.amazonaws.com'
