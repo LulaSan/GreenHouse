@@ -1,5 +1,5 @@
 {
-	"TBbroker" : "ec2-13-59-136-106.us-east-2.compute.amazonaws.com",
-	"TBport" : 2000,
+	"TBbroker" : "demo.thingsboard.io",
+	"TBport" : 1883,
 	"TBpath" : "v1/devices/me/telemetry"
 }
