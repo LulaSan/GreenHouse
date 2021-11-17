@@ -217,7 +217,7 @@ def buyitemuser(update: Update, context: CallbackContext) -> int:
   quantita=text[2]
   r=requests.post(f"{SERVER}/buyitem/{farmerID}/{item}/{quantita}").text
   itemstobuy=json.loads(requests.get(url=f"{SERVER}/itemstobuy").text)
-  update.message.reply_text(f"Ok, done! . Here there is the modified list : \n {itemstobuy} \n Try again if you want to modify something else \n Write 'Principale' to go pack to the main menu")
+  update.message.reply_text(f"Ok, done 🛍!  Here there is the modified list : \n {itemstobuy} \n Try again if you want to buy something else \n Write 'Principale' to go pack to the main menu")
 
   return USER_TYPING
 
