@@ -12,8 +12,11 @@ Finally, Telegram Bot implements several customized functionalities, such us:
 - Possibility to modify control settings of the greenhouse
 
 
-AWS server:
+**AWS server:**
 http://ec2-13-59-136-106.us-east-2.compute.amazonaws.com:2000
+
+**Video Demo:**
+https://clipchamp.com/watch/ErVXeyWnpmN
 
 **Contributors:**
 Claudio Mariuzzo,
