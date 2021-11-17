@@ -425,7 +425,7 @@ def NewThreshold_period(update: Update, context: CallbackContext) -> int:
   return LEVEL1
 
 def OpenWindows(update: Update, context: CallbackContext) -> int:
-    update.callback_query.message.edit_text("Finestra aperta")
+    update.callback_query.message.edit_text("Window opened")
     window_status={"STATUS_WINDOW":1}
     user_data=context.user_data
     greenhouse_id=user_data["CHOSEN_GREENHOUSEID"]
@@ -519,8 +519,8 @@ def Statistics_keyboard():
 def actuator_control_keyboard():
     keyboard = [[InlineKeyboardButton(text=f'turn ON vent', callback_data='VentON')],
                 [InlineKeyboardButton(text=f'turn OFF vent', callback_data='VentOFF')],
-                [InlineKeyboardButton(text=f'OPEN windows', callback_data='OpenWindows')],
-                [InlineKeyboardButton(text=f'CLOSE windows', callback_data='CloseWindows')],
+                [InlineKeyboardButton(text=f'OPEN window', callback_data='OpenWindows')],
+                [InlineKeyboardButton(text=f'CLOSE window', callback_data='CloseWindows')],
                 [InlineKeyboardButton(text=f'Main menu', callback_data='main_fm')]]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
   
