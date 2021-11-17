@@ -647,7 +647,7 @@ def listpumps(farmerid):
     plants=json.loads(requests.get(url=f"{SERVER}/plants").text)
     cropsowned=farmer["CROPS_OWNED"]
     pprint(cropsowned)
-    displaydict={" Your list":[]}
+    displaydict={"Your list":[]}
     #STAMPO LISTA PIANTE OWNED CON THRESHOLDS
     for crop in cropsowned:
       for plant in plants:
