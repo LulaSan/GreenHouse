@@ -139,7 +139,7 @@ if __name__ == '__main__':
     while True:
 
         plant_ID = '84F3EB33DB49'
-        topic_sensor =plantInfo[["PLANT_ID"]==plant_ID]['STATUS_CONTROLL_MOISTURE']
+        topic_sensor =plantInfo[["PLANT_ID"]==plant_ID]['SENSORS_TOPIC_HUM']
         connect= Subscriber_get_info_h("controller_brgth_tomato",topic_sensor,conf['broker'], conf['port'])
         
         server_name =  conf['url']
