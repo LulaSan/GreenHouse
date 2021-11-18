@@ -24,7 +24,7 @@ if __name__=="__main__":
     id="CFYG4567YGH"
     
     plantInfo =  json.loads(requests.get(
-        conf['url']+'plants'
+        conf['url']+'/plants'
         ).text)
     
     topic_sensor = plantInfo[["PLANT_ID"]==id]['SENSORS_TOPIC_HUM']
