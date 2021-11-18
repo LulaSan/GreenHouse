@@ -94,7 +94,7 @@
             "OWNER": "5678",
             "STATUS_PUMP": 0,
             "THRESHOLD_MOIST_MIN": 0,
-            "THRESHOLD_MOIST_MAX": 0,
+            "THRESHOLD_MOIST_MAX": 0
         },
         {
             "PLANT_ID": "CFGHJ57Y789T",
@@ -122,7 +122,6 @@
             "SENSORS_TOPIC": "/p4iot/plants/84F3EB35GBD88/sensors",
             "STATUS_CONTROLL_MOISTURE" : 1,
             "SENSORS_TOPIC_HUM": "/p4iot/plants/84F3EB35GBD88humidity",
-            
             "OWNER":  "1234",
             "STATUS_PUMP": 0,
             "THRESHOLD_MOIST_MIN": 54,
