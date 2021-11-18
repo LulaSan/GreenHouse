@@ -20,7 +20,9 @@
             "BROKER_PORT": 1883,
             "STATUS_TOPIC": "/p4iot/greenhouses/84F3EB33D049/status",
             "COMMANDS_TOPIC": "/p4iot/greenhouses/84F3EB33D049/commands/+",
-            "SENSORS_TOPIC": "/p4iot/greenhouses/84F3EB33D049/sensors"
+             "SENSORS_TOPIC_TEMP": "/p4iot/greenhouses/84F3EB33D049temperature",
+            "SENSORS_TOPIC_HUM": "/p4iot/greenhouses/84F3EB33D049humidty",
+            "SENSORS_TOPIC_BRGHT": "/p4iot/greenhouses/84F3EB33D049brigthness"
         }, 
         {
             "GREENHOUSE_ID": "ABCDEFG",
