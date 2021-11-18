@@ -133,7 +133,7 @@ if __name__ == '__main__':
     conf=json.load(open("settings_controller.json"))
     
     plantInfo =  json.loads(requests.get(
-        conf['url']+'plants'
+        conf['url']+'/plants'
         ).text)
     
     while True:
