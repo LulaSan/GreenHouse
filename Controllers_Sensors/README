@@ -1,0 +1,4 @@
+This is the repository for greenhouse controllers.
+It conntains Virtual Sensors too.
+
+Based on MQTT & REST protocoll.
