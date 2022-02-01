@@ -13,7 +13,7 @@ Finally, Telegram Bot implements several customized functionalities, such us:
 
 
 **AWS server:**
-http://ec2-13-59-136-106.us-east-2.compute.amazonaws.com:2000
+http://ec2-13-59-136-106.us-east-2.compute.amazonaws.com:2000 (This is turned off now. sorry!)
 
 **Video Demo:**
 https://clipchamp.com/watch/ErVXeyWnpmN
